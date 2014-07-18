@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<!--[if IE 6]>
+<html id="ie6" lang="en-US">
+<![endif]-->
+<!--[if IE 7]>
+<html id="ie7" lang="en-US">
+<![endif]-->
+<!--[if IE 8]>
+<html id="ie8" lang="en-US">
+<![endif]-->
+<!--[if !(IE 6) | !(IE 7) | !(IE 8)  ]><!-->
+<html lang="en-US">
+<!--<![endif]-->
+<head>
+<base href="http://ceriksen.com" />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="initial-scale=1.0, width=device-width" />
+<title>Dissecting traffic from SpringPad for iOS | ceriksen.com</title>
+
+<link rel="stylesheet" type="text/css" media="all" href="http://ceriksen.com/wp-content/themes/simplex/style.css" />
+
+<!--[if lt IE 9]>
+<script src="http://ceriksen.com/wp-content/themes/simplex/js/html5.js" type="text/javascript"></script>
+<script src="http://ceriksen.com/wp-content/themes/simplex/js/css3-mediaqueries.js"></script>
+<![endif]-->
+
+
+
+<link rel='stylesheet' id='crayon-css'  href='http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/css/min/crayon.min.css?ver=2.5.0' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-theme-twilight-css'  href='http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/themes/twilight/twilight.css?ver=2.5.0' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-font-monaco-css'  href='http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/fonts/monaco.css?ver=2.5.0' type='text/css' media='all' />
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/jquery.js?ver=1.10.2'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var quicktagsL10n = {"closeAllOpenTags":"Close all open tags","closeTags":"close tags","enterURL":"Enter the URL","enterImageURL":"Enter the URL of the image","enterImageDescription":"Enter a description of the image","fullscreen":"fullscreen","toggleFullscreen":"Toggle fullscreen mode","textdirection":"text direction","toggleTextdirection":"Toggle Editor Text Direction"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/quicktags.min.js?ver=3.8.3'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"2.5.0","is_admin":"0","ajaxurl":"http:\/\/ceriksen.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+var CrayonTagEditorSettings = {"home_url":"http:\/\/ceriksen.com","css":"crayon-te","css_selected":"crayon-selected","code_css":"#crayon-code","url_css":"#crayon-url","url_info_css":"#crayon-te-url-info","lang_css":"#crayon-lang","title_css":"#crayon-title","mark_css":"#crayon-mark","range_css":"#crayon-range","inline_css":"crayon-inline","inline_hide_css":"crayon-hide-inline","inline_hide_only_css":"crayon-hide-inline-only","hl_css":"#crayon-highlight","switch_html":"#content-html","switch_tmce":"#content-tmce","tinymce_button":"a.mce_crayon_tinymce","submit_css":"#crayon-te-ok","cancel_css":"#crayon-te-cancel","content_css":"#crayon-te-content","dialog_title_css":"#crayon-te-title","submit_wrapper_css":"#crayon-te-submit-wrapper","data_value":"data-value","attr_sep":":","css_sep":"_","fallback_lang":"default","dialog_title_add":"Add Crayon Code","dialog_title_edit":"Edit Crayon Code","submit_add":"Add","submit_edit":"Save","bar":"#crayon-te-bar","bar_content":"#crayon-te-bar-content","extensions":{"scpt":"applescript","applescript":"applescript","swf":"as","fla":"as","cs":"c#","h":"c++","hh":"c++","hpp":"c++","hxx":"c++","h++":"c++","cc":"c++","cpp":"c++","cxx":"c++","c++":"c++","pas":"delphi","java":"java","class":"java","jar":"java","mv":"miva","mvc":"miva","mvt":"miva","m":"objc","mm":"objc","pl":"perl","py":"python","pyw":"python","pyc":"python","pyo":"python","pyd":"python","rb":"ruby","rbx":"ruby","rhtml":"ruby","vbs":"vb"}};
+var CrayonSyntaxSettings = {"version":"2.5.0","is_admin":"0","ajaxurl":"http:\/\/ceriksen.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/js/min/crayon.te.min.js?ver=2.5.0'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/comment-reply.min.js?ver=3.8.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-content/themes/simplex/lib/js/jquery.fitvids.js?ver=3.8.3'></script>
+
+ 
+
+<link rel='next' title='Overview of iOS tracking traffic' href='http://ceriksen.com/2012/07/16/overview-of-ios-tracking-traffic/' />
+
+<link rel='canonical' href='http://ceriksen.com/2012/07/13/dissecting-traffic-from-springpad-for-ios/' />
+<link rel='shortlink' href='http://ceriksen.com/?p=29' />
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-32892239-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+	<script type="text/javascript">
+		jQuery(document).ready(function(){
+			jQuery("#page").fitVids();	 
+		});
+	</script>	<style type="text/css">
+			#site-title a,
+		#site-description {
+			color: #e6941e !important;
+		}
+		</style>
+	
+</head>
+
+<body lang="en" class="single single-post postid-29 single-format-standard browser-ie single-author singular">
+<div id="page" class="hfeed">
+	<header id="branding" role="banner">
+		<hgroup>
+			<h1 id="site-title"><a href="http://ceriksen.com/" title="ceriksen.com" rel="home">ceriksen.com</a></h1>
+			<h2 id="site-description"></h2>
+						
+							<form role="search" method="get" id="searchform" class="searchform" action="http://ceriksen.com/">
+				<div>
+					<label class="screen-reader-text" for="s">Search for:</label>
+					<input type="text" value="" name="s" id="s" />
+					<input type="submit" id="searchsubmit" value="Search" />
+				</div>
+			</form>					</hgroup>
+		
+		<nav id="access" role="navigation">
+			<h2 class="assistive-text">Main menu</h2>
+			<div class="skip-link screen-reader-text"><a href="#content" title="Skip to content">Skip to content</a></div>
+
+			<div class="menu"><ul><li ><a href="http://ceriksen.com/">Home</a></li></ul></div>
+
+		</nav><!-- #access -->
+		<div class="clear"></div>
+	</header><!-- #branding -->
+
+	<div id="main">
+		<div id="primary">
+			<div id="content" role="main">
+
+			
+				
+				
+<article id="post-29" class="post-29 post type-post status-publish format-standard hentry category-privacy tag-ios tag-privacy tag-springpad">
+	<header class="entry-header">
+				<h2 class="entry-title">Dissecting traffic from SpringPad for iOS</h2>
+		
+		<div class="entry-meta">
+			<a href="http://ceriksen.com/2012/07/13/dissecting-traffic-from-springpad-for-ios/" title="8:24 pm" rel="bookmark" class="entry-date"><time datetime="2012-07-13T20:24:00+00:00" pubdate>July 13, 2012</time></a>		</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+	<div class="entry-content">
+				<p>My research over the last couple of months has focused on the security ghetto of WordPress plugins. But recently <a href="https://twitter.com/#!/arnimarhardar">@arnimarhardar</a> turned me to the subject of mobile applications. As they often use HTTP, I felt right at home. I decided to download a few random applications onto my iPad and then go to town. I personally use my iPhone on a daily basis, so what I&#8217;m about to describe to you was quite the eye-opener for me in terms of what sort of data is sent about you to third-parties and such. Let me present to you, an extremely popular application: SpringPad.</p>
+<p>Note: I&#8217;ve masked out parts of requests since they may contain unique identifiers and such things.</p>
+<p><strong>Dissecting Springpad</strong><br />
+Armed with my recently acquired copy of Burp Pro, I booted up the application for the very first time. I was greeted with an authentication screen, asking me to sign up. Already at this point, Springpad has contacted a number of very interesting domains. There&#8217;s a few calls to Twitter and Facebook and such, but I&#8217;ve left those out since they offer no insights into what Springpad does.</p>
+<ul>
+<li>https://api.redlaser.com</li>
+<li>http://data.flurry.com</li>
+<li>http://iphone3.springpad.com</li>
+<li>https://ws.tapjoyads.com</li>
+</ul>
+<p>Of these 4 requests, only one of them is actually related to the application at all. That seemed very odd to me. So let&#8217;s look at what they did in order listed.</p>
+<p><strong>Third-party requests</strong></p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c9779934c34986103758" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+GET /getstatus?key=com.springpadit.springpad&amp;;udid=2B9XXXX8-DXXC-4XXC-8XX8-94AEXXXXDF1A&amp;;platform=ios&amp;;dv=iPad1%2C1&amp;;sdkver=3.3.0build154&amp;;appid=com.springpadit.springpad&amp;;locale=en_US&amp;;appver=3.0.6&amp;;os=5.0.1 HTTP/1.1
+Host: api.redlaser.com
+User-Agent: Springpad/3.0.6 CFNetwork/548.0.4 Darwin/11.0.0
+Accept-Language: en-us
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Proxy-Connection: keep-alive</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c9779934c34986103758-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c34986103758-2">2</div><div class="crayon-num" data-line="crayon-53c9779934c34986103758-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c34986103758-4">4</div><div class="crayon-num" data-line="crayon-53c9779934c34986103758-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c34986103758-6">6</div><div class="crayon-num" data-line="crayon-53c9779934c34986103758-7">7</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c9779934c34986103758-1"><span class="crayon-i">GET</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i">getstatus</span><span class="crayon-sy">?</span><span class="crayon-v">key</span><span class="crayon-o">=</span><span class="crayon-v">com</span><span class="crayon-sy">.</span><span class="crayon-v">springpadit</span><span class="crayon-sy">.</span><span class="crayon-i">springpad</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">udid</span><span class="crayon-o">=</span><span class="crayon-cn">2B9XXXX8</span><span class="crayon-o">-</span><span class="crayon-i">DXXC</span><span class="crayon-o">-</span><span class="crayon-cn">4XXC</span><span class="crayon-o">-</span><span class="crayon-cn">8XX8</span><span class="crayon-o">-</span><span class="crayon-cn">94AEXXXXDF1A</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">platform</span><span class="crayon-o">=</span><span class="crayon-i">ios</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">dv</span><span class="crayon-o">=</span><span class="crayon-i">iPad1</span><span class="crayon-o">%</span><span class="crayon-cn">2C1</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">sdkver</span><span class="crayon-o">=</span><span class="crayon-cn">3.3.0build154</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">appid</span><span class="crayon-o">=</span><span class="crayon-v">com</span><span class="crayon-sy">.</span><span class="crayon-v">springpadit</span><span class="crayon-sy">.</span><span class="crayon-i">springpad</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">locale</span><span class="crayon-o">=</span><span class="crayon-i">en_US</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">appver</span><span class="crayon-o">=</span><span class="crayon-cn">3.0.6</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">os</span><span class="crayon-o">=</span><span class="crayon-cn">5.0.1</span><span class="crayon-h"> </span><span class="crayon-i">HTTP</span><span class="crayon-o">/</span><span class="crayon-cn">1.1</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c34986103758-2"><span class="crayon-i">Host</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-v">api</span><span class="crayon-sy">.</span><span class="crayon-v">redlaser</span><span class="crayon-sy">.</span><span class="crayon-e">com</span></div><div class="crayon-line" id="crayon-53c9779934c34986103758-3"><span class="crayon-i">User</span><span class="crayon-o">-</span><span class="crayon-i">Agent</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">Springpad</span><span class="crayon-o">/</span><span class="crayon-cn">3.0.6</span><span class="crayon-h"> </span><span class="crayon-i">CFNetwork</span><span class="crayon-o">/</span><span class="crayon-cn">548.0.4</span><span class="crayon-h"> </span><span class="crayon-i">Darwin</span><span class="crayon-o">/</span><span class="crayon-cn">11.0.0</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c34986103758-4"><span class="crayon-i">Accept</span><span class="crayon-o">-</span><span class="crayon-i">Language</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">en</span><span class="crayon-o">-</span><span class="crayon-e">us</span></div><div class="crayon-line" id="crayon-53c9779934c34986103758-5"><span class="crayon-i">Accept</span><span class="crayon-o">-</span><span class="crayon-i">Encoding</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">gzip</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">deflate</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c34986103758-6"><span class="crayon-i">Connection</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">keep</span><span class="crayon-o">-</span><span class="crayon-e">alive</span></div><div class="crayon-line" id="crayon-53c9779934c34986103758-7"><span class="crayon-i">Proxy</span><span class="crayon-o">-</span><span class="crayon-i">Connection</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">keep</span><span class="crayon-o">-</span><span class="crayon-i">alive</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0094 seconds] -->
+<p>RedLaser is a &#8220;RedLaser is a free shopping app for iPhone, Windows Phones, and Android that has been downloaded over 19 million times.&#8221;. Ok, interesting. How that is used by a note-taking application is a mystery to me. But from what we can tell from the request, is that they sent the name of the application making the request, an unique identifier, the platform, hardware versions, sdk version, the build number, locale, application version and OS version. Of course, sending across an unique identifier is a bit questionable, given that I as an end-user have no idea what redlaser is, but let&#8217;s move on!</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c9779934c4d166815934" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+POST /aas.do HTTP/1.1
+Host: data.flurry.com
+User-Agent: Springpad/3.0.6 CFNetwork/548.0.4 Darwin/11.0.0
+Content-Length: 307
+Content-Type: application/octet-stream
+Accept-Language: en-us
+Accept-Encoding: gzip, deflate
+Pragma: no-cache
+Connection: keep-alive
+Proxy-Connection: keep-alive
+
+               N  8Dƒ°Ä 9UXXXW5CUIXXXXXHDHSR 3.0.6    .IPHONEde53XXe0XX10d930XXb50f4315XX3aeXX4dXX589  Pq…·j³î•&amp;gt;-ß"›Óì.2‹&amp;gt;  ŽJWÖ"º9†zÍF»{»¾~7p|  &amp;;ID06XX586A-CXX4-4F72-8AXXD-XXXX9CE1B3C63  8Dƒ°¢  8Dƒ°¢  
+scr.height 1024 	scr.width 768 device.os.version 5.0.1 device.model.1 iPad1,1  à„</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c9779934c4d166815934-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c4d166815934-2">2</div><div class="crayon-num" data-line="crayon-53c9779934c4d166815934-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c4d166815934-4">4</div><div class="crayon-num" data-line="crayon-53c9779934c4d166815934-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c4d166815934-6">6</div><div class="crayon-num" data-line="crayon-53c9779934c4d166815934-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c4d166815934-8">8</div><div class="crayon-num" data-line="crayon-53c9779934c4d166815934-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c4d166815934-10">10</div><div class="crayon-num" data-line="crayon-53c9779934c4d166815934-11">11</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c4d166815934-12">12</div><div class="crayon-num" data-line="crayon-53c9779934c4d166815934-13">13</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c9779934c4d166815934-1"><span class="crayon-i">POST</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-v">aas</span><span class="crayon-sy">.</span><span class="crayon-st">do</span><span class="crayon-h"> </span><span class="crayon-i">HTTP</span><span class="crayon-o">/</span><span class="crayon-cn">1.1</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c4d166815934-2"><span class="crayon-i">Host</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-v">data</span><span class="crayon-sy">.</span><span class="crayon-v">flurry</span><span class="crayon-sy">.</span><span class="crayon-e">com</span></div><div class="crayon-line" id="crayon-53c9779934c4d166815934-3"><span class="crayon-i">User</span><span class="crayon-o">-</span><span class="crayon-i">Agent</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">Springpad</span><span class="crayon-o">/</span><span class="crayon-cn">3.0.6</span><span class="crayon-h"> </span><span class="crayon-i">CFNetwork</span><span class="crayon-o">/</span><span class="crayon-cn">548.0.4</span><span class="crayon-h"> </span><span class="crayon-i">Darwin</span><span class="crayon-o">/</span><span class="crayon-cn">11.0.0</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c4d166815934-4"><span class="crayon-i">Content</span><span class="crayon-o">-</span><span class="crayon-i">Length</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-cn">307</span></div><div class="crayon-line" id="crayon-53c9779934c4d166815934-5"><span class="crayon-i">Content</span><span class="crayon-o">-</span><span class="crayon-i">Type</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">application</span><span class="crayon-o">/</span><span class="crayon-i">octet</span><span class="crayon-o">-</span><span class="crayon-e">stream</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c4d166815934-6"><span class="crayon-i">Accept</span><span class="crayon-o">-</span><span class="crayon-i">Language</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">en</span><span class="crayon-o">-</span><span class="crayon-e">us</span></div><div class="crayon-line" id="crayon-53c9779934c4d166815934-7"><span class="crayon-i">Accept</span><span class="crayon-o">-</span><span class="crayon-i">Encoding</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">gzip</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">deflate</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c4d166815934-8"><span class="crayon-i">Pragma</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">no</span><span class="crayon-o">-</span><span class="crayon-e">cache</span></div><div class="crayon-line" id="crayon-53c9779934c4d166815934-9"><span class="crayon-i">Connection</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">keep</span><span class="crayon-o">-</span><span class="crayon-e">alive</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c4d166815934-10"><span class="crayon-i">Proxy</span><span class="crayon-o">-</span><span class="crayon-i">Connection</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">keep</span><span class="crayon-o">-</span><span class="crayon-i">alive</span></div><div class="crayon-line" id="crayon-53c9779934c4d166815934-11">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c4d166815934-12"><span class="crayon-h"> </span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-h"> </span><span class="crayon-i">N</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-cn">8D</span>ƒ°Ä<span class="crayon-h"> </span><span class="crayon-cn">9UXXXW5CUIXXXXXHDHSR</span><span class="crayon-h"> </span><span class="crayon-cn">3.0.6</span><span class="crayon-h"> </span><span class="crayon-h">&nbsp;&nbsp; </span><span class="crayon-sy">.</span><span class="crayon-i">IPHONEde53XXe0XX10d930XXb50f4315XX3aeXX4dXX589</span><span class="crayon-h"> </span><span class="crayon-h"> </span><span class="crayon-i">Pq</span>…·<span class="crayon-i">j</span>³î•<span class="crayon-o">&amp;</span><span class="crayon-i">gt</span><span class="crayon-sy">;</span><span class="crayon-o">-</span>ß<span class="crayon-s">"›Óì.2‹&amp;gt;  ŽJWÖ"</span>º<span class="crayon-cn">9</span>†<span class="crayon-e">z</span>Í<span class="crayon-e">F</span>»<span class="crayon-sy">{</span>»¾<span class="crayon-o">~</span><span class="crayon-cn">7p</span><span class="crayon-o">|</span><span class="crayon-h"> </span><span class="crayon-h"> </span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-i">ID06XX586A</span><span class="crayon-o">-</span><span class="crayon-i">CXX4</span><span class="crayon-o">-</span><span class="crayon-cn">4F72</span><span class="crayon-o">-</span><span class="crayon-cn">8AXXD</span><span class="crayon-o">-</span><span class="crayon-i">XXXX9CE1B3C63</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-cn">8D</span>ƒ°¢<span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-cn">8D</span>ƒ°¢<span class="crayon-h"> </span><span class="crayon-h"> </span></div><div class="crayon-line" id="crayon-53c9779934c4d166815934-13"><span class="crayon-v">scr</span><span class="crayon-sy">.</span><span class="crayon-i">height</span><span class="crayon-h"> </span><span class="crayon-cn">1024</span><span class="crayon-h"> &nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">scr</span><span class="crayon-sy">.</span><span class="crayon-i">width</span><span class="crayon-h"> </span><span class="crayon-cn">768</span><span class="crayon-h"> </span><span class="crayon-v">device</span><span class="crayon-sy">.</span><span class="crayon-v">os</span><span class="crayon-sy">.</span><span class="crayon-i">version</span><span class="crayon-h"> </span><span class="crayon-cn">5.0.1</span><span class="crayon-h"> </span><span class="crayon-v">device</span><span class="crayon-sy">.</span><span class="crayon-v">model</span><span class="crayon-sy">.</span><span class="crayon-cn">1</span><span class="crayon-h"> </span><span class="crayon-i">iPad1</span><span class="crayon-sy">,</span><span class="crayon-cn">1</span><span class="crayon-h">&nbsp;&nbsp;</span>à„</div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0131 seconds] -->
+<p>This one is fun, because it seems to be sending across an actual data-structure, null-byte padding and everything. But it&#8217;s sending across a couple of (unique) identifiers, resolution, model, and version information. That&#8217;s nice. Not only does there seem to be one piece of identifying information in this request like to redlaser, there&#8217;s several.</p>
+<p>Before getting into the actual request to springpad, we need a last stop over to tapjoyads.com!</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c9779934c55860872217" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+GET /connect?sdk_type=connect&amp;;country_code=US&amp;;display_multiplier=1.000000&amp;;plugin=native&amp;;library_version=8.1.8&amp;;app_id=1168c244-ca87-40db-816c-8abd0f1a2144&amp;;lad=0&amp;;mobile_country_code=&amp;;device_type=iPad&amp;;carrier_name=&amp;;language_code=en&amp;;os_version=5.0.1&amp;;verifier=23a213fcfdceb0dd91XXX67a1b136c1e8c9335a2d409f3dXXX1b500495f8834b&amp;;timestamp=1341179277&amp;;allows_voip=yes&amp;;app_version=3.0.6&amp;;mobile_network_code=&amp;;carrier_country_code=&amp;;platform=iOS&amp;;mac_address=d8XX6270XXfX HTTP/1.1
+Host: ws.tapjoyads.com
+User-Agent: Springpad/3.0.6 CFNetwork/548.0.4 Darwin/11.0.0
+Accept-Language: en-us
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Proxy-Connection: keep-alive</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c9779934c55860872217-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c55860872217-2">2</div><div class="crayon-num" data-line="crayon-53c9779934c55860872217-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c55860872217-4">4</div><div class="crayon-num" data-line="crayon-53c9779934c55860872217-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c55860872217-6">6</div><div class="crayon-num" data-line="crayon-53c9779934c55860872217-7">7</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c9779934c55860872217-1"><span class="crayon-i">GET</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i">connect</span><span class="crayon-sy">?</span><span class="crayon-v">sdk_type</span><span class="crayon-o">=</span><span class="crayon-i">connect</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">country_code</span><span class="crayon-o">=</span><span class="crayon-i">US</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">display_multiplier</span><span class="crayon-o">=</span><span class="crayon-cn">1.000000</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">plugin</span><span class="crayon-o">=</span><span class="crayon-m">native</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">library_version</span><span class="crayon-o">=</span><span class="crayon-cn">8.1.8</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">app_id</span><span class="crayon-o">=</span><span class="crayon-cn">1168c244</span><span class="crayon-o">-</span><span class="crayon-i">ca87</span><span class="crayon-o">-</span><span class="crayon-cn">40db</span><span class="crayon-o">-</span><span class="crayon-cn">816c</span><span class="crayon-o">-</span><span class="crayon-cn">8abd0f1a2144</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">lad</span><span class="crayon-o">=</span><span class="crayon-cn">0</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">mobile_country_code</span><span class="crayon-o">=&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">device_type</span><span class="crayon-o">=</span><span class="crayon-i">iPad</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">carrier_name</span><span class="crayon-o">=&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">language_code</span><span class="crayon-o">=</span><span class="crayon-i">en</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">os_version</span><span class="crayon-o">=</span><span class="crayon-cn">5.0.1</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">verifier</span><span class="crayon-o">=</span><span class="crayon-cn">23a213fcfdceb0dd91XXX67a1b136c1e8c9335a2d409f3dXXX1b500495f8834b</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">timestamp</span><span class="crayon-o">=</span><span class="crayon-cn">1341179277</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">allows_voip</span><span class="crayon-o">=</span><span class="crayon-i">yes</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">app_version</span><span class="crayon-o">=</span><span class="crayon-cn">3.0.6</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">mobile_network_code</span><span class="crayon-o">=&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">carrier_country_code</span><span class="crayon-o">=&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">platform</span><span class="crayon-o">=</span><span class="crayon-i">iOS</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">mac_address</span><span class="crayon-o">=</span><span class="crayon-e">d8XX6270XXfX </span><span class="crayon-i">HTTP</span><span class="crayon-o">/</span><span class="crayon-cn">1.1</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c55860872217-2"><span class="crayon-i">Host</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-v">ws</span><span class="crayon-sy">.</span><span class="crayon-v">tapjoyads</span><span class="crayon-sy">.</span><span class="crayon-e">com</span></div><div class="crayon-line" id="crayon-53c9779934c55860872217-3"><span class="crayon-i">User</span><span class="crayon-o">-</span><span class="crayon-i">Agent</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">Springpad</span><span class="crayon-o">/</span><span class="crayon-cn">3.0.6</span><span class="crayon-h"> </span><span class="crayon-i">CFNetwork</span><span class="crayon-o">/</span><span class="crayon-cn">548.0.4</span><span class="crayon-h"> </span><span class="crayon-i">Darwin</span><span class="crayon-o">/</span><span class="crayon-cn">11.0.0</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c55860872217-4"><span class="crayon-i">Accept</span><span class="crayon-o">-</span><span class="crayon-i">Language</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">en</span><span class="crayon-o">-</span><span class="crayon-e">us</span></div><div class="crayon-line" id="crayon-53c9779934c55860872217-5"><span class="crayon-i">Accept</span><span class="crayon-o">-</span><span class="crayon-i">Encoding</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">gzip</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">deflate</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c55860872217-6"><span class="crayon-i">Connection</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">keep</span><span class="crayon-o">-</span><span class="crayon-e">alive</span></div><div class="crayon-line" id="crayon-53c9779934c55860872217-7"><span class="crayon-i">Proxy</span><span class="crayon-o">-</span><span class="crayon-i">Connection</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">keep</span><span class="crayon-o">-</span><span class="crayon-i">alive</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0117 seconds] -->
+<p>The third request to a third party consists of a lot of fun information, such as country, device type, carrier name, language, iOS version, and your devices&#8217; mac address.</p>
+<p><strong>Springpad requests</strong><br />
+And now, for the main course, Springpad. Let&#8217;s see what it&#8217;s got in store for us!</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c9779934c5b621280677" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+GET /api/ui/layouts HTTP/1.1
+Host: iphone3.springpad.com
+User-Agent: Springpad/3.0.6 CFNetwork/548.0.4 Darwin/11.0.0
+Accept: application/json
+Authorization: OAuth realm="", oauth_consumer_key="aXXeb1d3543XX2749XX83f56beXXdb81", oauth_signature_method="PLAINTEXT", oauth_signature="43XX9ffdfb8XX8aea607316XXf3aXXd6%26", oauth_timestamp="1341179279", oauth_nonce="4190XX27-XX12-4XX6-9XX3-CDD9EXXX2FAD", oauth_version="1.0"
+Accept-Charset: ISO-8859-1,utf-8
+Accept-Encoding: gzip
+X-Spring-Client: iPad
+X-Spring-Client-Version: 3.06
+X-Spring-Api-Version: 9
+X-Spring-Device-Identifier: d8XX6270XXfX
+Accept-Language: en-us
+Pragma: no-cache
+Connection: keep-alive
+Proxy-Connection: keep-alive</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c9779934c5b621280677-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c5b621280677-2">2</div><div class="crayon-num" data-line="crayon-53c9779934c5b621280677-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c5b621280677-4">4</div><div class="crayon-num" data-line="crayon-53c9779934c5b621280677-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c5b621280677-6">6</div><div class="crayon-num" data-line="crayon-53c9779934c5b621280677-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c5b621280677-8">8</div><div class="crayon-num" data-line="crayon-53c9779934c5b621280677-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c5b621280677-10">10</div><div class="crayon-num" data-line="crayon-53c9779934c5b621280677-11">11</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c5b621280677-12">12</div><div class="crayon-num" data-line="crayon-53c9779934c5b621280677-13">13</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c5b621280677-14">14</div><div class="crayon-num" data-line="crayon-53c9779934c5b621280677-15">15</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c9779934c5b621280677-1"><span class="crayon-i">GET</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i">api</span><span class="crayon-o">/</span><span class="crayon-i">ui</span><span class="crayon-o">/</span><span class="crayon-e">layouts </span><span class="crayon-i">HTTP</span><span class="crayon-o">/</span><span class="crayon-cn">1.1</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c5b621280677-2"><span class="crayon-i">Host</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-v">iphone3</span><span class="crayon-sy">.</span><span class="crayon-v">springpad</span><span class="crayon-sy">.</span><span class="crayon-e">com</span></div><div class="crayon-line" id="crayon-53c9779934c5b621280677-3"><span class="crayon-i">User</span><span class="crayon-o">-</span><span class="crayon-i">Agent</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">Springpad</span><span class="crayon-o">/</span><span class="crayon-cn">3.0.6</span><span class="crayon-h"> </span><span class="crayon-i">CFNetwork</span><span class="crayon-o">/</span><span class="crayon-cn">548.0.4</span><span class="crayon-h"> </span><span class="crayon-i">Darwin</span><span class="crayon-o">/</span><span class="crayon-cn">11.0.0</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c5b621280677-4"><span class="crayon-i">Accept</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">application</span><span class="crayon-o">/</span><span class="crayon-e">json</span></div><div class="crayon-line" id="crayon-53c9779934c5b621280677-5"><span class="crayon-i">Authorization</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-e">OAuth </span><span class="crayon-v">realm</span><span class="crayon-o">=</span><span class="crayon-s">""</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_consumer_key</span><span class="crayon-o">=</span><span class="crayon-s">"aXXeb1d3543XX2749XX83f56beXXdb81"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_signature_method</span><span class="crayon-o">=</span><span class="crayon-s">"PLAINTEXT"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_signature</span><span class="crayon-o">=</span><span class="crayon-s">"43XX9ffdfb8XX8aea607316XXf3aXXd6%26"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_timestamp</span><span class="crayon-o">=</span><span class="crayon-s">"1341179279"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_nonce</span><span class="crayon-o">=</span><span class="crayon-s">"4190XX27-XX12-4XX6-9XX3-CDD9EXXX2FAD"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_version</span><span class="crayon-o">=</span><span class="crayon-s">"1.0"</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c5b621280677-6"><span class="crayon-i">Accept</span><span class="crayon-o">-</span><span class="crayon-i">Charset</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">ISO</span><span class="crayon-o">-</span><span class="crayon-cn">8859</span><span class="crayon-o">-</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span><span class="crayon-i">utf</span><span class="crayon-o">-</span><span class="crayon-cn">8</span></div><div class="crayon-line" id="crayon-53c9779934c5b621280677-7"><span class="crayon-i">Accept</span><span class="crayon-o">-</span><span class="crayon-i">Encoding</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">gzip</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c5b621280677-8"><span class="crayon-i">X</span><span class="crayon-o">-</span><span class="crayon-i">Spring</span><span class="crayon-o">-</span><span class="crayon-i">Client</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">iPad</span></div><div class="crayon-line" id="crayon-53c9779934c5b621280677-9"><span class="crayon-i">X</span><span class="crayon-o">-</span><span class="crayon-i">Spring</span><span class="crayon-o">-</span><span class="crayon-i">Client</span><span class="crayon-o">-</span><span class="crayon-i">Version</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-cn">3.06</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c5b621280677-10"><span class="crayon-i">X</span><span class="crayon-o">-</span><span class="crayon-i">Spring</span><span class="crayon-o">-</span><span class="crayon-i">Api</span><span class="crayon-o">-</span><span class="crayon-i">Version</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-cn">9</span></div><div class="crayon-line" id="crayon-53c9779934c5b621280677-11"><span class="crayon-i">X</span><span class="crayon-o">-</span><span class="crayon-i">Spring</span><span class="crayon-o">-</span><span class="crayon-i">Device</span><span class="crayon-o">-</span><span class="crayon-i">Identifier</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-e">d8XX6270XXfX</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c5b621280677-12"><span class="crayon-i">Accept</span><span class="crayon-o">-</span><span class="crayon-i">Language</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">en</span><span class="crayon-o">-</span><span class="crayon-e">us</span></div><div class="crayon-line" id="crayon-53c9779934c5b621280677-13"><span class="crayon-i">Pragma</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">no</span><span class="crayon-o">-</span><span class="crayon-e">cache</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c5b621280677-14"><span class="crayon-i">Connection</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">keep</span><span class="crayon-o">-</span><span class="crayon-e">alive</span></div><div class="crayon-line" id="crayon-53c9779934c5b621280677-15"><span class="crayon-i">Proxy</span><span class="crayon-o">-</span><span class="crayon-i">Connection</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">keep</span><span class="crayon-o">-</span><span class="crayon-i">alive</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0130 seconds] -->
+<p>This is the first request it makes, and the very first thing that greeted me was that this communication didn&#8217;t go over HTTPS, which is a concern. But onto the request, we see some OAuth fun, and then a device identifier, which is again your mac address. Ok, not the biggest of deals, let&#8217;s now sign up!</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c9779934c62764666443" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+POST /api/users HTTP/1.1
+Host: iphone3.springpad.com
+User-Agent: Springpad/3.0.6 CFNetwork/548.0.4 Darwin/11.0.0
+Content-Length: 185
+Accept: application/json
+Authorization: OAuth realm="", oauth_consumer_key="aXXeb1d3543XX2749XX83f56beXXdb81", oauth_signature_method="PLAINTEXT", oauth_signature="43XX9ffdfb8XX8aea607316XXf3aXXd6%26", oauth_timestamp="1341179279", oauth_nonce="4190XX27-XX12-4XX6-9XX3-CDD9EXXX2FAD", oauth_version="1.0"
+Content-Type: application/json; charset=UTF-8
+Accept-Charset: ISO-8859-1,utf-8
+Accept-Encoding: gzip
+X-Spring-Client: iPad
+X-Spring-Client-Version: 3.06
+X-Spring-Api-Version: 9
+X-Spring-Device-Identifier: d8XX6270XXfX
+Accept-Language: en-us
+Cookie: JSESSIONID=E2XX9E4XX6C3CE2494EXX5C382XX3AFB.SPAD_NODE6
+Pragma: no-cache
+Connection: keep-alive
+Proxy-Connection: keep-alive
+
+{"key2":"43XX9ffdfb8XX8aea607316XXf3aXXd6","password":"XXXXXXXXXXXXXXX","source":"ipad","email":"XXXXXXXXXXXX@gmail.com","key1":"aXXeb1d3543XX2749XX83f56beXXdb81","timeZone":"Atlantic/Reykjavik"}</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c9779934c62764666443-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c62764666443-2">2</div><div class="crayon-num" data-line="crayon-53c9779934c62764666443-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c62764666443-4">4</div><div class="crayon-num" data-line="crayon-53c9779934c62764666443-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c62764666443-6">6</div><div class="crayon-num" data-line="crayon-53c9779934c62764666443-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c62764666443-8">8</div><div class="crayon-num" data-line="crayon-53c9779934c62764666443-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c62764666443-10">10</div><div class="crayon-num" data-line="crayon-53c9779934c62764666443-11">11</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c62764666443-12">12</div><div class="crayon-num" data-line="crayon-53c9779934c62764666443-13">13</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c62764666443-14">14</div><div class="crayon-num" data-line="crayon-53c9779934c62764666443-15">15</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c62764666443-16">16</div><div class="crayon-num" data-line="crayon-53c9779934c62764666443-17">17</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c62764666443-18">18</div><div class="crayon-num" data-line="crayon-53c9779934c62764666443-19">19</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c62764666443-20">20</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c9779934c62764666443-1"><span class="crayon-i">POST</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i">api</span><span class="crayon-o">/</span><span class="crayon-e">users </span><span class="crayon-i">HTTP</span><span class="crayon-o">/</span><span class="crayon-cn">1.1</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c62764666443-2"><span class="crayon-i">Host</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-v">iphone3</span><span class="crayon-sy">.</span><span class="crayon-v">springpad</span><span class="crayon-sy">.</span><span class="crayon-e">com</span></div><div class="crayon-line" id="crayon-53c9779934c62764666443-3"><span class="crayon-i">User</span><span class="crayon-o">-</span><span class="crayon-i">Agent</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">Springpad</span><span class="crayon-o">/</span><span class="crayon-cn">3.0.6</span><span class="crayon-h"> </span><span class="crayon-i">CFNetwork</span><span class="crayon-o">/</span><span class="crayon-cn">548.0.4</span><span class="crayon-h"> </span><span class="crayon-i">Darwin</span><span class="crayon-o">/</span><span class="crayon-cn">11.0.0</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c62764666443-4"><span class="crayon-i">Content</span><span class="crayon-o">-</span><span class="crayon-i">Length</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-cn">185</span></div><div class="crayon-line" id="crayon-53c9779934c62764666443-5"><span class="crayon-i">Accept</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">application</span><span class="crayon-o">/</span><span class="crayon-e">json</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c62764666443-6"><span class="crayon-i">Authorization</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-e">OAuth </span><span class="crayon-v">realm</span><span class="crayon-o">=</span><span class="crayon-s">""</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_consumer_key</span><span class="crayon-o">=</span><span class="crayon-s">"aXXeb1d3543XX2749XX83f56beXXdb81"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_signature_method</span><span class="crayon-o">=</span><span class="crayon-s">"PLAINTEXT"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_signature</span><span class="crayon-o">=</span><span class="crayon-s">"43XX9ffdfb8XX8aea607316XXf3aXXd6%26"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_timestamp</span><span class="crayon-o">=</span><span class="crayon-s">"1341179279"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_nonce</span><span class="crayon-o">=</span><span class="crayon-s">"4190XX27-XX12-4XX6-9XX3-CDD9EXXX2FAD"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_version</span><span class="crayon-o">=</span><span class="crayon-s">"1.0"</span></div><div class="crayon-line" id="crayon-53c9779934c62764666443-7"><span class="crayon-i">Content</span><span class="crayon-o">-</span><span class="crayon-i">Type</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">application</span><span class="crayon-o">/</span><span class="crayon-i">json</span><span class="crayon-sy">;</span><span class="crayon-h"> </span><span class="crayon-v">charset</span><span class="crayon-o">=</span><span class="crayon-i">UTF</span><span class="crayon-o">-</span><span class="crayon-cn">8</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c62764666443-8"><span class="crayon-i">Accept</span><span class="crayon-o">-</span><span class="crayon-i">Charset</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">ISO</span><span class="crayon-o">-</span><span class="crayon-cn">8859</span><span class="crayon-o">-</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span><span class="crayon-i">utf</span><span class="crayon-o">-</span><span class="crayon-cn">8</span></div><div class="crayon-line" id="crayon-53c9779934c62764666443-9"><span class="crayon-i">Accept</span><span class="crayon-o">-</span><span class="crayon-i">Encoding</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">gzip</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c62764666443-10"><span class="crayon-i">X</span><span class="crayon-o">-</span><span class="crayon-i">Spring</span><span class="crayon-o">-</span><span class="crayon-i">Client</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">iPad</span></div><div class="crayon-line" id="crayon-53c9779934c62764666443-11"><span class="crayon-i">X</span><span class="crayon-o">-</span><span class="crayon-i">Spring</span><span class="crayon-o">-</span><span class="crayon-i">Client</span><span class="crayon-o">-</span><span class="crayon-i">Version</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-cn">3.06</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c62764666443-12"><span class="crayon-i">X</span><span class="crayon-o">-</span><span class="crayon-i">Spring</span><span class="crayon-o">-</span><span class="crayon-i">Api</span><span class="crayon-o">-</span><span class="crayon-i">Version</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-cn">9</span></div><div class="crayon-line" id="crayon-53c9779934c62764666443-13"><span class="crayon-i">X</span><span class="crayon-o">-</span><span class="crayon-i">Spring</span><span class="crayon-o">-</span><span class="crayon-i">Device</span><span class="crayon-o">-</span><span class="crayon-i">Identifier</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-e">d8XX6270XXfX</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c62764666443-14"><span class="crayon-i">Accept</span><span class="crayon-o">-</span><span class="crayon-i">Language</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">en</span><span class="crayon-o">-</span><span class="crayon-e">us</span></div><div class="crayon-line" id="crayon-53c9779934c62764666443-15"><span class="crayon-i">Cookie</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-v">JSESSIONID</span><span class="crayon-o">=</span><span class="crayon-v">E2XX9E4XX6C3CE2494EXX5C382XX3AFB</span><span class="crayon-sy">.</span><span class="crayon-e">SPAD_NODE6</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c62764666443-16"><span class="crayon-i">Pragma</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">no</span><span class="crayon-o">-</span><span class="crayon-e">cache</span></div><div class="crayon-line" id="crayon-53c9779934c62764666443-17"><span class="crayon-i">Connection</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">keep</span><span class="crayon-o">-</span><span class="crayon-e">alive</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c62764666443-18"><span class="crayon-i">Proxy</span><span class="crayon-o">-</span><span class="crayon-i">Connection</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-e">keep</span><span class="crayon-o">-</span><span class="crayon-e">alive</span></div><div class="crayon-line" id="crayon-53c9779934c62764666443-19">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c62764666443-20"><span class="crayon-sy">{</span><span class="crayon-s">"key2"</span><span class="crayon-o">:</span><span class="crayon-s">"43XX9ffdfb8XX8aea607316XXf3aXXd6"</span><span class="crayon-sy">,</span><span class="crayon-s">"password"</span><span class="crayon-o">:</span><span class="crayon-s">"XXXXXXXXXXXXXXX"</span><span class="crayon-sy">,</span><span class="crayon-s">"source"</span><span class="crayon-o">:</span><span class="crayon-s">"ipad"</span><span class="crayon-sy">,</span><span class="crayon-s">"email"</span><span class="crayon-o">:</span><span class="crayon-s">"XXXXXXXXXXXX@gmail.com"</span><span class="crayon-sy">,</span><span class="crayon-s">"key1"</span><span class="crayon-o">:</span><span class="crayon-s">"aXXeb1d3543XX2749XX83f56beXXdb81"</span><span class="crayon-sy">,</span><span class="crayon-s">"timeZone"</span><span class="crayon-o">:</span><span class="crayon-s">"Atlantic/Reykjavik"</span><span class="crayon-sy">}</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0175 seconds] -->
+<p>At this point, we post our credentials to the site(Over HTTP, mind you. Ooops) with the addition of a sessionID in our cookie. Again we see the transmission of your mac address.</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c9779934c6a886193750" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+POST /api/users/me/contacts?&amp;;filter=springpad HTTP/1.1
+Host: iphone3.springpad.com
+User-Agent: Springpad/3.0.6 CFNetwork/548.0.4 Darwin/11.0.0
+Content-Length: 45
+Accept: application/json
+Authorization: OAuth realm="", oauth_consumer_key="aXXeb1d3543XX2749XX83f56beXXdb81", oauth_token="f46939dfffeae3ae50e6e38310140bf2", oauth_signature_method="PLAINTEXT", oauth_signature="43XX9ffdfb8XX8aea607316XXf3aXXd6%26XXfe8b8XXafeecdf55XXecf11adXX5e2", oauth_timestamp="1341185371", oauth_nonce="ADXX06A2-EXXD-4D26-BXXF-XXB9XX36DXX1", oauth_version="1.0"
+Content-Type: application/json; charset=UTF-8
+Accept-Charset: ISO-8859-1,utf-8
+Accept-Encoding: gzip
+X-Spring-Client: iPad
+X-Spring-Client-Version: 3.06
+X-Spring-Api-Version: 9
+X-Spring-Device-Identifier: d8XX6270XXfX
+Accept-Language: en-us
+Cookie: JSESSIONID=E2XX9E4XX6C3CE2494EXX5C382XX3AFB.SPAD_NODE6
+Pragma: no-cache
+Connection: keep-alive
+Proxy-Connection: keep-alive
+
+["M8R-39frht@mailinator.com","M8R-yxpm07@mailinator.com"]</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c9779934c6a886193750-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c6a886193750-2">2</div><div class="crayon-num" data-line="crayon-53c9779934c6a886193750-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c6a886193750-4">4</div><div class="crayon-num" data-line="crayon-53c9779934c6a886193750-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c6a886193750-6">6</div><div class="crayon-num" data-line="crayon-53c9779934c6a886193750-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c6a886193750-8">8</div><div class="crayon-num" data-line="crayon-53c9779934c6a886193750-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c6a886193750-10">10</div><div class="crayon-num" data-line="crayon-53c9779934c6a886193750-11">11</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c6a886193750-12">12</div><div class="crayon-num" data-line="crayon-53c9779934c6a886193750-13">13</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c6a886193750-14">14</div><div class="crayon-num" data-line="crayon-53c9779934c6a886193750-15">15</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c6a886193750-16">16</div><div class="crayon-num" data-line="crayon-53c9779934c6a886193750-17">17</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c6a886193750-18">18</div><div class="crayon-num" data-line="crayon-53c9779934c6a886193750-19">19</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c6a886193750-20">20</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c9779934c6a886193750-1"><span class="crayon-i">POST</span><span class="crayon-h"> </span><span class="crayon-o">/</span><span class="crayon-i">api</span><span class="crayon-o">/</span><span class="crayon-i">users</span><span class="crayon-o">/</span><span class="crayon-i">me</span><span class="crayon-o">/</span><span class="crayon-i">contacts</span><span class="crayon-sy">?</span><span class="crayon-o">&amp;</span><span class="crayon-sy">;</span><span class="crayon-v">filter</span><span class="crayon-o">=</span><span class="crayon-e">springpad </span><span class="crayon-i">HTTP</span><span class="crayon-o">/</span><span class="crayon-cn">1.1</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c6a886193750-2"><span class="crayon-i">Host</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-v">iphone3</span><span class="crayon-sy">.</span><span class="crayon-v">springpad</span><span class="crayon-sy">.</span><span class="crayon-e">com</span></div><div class="crayon-line" id="crayon-53c9779934c6a886193750-3"><span class="crayon-i">User</span><span class="crayon-o">-</span><span class="crayon-i">Agent</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">Springpad</span><span class="crayon-o">/</span><span class="crayon-cn">3.0.6</span><span class="crayon-h"> </span><span class="crayon-i">CFNetwork</span><span class="crayon-o">/</span><span class="crayon-cn">548.0.4</span><span class="crayon-h"> </span><span class="crayon-i">Darwin</span><span class="crayon-o">/</span><span class="crayon-cn">11.0.0</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c6a886193750-4"><span class="crayon-i">Content</span><span class="crayon-o">-</span><span class="crayon-i">Length</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-cn">45</span></div><div class="crayon-line" id="crayon-53c9779934c6a886193750-5"><span class="crayon-i">Accept</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">application</span><span class="crayon-o">/</span><span class="crayon-e">json</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c6a886193750-6"><span class="crayon-i">Authorization</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-e">OAuth </span><span class="crayon-v">realm</span><span class="crayon-o">=</span><span class="crayon-s">""</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_consumer_key</span><span class="crayon-o">=</span><span class="crayon-s">"aXXeb1d3543XX2749XX83f56beXXdb81"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_token</span><span class="crayon-o">=</span><span class="crayon-s">"f46939dfffeae3ae50e6e38310140bf2"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_signature_method</span><span class="crayon-o">=</span><span class="crayon-s">"PLAINTEXT"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_signature</span><span class="crayon-o">=</span><span class="crayon-s">"43XX9ffdfb8XX8aea607316XXf3aXXd6%26XXfe8b8XXafeecdf55XXecf11adXX5e2"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_timestamp</span><span class="crayon-o">=</span><span class="crayon-s">"1341185371"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_nonce</span><span class="crayon-o">=</span><span class="crayon-s">"ADXX06A2-EXXD-4D26-BXXF-XXB9XX36DXX1"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">oauth_version</span><span class="crayon-o">=</span><span class="crayon-s">"1.0"</span></div><div class="crayon-line" id="crayon-53c9779934c6a886193750-7"><span class="crayon-i">Content</span><span class="crayon-o">-</span><span class="crayon-i">Type</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">application</span><span class="crayon-o">/</span><span class="crayon-i">json</span><span class="crayon-sy">;</span><span class="crayon-h"> </span><span class="crayon-v">charset</span><span class="crayon-o">=</span><span class="crayon-i">UTF</span><span class="crayon-o">-</span><span class="crayon-cn">8</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c6a886193750-8"><span class="crayon-i">Accept</span><span class="crayon-o">-</span><span class="crayon-i">Charset</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">ISO</span><span class="crayon-o">-</span><span class="crayon-cn">8859</span><span class="crayon-o">-</span><span class="crayon-cn">1</span><span class="crayon-sy">,</span><span class="crayon-i">utf</span><span class="crayon-o">-</span><span class="crayon-cn">8</span></div><div class="crayon-line" id="crayon-53c9779934c6a886193750-9"><span class="crayon-i">Accept</span><span class="crayon-o">-</span><span class="crayon-i">Encoding</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">gzip</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c6a886193750-10"><span class="crayon-i">X</span><span class="crayon-o">-</span><span class="crayon-i">Spring</span><span class="crayon-o">-</span><span class="crayon-i">Client</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">iPad</span></div><div class="crayon-line" id="crayon-53c9779934c6a886193750-11"><span class="crayon-i">X</span><span class="crayon-o">-</span><span class="crayon-i">Spring</span><span class="crayon-o">-</span><span class="crayon-i">Client</span><span class="crayon-o">-</span><span class="crayon-i">Version</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-cn">3.06</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c6a886193750-12"><span class="crayon-i">X</span><span class="crayon-o">-</span><span class="crayon-i">Spring</span><span class="crayon-o">-</span><span class="crayon-i">Api</span><span class="crayon-o">-</span><span class="crayon-i">Version</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-cn">9</span></div><div class="crayon-line" id="crayon-53c9779934c6a886193750-13"><span class="crayon-i">X</span><span class="crayon-o">-</span><span class="crayon-i">Spring</span><span class="crayon-o">-</span><span class="crayon-i">Device</span><span class="crayon-o">-</span><span class="crayon-i">Identifier</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-e">d8XX6270XXfX</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c6a886193750-14"><span class="crayon-i">Accept</span><span class="crayon-o">-</span><span class="crayon-i">Language</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">en</span><span class="crayon-o">-</span><span class="crayon-e">us</span></div><div class="crayon-line" id="crayon-53c9779934c6a886193750-15"><span class="crayon-i">Cookie</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-v">JSESSIONID</span><span class="crayon-o">=</span><span class="crayon-v">E2XX9E4XX6C3CE2494EXX5C382XX3AFB</span><span class="crayon-sy">.</span><span class="crayon-e">SPAD_NODE6</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c6a886193750-16"><span class="crayon-i">Pragma</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">no</span><span class="crayon-o">-</span><span class="crayon-e">cache</span></div><div class="crayon-line" id="crayon-53c9779934c6a886193750-17"><span class="crayon-i">Connection</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">keep</span><span class="crayon-o">-</span><span class="crayon-e">alive</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c6a886193750-18"><span class="crayon-i">Proxy</span><span class="crayon-o">-</span><span class="crayon-i">Connection</span><span class="crayon-o">:</span><span class="crayon-h"> </span><span class="crayon-i">keep</span><span class="crayon-o">-</span><span class="crayon-v">alive</span></div><div class="crayon-line" id="crayon-53c9779934c6a886193750-19">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c6a886193750-20"><span class="crayon-sy">[</span><span class="crayon-s">"M8R-39frht@mailinator.com"</span><span class="crayon-sy">,</span><span class="crayon-s">"M8R-yxpm07@mailinator.com"</span><span class="crayon-sy">]</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0173 seconds] -->
+<p>Hold on a minute, what is that being sent across the wire? At this point, all I&#8217;ve clicked on is for me to sign up and just finish registration. I&#8217;ve not been requested to submit all of my contacts which are stored in my iOS contact list. Huh, that&#8217;s odd! I thought maybe I missed something, so I checked again. Nope, I&#8217;m not asked if I want to upload this.</p>
+<p><a href="http://ceriksen.com/wp-content/uploads/2012/08/ContactList.png"><img class="alignnone size-medium wp-image-30" title="My contact list" src="http://ceriksen.com/wp-content/uploads/2012/08/ContactList-300x225.png" alt="Note that these emails were a part of the HTTP request" width="300" height="225" /></a></p>
+<p><strong>The fine-print part of the story<br />
+</strong>So let&#8217;s go consult our privacy policy as for what information the application will automatically upload from me:</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c9779934c72511841918" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+Types of Information We Collect
+
+In connection with your use of our Website and our mobile applications, we may collect a variety of information from and about you in different ways.
+
+This includes:
+
+-Information you provide to us such as the information you provide when you register to use our service, give us your contact information, create a profile on our Website, or register to receive newsletters, alerts, or any products or services we provide via our Website or through our mobile applications ("Personal Information").
+
+-Private User Submitted Content ("Private Content") or Public Content (as such terms defined in our Terms of Service) as designated by you.
+
+-Information we collect automatically as you use the Website or our mobile applications, such as your IP address, the referring URL, browser type, and information about your usage of the Website or our mobile applications, whether links to external websites are followed, and whether advertisements provided to you are clicked.
+
+-We use cookies, which are small data files that we send to your browser for storage on your computer's hard drive, to identify you as a user, store your preferences, track activity at our Website and better serve your needs and interests. Cookies can be deleted or blocked by changing the settings on your Web browser, but if you block all cookies, you may not be able to take full advantage of the Springpad services.</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c9779934c72511841918-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c72511841918-2">2</div><div class="crayon-num" data-line="crayon-53c9779934c72511841918-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c72511841918-4">4</div><div class="crayon-num" data-line="crayon-53c9779934c72511841918-5">5</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c72511841918-6">6</div><div class="crayon-num" data-line="crayon-53c9779934c72511841918-7">7</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c72511841918-8">8</div><div class="crayon-num" data-line="crayon-53c9779934c72511841918-9">9</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c72511841918-10">10</div><div class="crayon-num" data-line="crayon-53c9779934c72511841918-11">11</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c72511841918-12">12</div><div class="crayon-num" data-line="crayon-53c9779934c72511841918-13">13</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c9779934c72511841918-1"><span class="crayon-e">Types </span><span class="crayon-e">of </span><span class="crayon-e">Information </span><span class="crayon-e">We </span><span class="crayon-e">Collect</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c72511841918-2">&nbsp;</div><div class="crayon-line" id="crayon-53c9779934c72511841918-3"><span class="crayon-st">In</span><span class="crayon-h"> </span><span class="crayon-e">connection </span><span class="crayon-e">with </span><span class="crayon-e">your </span><span class="crayon-st">use</span><span class="crayon-h"> </span><span class="crayon-e">of </span><span class="crayon-e">our </span><span class="crayon-e">Website </span><span class="crayon-st">and</span><span class="crayon-h"> </span><span class="crayon-e">our </span><span class="crayon-e">mobile </span><span class="crayon-i">applications</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">we </span><span class="crayon-e">may </span><span class="crayon-i">collect</span><span class="crayon-h"> </span><span class="crayon-i">a</span><span class="crayon-h"> </span><span class="crayon-e">variety </span><span class="crayon-e">of </span><span class="crayon-e">information </span><span class="crayon-e">from </span><span class="crayon-st">and</span><span class="crayon-h"> </span><span class="crayon-e">about </span><span class="crayon-e">you </span><span class="crayon-st">in</span><span class="crayon-h"> </span><span class="crayon-e">different </span><span class="crayon-v">ways</span><span class="crayon-sy">.</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c72511841918-4">&nbsp;</div><div class="crayon-line" id="crayon-53c9779934c72511841918-5"><span class="crayon-r">This</span><span class="crayon-h"> </span><span class="crayon-i">includes</span><span class="crayon-o">:</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c72511841918-6">&nbsp;</div><div class="crayon-line" id="crayon-53c9779934c72511841918-7"><span class="crayon-o">-</span><span class="crayon-e">Information </span><span class="crayon-e">you </span><span class="crayon-e">provide </span><span class="crayon-st">to</span><span class="crayon-h"> </span><span class="crayon-e">us </span><span class="crayon-e">such </span><span class="crayon-st">as</span><span class="crayon-h"> </span><span class="crayon-e">the </span><span class="crayon-e">information </span><span class="crayon-e">you </span><span class="crayon-e">provide </span><span class="crayon-e">when </span><span class="crayon-e">you </span><span class="crayon-e">register </span><span class="crayon-st">to</span><span class="crayon-h"> </span><span class="crayon-st">use</span><span class="crayon-h"> </span><span class="crayon-e">our </span><span class="crayon-i">service</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">give </span><span class="crayon-e">us </span><span class="crayon-e">your </span><span class="crayon-e">contact </span><span class="crayon-i">information</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-i">create</span><span class="crayon-h"> </span><span class="crayon-i">a</span><span class="crayon-h"> </span><span class="crayon-e">profile </span><span class="crayon-e">on </span><span class="crayon-e">our </span><span class="crayon-i">Website</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-st">or</span><span class="crayon-h"> </span><span class="crayon-e">register </span><span class="crayon-st">to</span><span class="crayon-h"> </span><span class="crayon-e">receive </span><span class="crayon-i">newsletters</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-i">alerts</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-st">or</span><span class="crayon-h"> </span><span class="crayon-e">any </span><span class="crayon-e">products </span><span class="crayon-st">or</span><span class="crayon-h"> </span><span class="crayon-e">services </span><span class="crayon-e">we </span><span class="crayon-e">provide </span><span class="crayon-e">via </span><span class="crayon-e">our </span><span class="crayon-e">Website </span><span class="crayon-st">or</span><span class="crayon-h"> </span><span class="crayon-e">through </span><span class="crayon-e">our </span><span class="crayon-e">mobile </span><span class="crayon-e">applications</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-s">"Personal Information"</span><span class="crayon-sy">)</span><span class="crayon-sy">.</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c72511841918-8">&nbsp;</div><div class="crayon-line" id="crayon-53c9779934c72511841918-9"><span class="crayon-o">-</span><span class="crayon-m">Private</span><span class="crayon-h"> </span><span class="crayon-e">User </span><span class="crayon-e">Submitted </span><span class="crayon-e">Content</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-s">"Private Content"</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-st">or</span><span class="crayon-h"> </span><span class="crayon-m">Public</span><span class="crayon-h"> </span><span class="crayon-e">Content</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-st">as</span><span class="crayon-h"> </span><span class="crayon-e">such </span><span class="crayon-e">terms </span><span class="crayon-e">defined </span><span class="crayon-st">in</span><span class="crayon-h"> </span><span class="crayon-e">our </span><span class="crayon-e">Terms </span><span class="crayon-e">of </span><span class="crayon-i">Service</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-st">as</span><span class="crayon-h"> </span><span class="crayon-e">designated </span><span class="crayon-e">by </span><span class="crayon-v">you</span><span class="crayon-sy">.</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c72511841918-10">&nbsp;</div><div class="crayon-line" id="crayon-53c9779934c72511841918-11"><span class="crayon-o">-</span><span class="crayon-e">Information </span><span class="crayon-e">we </span><span class="crayon-e">collect </span><span class="crayon-e">automatically </span><span class="crayon-st">as</span><span class="crayon-h"> </span><span class="crayon-e">you </span><span class="crayon-st">use</span><span class="crayon-h"> </span><span class="crayon-e">the </span><span class="crayon-e">Website </span><span class="crayon-st">or</span><span class="crayon-h"> </span><span class="crayon-e">our </span><span class="crayon-e">mobile </span><span class="crayon-i">applications</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">such </span><span class="crayon-st">as</span><span class="crayon-h"> </span><span class="crayon-e">your </span><span class="crayon-e">IP </span><span class="crayon-i">address</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">the </span><span class="crayon-e">referring </span><span class="crayon-i">URL</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">browser </span><span class="crayon-i">type</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-st">and</span><span class="crayon-h"> </span><span class="crayon-e">information </span><span class="crayon-e">about </span><span class="crayon-e">your </span><span class="crayon-e">usage </span><span class="crayon-e">of </span><span class="crayon-e">the </span><span class="crayon-e">Website </span><span class="crayon-st">or</span><span class="crayon-h"> </span><span class="crayon-e">our </span><span class="crayon-e">mobile </span><span class="crayon-i">applications</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">whether </span><span class="crayon-e">links </span><span class="crayon-st">to</span><span class="crayon-h"> </span><span class="crayon-e">external </span><span class="crayon-e">websites </span><span class="crayon-e">are </span><span class="crayon-i">followed</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-st">and</span><span class="crayon-h"> </span><span class="crayon-e">whether </span><span class="crayon-e">advertisements </span><span class="crayon-e">provided </span><span class="crayon-st">to</span><span class="crayon-h"> </span><span class="crayon-e">you </span><span class="crayon-e">are </span><span class="crayon-v">clicked</span><span class="crayon-sy">.</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c72511841918-12">&nbsp;</div><div class="crayon-line" id="crayon-53c9779934c72511841918-13"><span class="crayon-o">-</span><span class="crayon-e">We </span><span class="crayon-st">use</span><span class="crayon-h"> </span><span class="crayon-i">cookies</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">which </span><span class="crayon-e">are </span><span class="crayon-e">small </span><span class="crayon-e">data </span><span class="crayon-e">files </span><span class="crayon-e">that </span><span class="crayon-e">we </span><span class="crayon-e">send </span><span class="crayon-st">to</span><span class="crayon-h"> </span><span class="crayon-e">your </span><span class="crayon-e">browser </span><span class="crayon-st">for</span><span class="crayon-h"> </span><span class="crayon-e">storage </span><span class="crayon-e">on </span><span class="crayon-e">your </span><span class="crayon-i">computer</span>'<span class="crayon-i">s</span><span class="crayon-h"> </span><span class="crayon-e">hard </span><span class="crayon-i">drive</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-st">to</span><span class="crayon-h"> </span><span class="crayon-e">identify </span><span class="crayon-e">you </span><span class="crayon-st">as</span><span class="crayon-h"> </span><span class="crayon-i">a</span><span class="crayon-h"> </span><span class="crayon-i">user</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">store </span><span class="crayon-e">your </span><span class="crayon-i">preferences</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">track </span><span class="crayon-e">activity </span><span class="crayon-e">at </span><span class="crayon-e">our </span><span class="crayon-e">Website </span><span class="crayon-st">and</span><span class="crayon-h"> </span><span class="crayon-e">better </span><span class="crayon-e">serve </span><span class="crayon-e">your </span><span class="crayon-e">needs </span><span class="crayon-st">and</span><span class="crayon-h"> </span><span class="crayon-v">interests</span><span class="crayon-sy">.</span><span class="crayon-h"> </span><span class="crayon-e">Cookies </span><span class="crayon-e">can </span><span class="crayon-e">be </span><span class="crayon-e">deleted </span><span class="crayon-st">or</span><span class="crayon-h"> </span><span class="crayon-e">blocked </span><span class="crayon-e">by </span><span class="crayon-e">changing </span><span class="crayon-e">the </span><span class="crayon-e">settings </span><span class="crayon-e">on </span><span class="crayon-e">your </span><span class="crayon-e">Web </span><span class="crayon-i">browser</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">but </span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-e">you </span><span class="crayon-e">block </span><span class="crayon-e">all </span><span class="crayon-i">cookies</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">you </span><span class="crayon-e">may </span><span class="crayon-st">not</span><span class="crayon-h"> </span><span class="crayon-e">be </span><span class="crayon-e">able </span><span class="crayon-st">to</span><span class="crayon-h"> </span><span class="crayon-e">take </span><span class="crayon-e">full </span><span class="crayon-e">advantage </span><span class="crayon-e">of </span><span class="crayon-e">the </span><span class="crayon-e">Springpad </span><span class="crayon-v">services</span><span class="crayon-sy">.</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0196 seconds] -->
+<p>Oh, how odd. Not a word about contacts! This isn&#8217;t really what I&#8217;d expect. There&#8217;s another bit of the privacy policy which states:</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c9779934c79965526094" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+Accessing Your Personal Information
+
+As a Springpad user, you will have the opportunity to review and modify the information stored in your personal account any time you log onto your Springpad account using an email address and password listed on the account.</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c9779934c79965526094-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c79965526094-2">2</div><div class="crayon-num" data-line="crayon-53c9779934c79965526094-3">3</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c9779934c79965526094-1"><span class="crayon-e">Accessing </span><span class="crayon-e">Your </span><span class="crayon-e">Personal </span><span class="crayon-e">Information</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c79965526094-2">&nbsp;</div><div class="crayon-line" id="crayon-53c9779934c79965526094-3"><span class="crayon-st">As</span><span class="crayon-h"> </span><span class="crayon-i">a</span><span class="crayon-h"> </span><span class="crayon-e">Springpad </span><span class="crayon-i">user</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-e">you </span><span class="crayon-e">will </span><span class="crayon-e">have </span><span class="crayon-e">the </span><span class="crayon-e">opportunity </span><span class="crayon-st">to</span><span class="crayon-h"> </span><span class="crayon-e">review </span><span class="crayon-st">and</span><span class="crayon-h"> </span><span class="crayon-e">modify </span><span class="crayon-e">the </span><span class="crayon-e">information </span><span class="crayon-e">stored </span><span class="crayon-st">in</span><span class="crayon-h"> </span><span class="crayon-e">your </span><span class="crayon-e">personal </span><span class="crayon-e">account </span><span class="crayon-e">any </span><span class="crayon-e">time </span><span class="crayon-e">you </span><span class="crayon-e">log </span><span class="crayon-e">onto </span><span class="crayon-e">your </span><span class="crayon-e">Springpad </span><span class="crayon-e">account </span><span class="crayon-e">using </span><span class="crayon-e">an </span><span class="crayon-e">email </span><span class="crayon-e">address </span><span class="crayon-st">and</span><span class="crayon-h"> </span><span class="crayon-e">password </span><span class="crayon-e">listed </span><span class="crayon-e">on </span><span class="crayon-e">the </span><span class="crayon-v">account</span><span class="crayon-sy">.</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0032 seconds] -->
+<p>Thinking that I could now log into their web-site and see which information they have obtained from me, I logged in and started reviewing it. To my surprise, not a single mention of contacts was to be found. This is starting to smell. So let&#8217;s consult the iOS Application Guidelines as put forward by Apple:</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c9779934c80803598787" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+3.3.9 You and Your Applications may not collect user or device data without prior user consent, and then only to provide a service or function that is directly relevant to the use of the Application, or to serve advertising. You may not use analytics software in Your Application to collect and send device data to a third party.
+...
+17.1  Apps cannot transmit data about a user without obtaining the user’s prior permission and providing the user with access to information about how and where the data will be used.</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c9779934c80803598787-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c9779934c80803598787-2">2</div><div class="crayon-num" data-line="crayon-53c9779934c80803598787-3">3</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c9779934c80803598787-1"><span class="crayon-cn">3.3.9</span><span class="crayon-h"> </span><span class="crayon-e">You </span><span class="crayon-st">and</span><span class="crayon-h"> </span><span class="crayon-e">Your </span><span class="crayon-e">Applications </span><span class="crayon-e">may </span><span class="crayon-st">not</span><span class="crayon-h"> </span><span class="crayon-e">collect </span><span class="crayon-e">user </span><span class="crayon-st">or</span><span class="crayon-h"> </span><span class="crayon-e">device </span><span class="crayon-e">data </span><span class="crayon-e">without </span><span class="crayon-e">prior </span><span class="crayon-e">user </span><span class="crayon-i">consent</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-st">and</span><span class="crayon-h"> </span><span class="crayon-st">then</span><span class="crayon-h"> </span><span class="crayon-e">only </span><span class="crayon-st">to</span><span class="crayon-h"> </span><span class="crayon-i">provide</span><span class="crayon-h"> </span><span class="crayon-i">a</span><span class="crayon-h"> </span><span class="crayon-e">service </span><span class="crayon-st">or</span><span class="crayon-h"> </span><span class="crayon-t">function</span><span class="crayon-h"> </span><span class="crayon-e">that </span><span class="crayon-st">is</span><span class="crayon-h"> </span><span class="crayon-e">directly </span><span class="crayon-e">relevant </span><span class="crayon-st">to</span><span class="crayon-h"> </span><span class="crayon-e">the </span><span class="crayon-st">use</span><span class="crayon-h"> </span><span class="crayon-e">of </span><span class="crayon-e">the </span><span class="crayon-i">Application</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-st">or</span><span class="crayon-h"> </span><span class="crayon-st">to</span><span class="crayon-h"> </span><span class="crayon-e">serve </span><span class="crayon-v">advertising</span><span class="crayon-sy">.</span><span class="crayon-h"> </span><span class="crayon-e">You </span><span class="crayon-e">may </span><span class="crayon-st">not</span><span class="crayon-h"> </span><span class="crayon-st">use</span><span class="crayon-h"> </span><span class="crayon-e">analytics </span><span class="crayon-e">software </span><span class="crayon-st">in</span><span class="crayon-h"> </span><span class="crayon-e">Your </span><span class="crayon-e">Application </span><span class="crayon-st">to</span><span class="crayon-h"> </span><span class="crayon-e">collect </span><span class="crayon-st">and</span><span class="crayon-h"> </span><span class="crayon-e">send </span><span class="crayon-e">device </span><span class="crayon-e">data </span><span class="crayon-st">to</span><span class="crayon-h"> </span><span class="crayon-i">a</span><span class="crayon-h"> </span><span class="crayon-e">third </span><span class="crayon-v">party</span><span class="crayon-sy">.</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c9779934c80803598787-2"><span class="crayon-sy">.</span><span class="crayon-sy">.</span><span class="crayon-sy">.</span></div><div class="crayon-line" id="crayon-53c9779934c80803598787-3"><span class="crayon-cn">17.1</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-e">Apps </span><span class="crayon-e">cannot </span><span class="crayon-e">transmit </span><span class="crayon-e">data </span><span class="crayon-i">about</span><span class="crayon-h"> </span><span class="crayon-i">a</span><span class="crayon-h"> </span><span class="crayon-e">user </span><span class="crayon-e">without </span><span class="crayon-e">obtaining </span><span class="crayon-e">the </span><span class="crayon-i">user</span>’<span class="crayon-i">s</span><span class="crayon-h"> </span><span class="crayon-e">prior </span><span class="crayon-e">permission </span><span class="crayon-st">and</span><span class="crayon-h"> </span><span class="crayon-e">providing </span><span class="crayon-e">the </span><span class="crayon-e">user </span><span class="crayon-e">with </span><span class="crayon-e">access </span><span class="crayon-st">to</span><span class="crayon-h"> </span><span class="crayon-e">information </span><span class="crayon-e">about </span><span class="crayon-e">how </span><span class="crayon-st">and</span><span class="crayon-h"> </span><span class="crayon-e">where </span><span class="crayon-e">the </span><span class="crayon-e">data </span><span class="crayon-e">will </span><span class="crayon-e">be </span><span class="crayon-v">used</span><span class="crayon-sy">.</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0049 seconds] -->
+<p>I am no lawyer, but I don&#8217;t see that this application should have, as per Apples application guidelines, taken this information from my device without permission.</p>
+<p>Does this remind anybody else about <a href="http://blog.path.com/post/17274932484/we-are-sorry">Path</a>?</p>
+<p><strong>Response from vendor</strong><br />
+When I contacted Springpad about my concerns in regards to the lack of HTTPS and their use of contact information, they were very prompt in a reply to my concerns, specifically in regards to the lack of HTTPS and the use of contact informations. They explained that the lack of HTTPS was a result of a bug in the build process. A fix for this was being fast-tracked for submission to Apple by the end of the day.</p>
+<p>They acknowledged that the application uploaded the emails from the contact book of the device. They noted that the data wasn&#8217;t stored, only kept in memory to see if anybody you know uses SpringPad as well. They plan to request for explicit permission in version 3.0.7, which at the time of writing is being tested by their QA.</p>
+<p>Overall, they were extremely quick to reply and addressed my concerns quite well, despite having a <a href="http://springpad.com/blog/2012/07/summary-of-springpad-outage-629-71/">bad time all at the same time</a>.</p>
+					</div><!-- .entry-content -->
+
+	<footer class="entry-meta">
+				This entry was tagged <a href="http://ceriksen.com/tag/ios/" rel="tag">iOS</a>, <a href="http://ceriksen.com/tag/privacy/" rel="tag">Privacy</a>, <a href="http://ceriksen.com/tag/springpad/" rel="tag">Springpad</a>. Bookmark the <a href="http://ceriksen.com/2012/07/13/dissecting-traffic-from-springpad-for-ios/" title="Permalink to Dissecting traffic from SpringPad for iOS" rel="bookmark">permalink</a>.
+					</footer><!-- .entry-meta -->
+</article><!-- #post-29 -->
+
+					<nav id="nav-below">
+		<h2 class="assistive-text">Post navigation</h2>
+
+		
+					<div class="nav-previous"><a href="http://ceriksen.com/2012/07/13/wordpress-paid-memberships-pro-information-disclosure-vulnerability/" rel="prev"><span class="meta-nav">&larr;</span> WordPress Paid Memberships Pro information disclosure vulnerability</a></div>			<div class="nav-next"><a href="http://ceriksen.com/2012/07/16/overview-of-ios-tracking-traffic/" rel="next">Overview of iOS tracking traffic <span class="meta-nav">&rarr;</span></a></div>						
+	
+	</nav><!-- #nav-below -->
+	
+						<div id="comments">
+	
+	
+	
+									<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2012/07/13/dissecting-traffic-from-springpad-for-ios/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<p class="must-log-in">You must be <a href="http://ceriksen.com/wp-login.php?redirect_to=http%3A%2F%2Fceriksen.com%2F2012%2F07%2F13%2Fdissecting-traffic-from-springpad-for-ios%2F">logged in</a> to post a comment.</p>												</div><!-- #respond -->
+			
+</div><!-- #comments -->
+
+			
+			</div><!-- #content -->
+		</div><!-- #primary -->
+
+			<div id="secondary" class="widget-area" role="complementary">
+			<aside id="text-2" class="widget widget_text"><h3 class="widget-title">Upcoming advisories</h3>			<div class="textwidget"><p>SA51412<br />
+SA51348<br />
+SA51344<br />
+SA51336 </p>
+</div>
+		</aside><aside id="categories-4" class="widget widget_categories"><h3 class="widget-title">Categories</h3>		<ul>
+	<li class="cat-item cat-item-3"><a href="http://ceriksen.com/category/advisories/" title="View all posts filed under Advisories">Advisories</a> (34)
+</li>
+	<li class="cat-item cat-item-12"><a href="http://ceriksen.com/category/privacy/" title="View all posts filed under Privacy">Privacy</a> (5)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://ceriksen.com/category/security/" title="View all posts filed under Security">Security</a> (7)
+</li>
+		</ul>
+</aside>		<aside id="recent-posts-4" class="widget widget_recent_entries">		<h3 class="widget-title">Recent posts</h3>		<ul>
+					<li>
+				<a href="http://ceriksen.com/2013/08/20/graphite-remote-code-execution-vulnerability-advisory/">Graphite remote code execution vulnerability advisory</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/08/06/squash-remote-code-execution-vulnerability-advisory/">Squash remote code execution vulnerability advisory</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/06/18/bsides-rhode-island-presentation-and-slides/">BSides Rhode Island presentation and slides</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/24/cve-2012-6399-or-how-your-cisco-webex-meetings-arent-very-confidential-on-ios/">CVE-2012-6399 &#8211; Or how your Cisco WebEx meetings aren&#8217;t very confidential on iOS</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/16/credit-card-numbers-third-parties-and-you/">Credit card numbers, third parties and you</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/09/cve-2013-2692-or-when-your-openvpn-is-a-bit-too-open/">CVE-2013-2692 &#8211; Or when your OpenVPN is a bit too open</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/03/conditional-csrf-or-how-to-spray-without-praying/">Conditional CSRF &#8211; Or how to spray without praying</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/01/wordpress-csrf-exploit-kit-a-novel-approach-to-exploiting-wordpress-plugins/">WordPress CSRF Exploit kit &#8211; A novel approach to exploiting WordPress plugins</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/03/17/amd-catalyst-driver-update-vulnerability/">AMD Catalyst driver update vulnerability</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/02/18/wordpress-online-store-local-file-inclusion-vulnerability/">WordPress Online Store local file inclusion vulnerability</a>
+						</li>
+				</ul>
+		</aside>		</div><!-- #secondary .widget-area -->
+	
+	</div><!-- #main -->
+	
+	
+	<footer id="colophon" role="contentinfo">
+		<div id="site-generator">
+						<a href="http://wordpress.org/" title="Semantic Personal Publishing Platform" rel="generator">Powered by WordPress</a> &amp;	<a href="http://wpshoppe.com/" title="Minimalist WordPress Themes" rel="generator">simpleX</a>.
+					
+		</div>
+	</footer><!-- #colophon -->
+	
+		
+</div><!-- #page -->
+
+<link rel='stylesheet' id='wp-jquery-ui-dialog-css'  href='http://ceriksen.com/wp-includes/css/jquery-ui-dialog.min.css?ver=3.8.3' type='text/css' media='all' />
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wordCountL10n = {"type":"w"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-admin/js/word-count.min.js?ver=3.8.3'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var userSettings = {"url":"\/","uid":"0","time":"1405712281"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/utils.min.js?ver=3.8.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-admin/js/editor.min.js?ver=3.8.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.core.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.widget.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.mouse.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.resizable.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.draggable.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.button.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.position.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.dialog.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/tinymce/plugins/wpdialogs/js/wpdialog.min.js?ver=3.8.3'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wpLinkL10n = {"title":"Insert\/edit link","update":"Update","save":"Add Link","noTitle":"(no title)","noMatchesFound":"No matches found."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/wplink.min.js?ver=3.8.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/tinymce/plugins/wpdialogs/js/popup.min.js?ver=3.8.3'></script>
+
+	<script type="text/javascript">
+		tinyMCEPreInit = {
+			base : "http://ceriksen.com/wp-includes/js/tinymce",
+			suffix : "",
+			query : "ver=359-20131026",
+			mceInit : {'comment':{mode:"exact",width:"100%",theme:"advanced",skin:"wp_theme",language:"en",theme_advanced_toolbar_location:"top",theme_advanced_toolbar_align:"left",theme_advanced_statusbar_location:"bottom",theme_advanced_resizing:true,theme_advanced_resize_horizontal:false,dialog_type:"modal",formats:{
+						alignleft : [
+							{selector : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li', styles : {textAlign : 'left'}},
+							{selector : 'img,table', classes : 'alignleft'}
+						],
+						aligncenter : [
+							{selector : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li', styles : {textAlign : 'center'}},
+							{selector : 'img,table', classes : 'aligncenter'}
+						],
+						alignright : [
+							{selector : 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li', styles : {textAlign : 'right'}},
+							{selector : 'img,table', classes : 'alignright'}
+						],
+						strikethrough : {inline : 'del'}
+					},relative_urls:false,remove_script_host:false,convert_urls:false,remove_linebreaks:true,gecko_spellcheck:true,fix_list_elements:true,keep_styles:false,entities:"38,amp,60,lt,62,gt",accessibility_focus:true,media_strict:false,paste_remove_styles:true,paste_remove_spans:true,paste_strip_class_attributes:"all",paste_text_use_dialog:true,webkit_fake_resize:false,preview_styles:"font-family font-weight text-decoration text-transform",schema:"html5",wpeditimage_disable_captions:false,wp_fullscreen_content_css:"http://ceriksen.com/wp-includes/js/tinymce/plugins/wpfullscreen/css/wp-fullscreen.css",plugins:"inlinepopups,tabfocus,paste,media,fullscreen,wordpress,wpeditimage,wpgallery,wplink,wpdialogs,-crayon_tinymce",elements:"comment",wpautop:true,apply_source_formatting:false,theme_advanced_buttons1:"bold,italic,strikethrough,bullist,numlist,blockquote,justifyleft,justifycenter,justifyright,link,unlink,wp_more,spellchecker,fullscreen,wp_adv,separator,crayon_tinymce",theme_advanced_buttons2:"formatselect,underline,justifyfull,forecolor,pastetext,pasteword,removeformat,charmap,outdent,indent,undo,redo,wp_help",theme_advanced_buttons3:"",theme_advanced_buttons4:"",tabfocus_elements:":prev,:next",body_class:"comment post-type-post post-status-publish post-format-standard",theme_advanced_resizing_use_cookie:true,extended_valid_elements:",pre[*],code[*],iframe[*]"}},
+			qtInit : {'comment':{id:"comment",buttons:"strong,em,link,block,del,ins,img,ul,ol,li,code,more,close"}},
+			ref : {plugins:"inlinepopups,tabfocus,paste,media,fullscreen,wordpress,wpeditimage,wpgallery,wplink,wpdialogs,-crayon_tinymce",theme:"advanced",language:"en"},
+			load_ext : function(url,lang){var sl=tinymce.ScriptLoader;sl.markDone(url+'/langs/'+lang+'.js');sl.markDone(url+'/langs/'+lang+'_dlg.js');}
+		};
+	</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/tinymce/tiny_mce.js?ver=359-20131026'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/tinymce/wp-tinymce-schema.js?ver=359-20131026'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/tinymce/langs/wp-langs-en.js?ver=359-20131026'></script>
+
+	<script type="text/javascript">
+		var wpActiveEditor;
+
+		(function(){
+			var init, ed, qt, first_init, DOM, el, i, mce = 1;
+
+			if ( typeof(tinymce) == 'object' ) {
+				DOM = tinymce.DOM;
+				// mark wp_theme/ui.css as loaded
+				DOM.files[tinymce.baseURI.getURI() + '/themes/advanced/skins/wp_theme/ui.css'] = true;
+
+				DOM.events.add( DOM.select('.wp-editor-wrap'), 'mousedown', function(e){
+					if ( this.id )
+						wpActiveEditor = this.id.slice(3, -5);
+				});
+
+				for ( ed in tinyMCEPreInit.mceInit ) {
+					if ( first_init ) {
+						init = tinyMCEPreInit.mceInit[ed] = tinymce.extend( {}, first_init, tinyMCEPreInit.mceInit[ed] );
+					} else {
+						init = first_init = tinyMCEPreInit.mceInit[ed];
+					}
+
+					if ( mce )
+						try { tinymce.init(init); } catch(e){}
+				}
+			} else {
+				if ( tinyMCEPreInit.qtInit ) {
+					for ( i in tinyMCEPreInit.qtInit ) {
+						el = tinyMCEPreInit.qtInit[i].id;
+						if ( el )
+							document.getElementById('wp-'+el+'-wrap').onmousedown = function(){ wpActiveEditor = this.id.slice(3, -5); }
+					}
+				}
+			}
+
+			if ( typeof(QTags) == 'function' ) {
+				for ( qt in tinyMCEPreInit.qtInit ) {
+					try { quicktags( tinyMCEPreInit.qtInit[qt] ); } catch(e){}
+				}
+			}
+		})();
+		tinyMCEPreInit.load_ext("http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/util/tag-editor", "en");
+tinymce.PluginManager.load("crayon_tinymce", "http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/util/tag-editor/crayon_tinymce.js");
+
+			(function(){var t=tinyMCEPreInit,sl=tinymce.ScriptLoader,ln=t.ref.language,th=t.ref.theme,pl=t.ref.plugins;sl.markDone(t.base+'/langs/'+ln+'.js');sl.markDone(t.base+'/themes/'+th+'/langs/'+ln+'.js');sl.markDone(t.base+'/themes/'+th+'/langs/'+ln+'_dlg.js');sl.markDone(t.base+'/themes/advanced/skins/wp_theme/ui.css');tinymce.each(pl.split(','),function(n){if(n&&n.charAt(0)!='-'){sl.markDone(t.base+'/plugins/'+n+'/langs/'+ln+'.js');sl.markDone(t.base+'/plugins/'+n+'/langs/'+ln+'_dlg.js');}});})();
+			var ajaxurl = "/wp-admin/admin-ajax.php";		</script>
+			<div style="display:none;">
+	<form id="wp-link" tabindex="-1">
+	<input type="hidden" id="_ajax_linking_nonce" name="_ajax_linking_nonce" value="a25a108328" />	<div id="link-selector">
+		<div id="link-options">
+			<p class="howto">Enter the destination URL</p>
+			<div>
+				<label><span>URL</span><input id="url-field" type="text" name="href" /></label>
+			</div>
+			<div>
+				<label><span>Title</span><input id="link-title-field" type="text" name="linktitle" /></label>
+			</div>
+			<div class="link-target">
+				<label><input type="checkbox" id="link-target-checkbox" /> Open link in a new window/tab</label>
+			</div>
+		</div>
+				<p class="howto toggle-arrow " id="internal-toggle">Or link to existing content</p>
+		<div id="search-panel" style="display:none">
+			<div class="link-search-wrapper">
+				<label>
+					<span class="search-label">Search</span>
+					<input type="search" id="search-field" class="link-search-field" autocomplete="off" />
+					<span class="spinner"></span>
+				</label>
+			</div>
+			<div id="search-results" class="query-results">
+				<ul></ul>
+				<div class="river-waiting">
+					<span class="spinner"></span>
+				</div>
+			</div>
+			<div id="most-recent-results" class="query-results">
+				<div class="query-notice"><em>No search term specified. Showing recent items.</em></div>
+				<ul></ul>
+				<div class="river-waiting">
+					<span class="spinner"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="submitbox">
+		<div id="wp-link-update">
+			<input type="submit" value="Add Link" class="button-primary" id="wp-link-submit" name="wp-link-submit">
+		</div>
+		<div id="wp-link-cancel">
+			<a class="submitdelete deletion" href="#">Cancel</a>
+		</div>
+	</div>
+	</form>
+	</div>
+	
+</body>
+</html>
+<!-- Performance optimized by W3 Total Cache. Learn more: http://www.w3-edge.com/wordpress-plugins/
+
+Page Caching using disk: enhanced
+
+ Served from: ceriksen.com @ 2014-07-18 19:38:01 by W3 Total Cache -->

